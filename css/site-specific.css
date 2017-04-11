@@ -1,24 +1,23 @@
 body{
     font-family: 'Roboto Condensed', helvetica, sans-serif;
-    padding-left: 1%;
 }
 
 /*styling for side column*/
 .sidePanel .container .col-md-3 {
     height: 100%;
-    padding: 0 0 0 0;
+    padding: 2% 2% 2% 2%; /*top, right, bottom, left*/ 
     margin: 0;
     overflow: hidden;
     background-color: rgba(38, 50, 56,0.9);
     position:fixed;
     left: 0;
+    color: white; /*font color*/
 }
 
 /*styling for the body of the page on the right */
 .bodyPanel .container .col-md-9 {
     height: 100%;
-    padding: 0 0 0 0;
-    margin: 0;
+    padding: 0 2% 2% 2%; /*top, right, bottom, left*/ 
     background-color: rgba(236,239,241,.8));
     position:fixed;
     right: 0;

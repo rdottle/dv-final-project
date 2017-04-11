@@ -36,14 +36,45 @@
     <div class="sidePanel">
       <div class = "container" >
         <div class="row">
-
           <!-- divides into 4, takes first left one  -->
           <div class="col-md-3">
-          
-            <p>Heading? hello trying to figure out side panel hi how are you washpopping etc</p>
+            
+            <!-- heading -->
+            <h1> FILTER </h1>
+
+            <!-- toggle bar -->
+            <div class="source">
+              User  
+            </div>
+
+            <div class="toggle">
+              <input type="checkbox" class="check" value="on">
+              <b class="b switch"> </b>
+              <b class="b track"> </b> 
+            </div>
+
+            <div class="source">
+              Host  
+            </div>
+
+            <!-- search bar -->
+            <div class="filters_search">
+              <div class="filter_label">
+                Search
+              </div>
+              <input type="text" class="filters_search_input">
+              <div class="search-type-selector">
+                <!-- react-text: 32 -->Multiple terms joined by<!-- /react-text -->
+                <select>
+                  <option value="OR">OR</option>
+                  <option value="AND">AND</option>
+                </select>
+              </div>
+              <ul class="existing_terms_list">
+              </ul>
+            </div>
 
           </div>
-
         </div>
       </div>
     </div> 
