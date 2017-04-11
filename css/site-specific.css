@@ -3,10 +3,23 @@ body{
     padding-left: 1%;
 }
 
-/*.container .col-md-3{
-    width: 100%;
-    height: auto;
+/*styling for side column*/
+.sidePanel .container .col-md-3 {
+    height: 100%;
     padding: 0 0 0 0;
+    margin: 0;
     overflow: hidden;
-    background-color: solid pink;
-}*/
+    background-color: rgba(38, 50, 56,0.9);
+    position:fixed;
+    left: 0;
+}
+
+/*styling for the body of the page on the right */
+.bodyPanel .container .col-md-9 {
+    height: 100%;
+    padding: 0 0 0 0;
+    margin: 0;
+    background-color: rgba(236,239,241,.8));
+    position:fixed;
+    right: 0;
+}

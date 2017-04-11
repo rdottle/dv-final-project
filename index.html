@@ -14,7 +14,14 @@
 
     <!-- Link to p5 sketch file -->
     <script language="javascript" type="text/javascript" src="js/sketch.js"></script>
-   
+    
+    <!-- bootstrap set up--> 
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- ensures website has a 1:1 ratio with the viewport (screen size) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+
     <!-- Stylesheet link -->
     <link href="../css/bootstrap.min.css" rel="stylesheet"> 
     <link rel="stylesheet" type="text/css" href="../css/site-specific.css">
@@ -25,48 +32,44 @@
   </head>
 
   <body>
-    
-    <div class="title">
-      
-      <h1>WELCOME TO AIRBNB</h1> 
-      
-      <h2>cartogram below!</h2>
+    <!-- side panel -->
+    <div class="sidePanel">
+      <div class = "container" >
+        <div class="row">
 
-      <p> whatever </p>
-
-    </div>
-
-    <div class = "container">
-
-      <div class="row">
-
-        <!-- divides into 4, takes first left one  -->
-        <div class="col-md-3">
+          <!-- divides into 4, takes first left one  -->
+          <div class="col-md-3">
           
-          <p>Heading? hello trying to figure out side panel hi how are you washpopping etc</p>
+            <p>Heading? hello trying to figure out side panel hi how are you washpopping etc</p>
+
+          </div>
 
         </div>
-        <div class="col-md-3">
-          
-          <p>Heading? hello trying to figure out side panel hi how are you</p>
-
-        </div>
-        <div class="col-md-3">
-          
-          <p>Heading? hello trying to figure out side panel hi how are you</p>
-
-        </div>
-        <div class="col-md-3">
-          
-          <p>Heading? hello trying to figure out side panel hi how are you</p>
-
-        </div>
-
       </div>
-
     </div> 
 
+    <!-- body panel-->
+    <div class="bodyPanel">
+      <div class = "container" >
+        <div class="row">
 
+          <div class="col-md-9">
+            
+            <div class="title">
+              
+              <h1>WELCOME TO AIRBNB</h1> 
+              
+              <h2>cartogram below!</h2>
+
+              <p> whatever </p>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div> 
 
     <!--jQuery via Google CDN -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
