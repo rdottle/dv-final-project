@@ -1,101 +1,42 @@
 body{
     font-family: 'Roboto Condensed', helvetica, sans-serif;
-    background: #363940;
 }
 
-canvas {
-    padding: 0;
-    margin: auto;
-    display: block;
-    width: 800px;
-}
-
-div.title{
-    width: 100%;
+/*styling for side column*/
+.sidePanel .container .col-md-3 {
     height: 100%;
+    padding: 2% 2% 2% 2%; /*top, right, bottom, left*/ 
+    margin: 0;
+    overflow: hidden;
+    background-color: rgba(38, 50, 56,0.9);
+    position:fixed;
+    left: 0;
+    color: white; /*font color*/
 }
 
-h1{
-    color: rgba(255, 255, 255, 0.7);
-    font-weight: 400;
-    font-size: 5em;
-    max-width: 800px;
+/*search bar*/
+.filters_search_input {
+    color: rgba(38, 50, 56,0.6); /* color of the typing */
+}
+
+/*submit button - change to that search magnifying glass thing*/
+.filters_search #submit {
+    color: rgba(38, 50, 56,0.); /* color of the text - search */
+    background-color: rgba(38, 50, 56,0.1); /* color of the text - search */
+    font-family: 'Roboto', helvetica, sans-serif;
+    border-radius: .2em;
+    border: 1px solid #808080;
+    padding: 0.5% 1% 0.5% 1% ; /*top right bottom left */
     text-align: center;
-    margin: 25px, 25px;
-    margin-right: auto;
-    margin-left: auto;
-    margin-bottom: auto;
+    font-size: .75em;
+    font-weight: 800;
 }
 
-h2{
-    color: rgba(255, 255, 255, 0.7);
-    text-align: center;
-}
-
-h3{
-  font-size: 1.25em;
-    font-weight: 300;
-    max-width: 800px;
-    text-align: center;
-    margin-top: 5px;
-    margin-right: auto;
-    margin-left: 20%;
-    margin-bottom: auto;
-}
-
-p{
-    font-weight: 300;
-    font-size:30px;
-    color: rgba(255, 255, 255, 0.7);
-    margin-right: auto;
-    margin-left: auto;
-    margin-bottom: auto;
-
-}
-div.bio{
-    max-width: 800px;
-    margin-top: 20px;
-    margin-right: auto;
-    margin-left: auto;
-}
-
-img.bioImage{
-    width: 40%;
-    margin: auto;
-    display: block;
-}
-
-p.bioText{
-    font-weight: 300;
-    font-size: 1.05em;
-    line-height: 130%;
-}
-
-p.bioText > a{
-    color: #000000;
-}
-
-p.bioText > a:hover{
-    background-color: #FFFF00; 
-}
-
-div.linkList{
-    max-width: 800px;
-    margin-top: 20px;
-    margin-right: auto;
-    margin-left: auto;
-}
-
-li.assignmentLink{
-    font-weight: 300;
-    font-size: 1.05em;
-    line-height: 130%;
-}
-
-li.assignmentLink > a{
-    color: #000000;
-}
-
-li.assignmentLink > a:hover{
-    background-color: #FFFF00; 
+/*styling for the body of the page on the right */
+.bodyPanel .container .col-md-9 {
+    height: 100%;
+    padding: 0 2% 2% 2%; /*top, right, bottom, left*/ 
+    background-color: rgba(236,239,241,.8));
+    position:fixed;
+    right: 0;
 }

@@ -3,9 +3,6 @@
   <head>
     <title>Airbnb|NYC</title>
 
-    <!-- Stylesheet link -->
-    <link rel="stylesheet" type="text/css" href="css/site-specific.css">
-
     <!-- Google fonts code -->
     <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700" rel="stylesheet">
 
@@ -17,23 +14,97 @@
 
     <!-- Link to p5 sketch file -->
     <script language="javascript" type="text/javascript" src="js/sketch.js"></script>
+    
+    <!-- bootstrap set up--> 
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
+    <!-- ensures website has a 1:1 ratio with the viewport (screen size) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+
+    <!-- Stylesheet link -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet"> 
+    <link rel="stylesheet" type="text/css" href="../css/site-specific.css">
+
+    <!-- favicon - img for browser -->
+    <link rel="shortcut icon" type="image/png" href="../img/logo.png"/>
+  
   </head>
+
   <body>
-    <div class="title">
-      <h1><b>WELCOME TO AIRBNB</b></h1> 
-      <h2>cartogram below!</h2>
+    <!-- side panel -->
+    <div class="sidePanel">
+      <div class = "container" >
+        <div class="row">
+          <!-- divides into 4, takes first left one  -->
+          <div class="col-md-3">
+            
+            <!-- heading -->
+            <h1> FILTER </h1>
 
+            <!-- toggle bar -->
+            <div class="source">
+              User  
+            </div>
 
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Claudii libidini, qui tum erat summo ne imperio, dederetur. Quid ergo attinet gloriose loqui, nisi constanter loquare? Tu vero, inquam, ducas licet, si sequetur; Quod autem principium officii quaerunt, melius quam Pyrrho; Quamvis enim depravatae non sint, pravae tamen esse possunt. Duo Reges: constructio interrete.
+            <div class="toggle">
+              <input type="checkbox" class="check" value="on">
+              <b class="b switch"> </b>
+              <b class="b track"> </b> 
+            </div>
 
-Quamquam id quidem, infinitum est in hac urbe; An potest, inquit ille, quicquam esse suavius quam nihil dolere? Si longus, levis dictata sunt. Sit sane ista voluptas. Non laboro, inquit, de nomine. Quae quidem vel cum periculo est quaerenda vobis; Nunc omni virtuti vitium contrario nomine opponitur.
+            <div class="source">
+              Host  
+            </div>
 
-Cuius similitudine perspecta in formarum specie ac dignitate transitum est ad honestatem dictorum atque factorum. Cupit enim dícere nihil posse ad beatam vitam deesse sapienti. Multoque hoc melius nos veriusque quam Stoici. Vide igitur ne non debeas verbis nostris uti, sententiis tuis. Negat esse eam, inquit, propter se expetendam. Quid de Pythagora?
+            <!-- search bar -->
+            <div class="filters_search">
+              <input type="text" class="filters_search_input"> <!-- search bar  -->
+              <button id='submit'> Search </button> <!-- search button that you click -->
+              <div class="search-type-selector">
+                <!-- react-text: 32 -->Multiple terms joined by<!-- /react-text -->
+                <select>
+                  <option value="OR">OR</option>
+                  <option value="AND">AND</option>
+                </select>
+              </div>
+              <ul class="existing_terms_list">
+              </ul>
+            </div>
 
-Quorum sine causa fieri nihil putandum est. Tibi hoc incredibile, quod beatissimum. A primo, ut opinor, animantium ortu petitur origo summi boni. Mihi vero, inquit, placet agi subtilius et, ut ipse dixisti, pressius. An dolor longissimus quisque miserrimus, voluptatem non optabiliorem diuturnitas facit? Iam illud quale tandem est, bona praeterita non effluere sapienti, mala meminisse non oportere? Nam de isto magna dissensio est.
+          </div>
+        </div>
+      </div>
+    </div> 
 
-Quantum Aristoxeni ingenium consumptum videmus in musicis? Si stante, hoc natura videlicet vult, salvam esse se, quod concedimus; Fortasse id optimum, sed ubi illud: Plus semper voluptatis? Confecta res esset. Verba tu fingas et ea dicas, quae non sentias? Sed eum qui audiebant, quoad poterant, defendebant sententiam suam. Multoque hoc melius nos veriusque quam Stoici. Tamen a proposito, inquam, aberramus. Res enim se praeclare habebat, et quidem in utraque parte.</p>
-    </div>
+    <!-- body panel-->
+    <div class="bodyPanel">
+      <div class = "container" >
+        <div class="row">
+
+          <div class="col-md-9">
+            
+            <div class="title">
+              
+              <h1>WELCOME TO AIRBNB</h1> 
+              
+              <h2>cartogram below!</h2>
+
+              <p> whatever </p>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div> 
+
+    <!--jQuery via Google CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
   </body>
 </html>
