@@ -1,0 +1,387 @@
+---
+title: "Text Mining Exploration Using Airbnb Listing and Review Data for New York City"
+output:
+  html_document: default
+  html_notebook: default
+---
+####Rachael Dottle
+####Data Mining for the Social Sciences
+####12/21/2016
+
+--- 
+##Introduction
+
+
+
+##Data 
+
+This data comes from [Inside Airbnb](http://insideairbnb.com/about.html), which is "an independent, non-commercial set of tools and data that allows you to explore how Airbnb is really being used in cities around the world" [(Inside Airbnb)](http://insideairbnb.com/about.html). As with other text mining exploratory projects, some of the challenges involve determining was information one can feasibly extract and quantify from a mass text corpus. Techniques usually employed include term freqency and topic modeling, which are methods that involve a lot of exploratory trial and error. This project is a dive into this initial section of my larger project, and involves such trial and error. 
+
+In order to spend a larger amount of time on the actual analysis of the text from Airbnb listings and reviews, the data I have chosen to work with has already been cleaned and set up by Inside Airbnb. It comes in the format of two separate compressed CSV, one for reviews and one for listings.
+
+
+##Setting Up and Bringing in Data
+
+```{r, warning = FALSE, message = FALSE}
+library(tm)
+library(wordcloud)
+library(qdap)
+library(topicmodels)
+library(dplyr)
+library(Rgraphviz)
+library(yaml)
+library(readr)
+library(magrittr)
+library(wesanderson)
+library(ggplot2)
+library(cluster)
+library(fpc)
+
+```
+
+
+```{r, warning = FALSE, message=FALSE}
+setwd("C:/Users/racha/Dropbox/Spring_2017/2_QMSS/1_datavis")
+
+# Read in data
+listings <- read_csv("listings.csv")
+
+```
+
+##Description of the Data
+
+####Listings
+
+The listings data includes 95 variables and 40,227 observations. Some relevant variables: 
+
+Variables | Description 
+--------- | -------------------------------------------------------------------
+last_scraped | date of day data was scraped from Airbnb website, for project reference.
+summary    | listing summary, text blob, will be useful for most text mining
+space | text blob of descriptions of space, particularly useful for my interest in the changing New York environment
+description | text blob, describing space and type of stay, relevant details
+neighborhood_overview | text blob of Airbnb listing description of neighborhood, particularly interesting for my work on neighborhood and place perception
+transit | lister's text blob description of transit access
+host_id | Host ID
+host_neighborhood | Airbnb labeled neighborhoods
+host_about | description of host written by host
+host_total_listings_count | Number of listings owned and operated by single host
+neighborhood | Listing location
+city | City
+property_type | Type of listing (Apartment, House, etc.)
+number_of_reviews | Number of total reviews
+review_per_month | Number of reviews per month for listing
+availability_365 | Number of days available in coming year
+
+
+```{r}
+
+setwd("C:/Users/racha/Desktop/listings (1).csv")
+listings <- read_csv("listings.csv")
+reviews <- read_csv(("reviews (1).csv/reviews.c"))
+
+# subset listings data to just select out the variables I'm interested in for my initial text analysis prior to moving into any additional exploration with quantitative variables
+
+listings_tm <- select(listings, id, summary, space, description, neighborhood_overview, transit,
+                      host_about, neighbourhood, city, latitude, longitude, property_type,
+                      availability_365, number_of_reviews, reviews_per_month)
+
+
+# subset data to just Brooklyn and Manhattan, for later 
+bk_listings <- listings_tm[grep("Brooklyn", listings_tm$city), ]
+mn_listings <- listings_tm[grep("New York", listings_tm$city), ]
+
+
+
+```
+
+I've subset my listings data into Brooklyn and New York data frames, in order to play around with their differences, but also to make it easier to read into R faster, since my DocumentTermMatrices are rather large and take up a lot of memory. In this way I will begin create my corpus of text, starting with just the summary field. I am more interested in the neighborhood field, which presents how the Airbnb listers' are representing their area, so I will run the same textual analyses on both the summary and the neighborhood fields. 
+
+
+```{r}
+# Create corpus of text using the first column of interest: summary
+# Removing punctuation, stopwords, turning text into a DocumentTermMatrix for visualization
+
+# All listings data
+doc_sum <- Corpus(VectorSource(listings$summary)) %>%
+  tm_map(removePunctuation) %>% tm_map(removeNumbers) %>% tm_map(tolower) %>%
+  tm_map(removeWords, stopwords("english")) %>% tm_map(PlainTextDocument) 
+
+
+# Brooklyn 
+doc_sum_bk <- Corpus(VectorSource(bk_listings$summary)) %>%
+  tm_map(removePunctuation) %>% tm_map(removeNumbers) %>% tm_map(tolower) %>%
+  tm_map(removeWords, stopwords("english")) %>% tm_map(PlainTextDocument) 
+
+# Brooklyn 
+dtm_sum <- doc_sum %>% DocumentTermMatrix()
+tdm_sum <- doc_sum %>% TermDocumentMatrix()
+
+# Remove sparse terms from matrix to minimize size
+dtms_sum <- removeSparseTerms(dtm_sum, 0.90) 
+
+# All 
+dtm_sum_l <- doc_sum %>% DocumentTermMatrix()
+tdm_sum_l <- doc_sum %>% TermDocumentMatrix()
+
+
+# Manhattan 
+doc_sum_mn <- Corpus(VectorSource(mn_listings$summary)) %>%
+  tm_map(removePunctuation) %>% tm_map(removeNumbers) %>% tm_map(tolower) %>%
+  tm_map(removeWords, stopwords("english")) %>% tm_map(PlainTextDocument) 
+
+# Manhattan 
+dtm_sum_mn <- doc_sum_mn %>% DocumentTermMatrix()
+tdm_sum_mn <- doc_sum_mn %>% TermDocumentMatrix()
+
+
+
+dtm_rev <- Corpus(VectorSource(reviews$comments)) %>% tm_map(removePunctuation) %>% tm_map(removeNumbers) %>%
+  tm_map(tolower) %>% tm_map(removeWords, stopwords("english")) %>% tm_map(PlainTextDocument)
+
+dtm_rev1 <- dtm_rev %>% DocumentTermMatrix()
+tdm_rev <- dtm_rev %>% TermDocumentMatrix()
+
+
+```
+
+
+```{r, message = FALSE, warning = FALSE}
+
+# Make some simple word clouds from DocumentTermMatrix 
+
+# Palette 
+pal_1 <- wes_palette("Darjeeling", type = "continuous")
+pal_2 <- wes_palette("Moonrise2", type = "continuous")
+
+# Word clouds for all listings data 
+doc_sum %>% wordcloud(min.freq = 10, max.words = 100,
+                      random.order = F, rot.per = .3, colors = pal_1)
+doc_sum %>% wordcloud(max.words = 150, random.order = F, colors = pal_2)
+
+# Word clouds for Brooklyn only
+doc_sum_bk %>% wordcloud(min.freq = 10, max.words = 100,
+                      random.order = F, rot.per = .3, colors = pal_1)
+doc_sum_bk %>% wordcloud(max.words = 150, random.order = F, colors = pal_2)
+
+# Word clouds for Manhattan only
+doc_sum_mn %>% wordcloud(min.freq = 10, max.words = 100,
+                      random.order = F, rot.per = .3, colors = pal_1)
+doc_sum_mn %>% wordcloud(max.words = 150, random.order = F, colors = pal_2)
+
+findFreqTerms(dtm_sum, lowfreq = 900)
+
+findAssocs(dtm_sum, terms = "neighborhood", corlimit = 0.1)
+
+reviews <- findAssocs(dtm_rev1, terms = "neighborhood", corlimit = 0.1)
+
+
+word <- c("safe", "quiet", "restaurants", "apartment", "felt", "subway", "around", "nice")
+cor <- c(0.23, 0.15, 0.13, 0.12, 0.12, 0.11, 0.1, 0.1)
+
+
+rev_neigh <-as.data.frame(cbind(word, cor)) 
+rev_neigh
+
+write.csv(rev_neigh, "review_neighborhood_wordcorr.csv")
+
+
+list_neigh <- c("safe", "love", "place", "adventurers", "restaurants", "solo", "ambiance", "couples", "good", "outdoors", "bars", 
+                "business", "close", "travelers", "diverse")
+list_cor <- c(0.21, 0.17, 0.15, 0.13, 0.13, 0.13, 0.12, 0.12, 0.12, 0.12, 0.11, 0.11, 0.11, 0.11, 0.1)
+
+list_neighb <- as.data.frame(cbind(list_neigh, list_cor))
+write.csv(list_neighb, "listing_neighborhood_wordcorr.csv")
+```
+
+
+## Initial Plot of Word type
+
+To begin, I've just run a simple ggplot to take a look at the distribution of words and word size, which helps to verify that the data is properly formatted. 
+
+```{r}
+
+
+dist_tab(nchar(colnames(dtm_sum)))
+
+data.frame(nletters = nchar(colnames(dtm_sum))) %>%
+ggplot(aes(x = nletters)) + geom_histogram(binwidth = 1) +
+geom_vline(xintercept = mean(nchar(colnames(dtm_sum))), 
+           color = "blue", size = 1, alpha = .5) +
+labs(x = "Number of Letters", y = "Number of Words") + xlim(c(0, 30))
+
+
+```
+
+```{r, message = FALSE, warning = FALSE}
+
+# Calculate word frequency 
+# Brooklyn
+freq <- colSums(as.matrix(dtm_sum)) 
+len_dtm <- freq %>% length()
+
+# Word matrix length (no words included in word frequency) 
+len_dtm
+wfreq <- as.data.frame(freq) %>% subset(freq > 2000)
+wfreq <- setNames(cbind(rownames(wfreq), wfreq, row.names = NULL), 
+         c("word", "freq"))
+
+
+# Plot word frequency for those words that occur more than 1000 times in the tdm
+plot_bk <- ggplot(wfreq, aes(word, freq)) +
+  geom_bar(stat="identity") + theme(axis.text.x = element_text(angle = 45, hjust = 1))+ 
+  ggtitle("Word Count")
+
+plot_bk
+
+
+# Calculate word frequency 
+# Manhattan 
+freq_mn <- colSums(as.matrix(dtm_sum_mn)) 
+len_dtm_mn <- freq_mn %>% length()
+# Word matrix length (no words included in word frequency) 
+len_dtm_mn
+
+wfreq_mn <- as.data.frame(freq_mn) %>% subset(freq_mn > 2000)
+wfreq_mn <- setNames(cbind(rownames(wfreq_mn), wfreq_mn, row.names = NULL), 
+         c("word", "freq"))
+
+
+# Plot word frequency for those words that occur more than 1000 times in the tdm
+plot_mn <- ggplot(wfreq_mn, aes(word, freq)) +
+  geom_bar(stat="identity") + theme(axis.text.x = element_text(angle = 45, hjust = 1))+ 
+  ggtitle("Word Count")
+
+plot_mn
+
+
+```
+
+These two plots demonstrate the slight differences in the wording used to represent Manhattan apartments compared to Brooklyn apartments. I will further investigate these differences using some correlations and also further analysis. I also focus more specifically on Brooklyn data for clustering and topic modeling. 
+
+```{r}
+
+# Look at some word associations for words I'm specifically interested in in my further research 
+# Brooklyn
+findAssocs(dtm_sum, c("access","train", "neighborhood"), corlimit = 0.1)   
+
+#Manhattan 
+findAssocs(dtm_sum_mn, c("access", "train", "neighborhood"), corlimit = 0.1)
+
+```
+
+It's interesting to note that the word correlations differ in the two boroughs, specifically things like:
+
+'access' in Brooklyn is associated with words like 'backyard' and 'manhattan' compared to 'access' in Manhattan, which isn't associated with backyards. This obviously makes sense since it's more likely that one would have a backyard in Brooklyn, but not in Manhattan 
+
+Since in my eventual project I am interested in neighborhood and perception of neighborhood, I have chosen it as one of the words that I focus on when looking for the other terms associated with it. 
+
+For both subsets, it's interesting to note that 'safe' is most highly correlated with the word 'neighborhood'. Since I'm currently looking at the listings data, I am not surprised that 'safe' as a term is often found next to neighborhood, since Airbnb listers are attempting to market their home or listing, and thus advertise it and its surrounding area as 'safe'. 
+
+It is also interesting for me in my work to note that 'diverse' appears in association with neighborhood in Brooklyn, while not in Manhattan. This may be an interesting layer of information to further delve into, perhaps as it relates to Airbnb prices, reviews, and interest in Brooklyn, compared to the rest of the city, and how that compares to other studies on demographics and gentrification, for example. 
+
+## Some Basic Clustering using K-means
+
+```{r, message = FALSE, warning = FALSE}
+
+# Brooklyn only 
+# Matrix Term Frequency 
+dtm_sum_tf <- weightTfIdf(dtm_sum)
+dtm_sum_m  <- as.matrix(dtm_sum_tf)
+
+# Some K-means clustering initially 
+set.seed(1)
+
+# Clusters set to 4
+k <- 4
+
+# k-means clustering 
+km_out <- kmeans(dtm_sum_m, centers  = k)
+colnames(km_out$centers) <- colnames(dtm_sum_m)
+str(km_out)
+
+# Listings in the fourth cluster: what words are used most commonly for example
+# Brooklyn
+
+names(head(sort(km_out$centers[4,], decreasing = TRUE), 16))
+as.integer(gsub("fp", "",
+           gsub(".txt", "", names(which(km_out$cluster == 4)), fixed = TRUE)))
+
+
+```
+
+## Topic Modeling
+
+After having done some basic clustering, and seeing the limitations based on the complex text data, which needs to be further cleaned up to really make meaningful clusters at a higher level. I move on to topic modeling, which will allow me to extract and consider what kind of topics are most common in listing descriptions. 
+
+This information is useful for my further research because it will be interesting to understand the probability of certain listings' topics covered, and be able to associate it with other additional data, like demographics, changing urban planning policy or real-estate markets. 
+
+This initial project involves determining these topics. I choose k = 5, and run a latent dirichlet allocation model. 
+
+```{r}
+library(topicmodels)
+
+# First set the basic parameter for topic modeling 
+seed <-list(2003,5,63,100001,765)
+k = 5
+
+# LDA for Gibbs sampling
+# Brookyln 
+
+rowTotals <- apply(dtm_sum, 1, sum) #Find the sum of words in each Document
+dtm_new   <- dtm_sum[rowTotals > 0, ]           #remove all docs without words
+
+lda_out_bk <-LDA(dtm_new, 5, method = "Gibbs",
+             control = list(nstart = 5, seed = seed,
+                          best = TRUE, burnin = 4000,
+                          iter = 2000, thin = 500))
+
+# Save and print terms to observe grouping and topics generally
+t <- terms(lda_out_bk, 5)
+t
+lda_out_topics <- as.matrix(topics(lda_out_bk))
+
+# extract probabilities that a listing will fall within certain topic based on k = 5 topics
+lda_out_terms <- as.matrix(terms(lda_out_bk, 6))
+topicp_probabilities_bk <- as.data.frame(lda_out_bk@gamma)
+
+# Summary of probability that a certain topic occurs for a given listing
+summary(topicp_probabilities_bk)
+
+# Rename data frame column
+topicp_probabilities_bk <- setNames(cbind(rownames(topicp_probabilities_bk), topicp_probabilities_bk, row.names = NULL), c("id", "Brooklyn", "Space", "Lodging", "Environment", "Location"))
+
+
+ggplot(data = topicp_probabilities_bk, aes(Brooklyn, "Topics")) + 
+     geom_point(aes(x = Space, y = Brooklyn), colour = alpha('red', 0.05)) + 
+     geom_point(aes(x = Lodging, y = Brooklyn), colour = alpha('blue', 0.05)) +  
+     geom_point(aes(x = Environment, y = Brooklyn), colour = alpha('green', 0.05)) + 
+     geom_point(aes(x = Location, y = Brooklyn), colour = alpha('purple', 0.05))
+
+
+# Calculate relative importance of topic 1 to topic 2
+topic1_topic2 <- lapply(1:nrow(dtm_new), function(x)
+sort(topicp_probabilities_bk[x, ])[k] / sort(topicp_probabilities_bk[x, ])[k - 1])
+
+# Calculate relative importance of topic 2 to topic 3
+topic2_topic3 <- lapply(1:nrow(dtm_new), function(x)
+sort(topicp_probabilities_bk[x, ])[4] / sort(topicp_probabilities_bk[x, ])[3])
+
+# Probabilities that listing will fall in one of the topics
+mean(round(posterior(lda_out_bk, dtm_new)$topics, digits = 3))
+
+```
+
+## Conclusions and Further Research 
+
+From this project, I have developed an understanding of the structure and topics that generally appear in Airbnb listings, specifically for Brooklyn, and New York City. This is a setting off point for further understanding and analysis into the ways Airbnb data can be used to look into the changing urban environment, and the ways neighborhoods and cities are marketed. While Airbnb data has largely been used to predict pricing and analyze how pricing is determined based on listings, reviews, neighborhood, and other such factors. 
+
+I am specifically interested not in understanding or predicting pricing or Airbnb use, but the ways one can study the changing landscape of cities and how city residents and visitors perceive them. 
+
+Because of this, this initial project has given me the foundations to further dive into this topic. Topic modeling has demonstrated the way in which place is a significant part of Airbnb listings. Furthermore, the neighborhood, place, and relationships between spaces are significant topics that appear and can be used to sort listing data. 
+
+Further research in this direction will focus on spatially understanding how these topics present themselves, using the location-based data available in the given dataset. 
+
+Furthermore, diving into the ways in which review data might be matched to listing data, to be able to look at both sides of representation of neighborhood or place, would be a useful further direction. 
+
+
