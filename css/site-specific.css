@@ -14,6 +14,24 @@ body{
     color: white; /*font color*/
 }
 
+/*search bar*/
+.filters_search_input {
+    color: rgba(38, 50, 56,0.6); /* color of the typing */
+}
+
+/*submit button - change to that search magnifying glass thing*/
+.filters_search #submit {
+    color: rgba(38, 50, 56,0.); /* color of the text - search */
+    background-color: rgba(38, 50, 56,0.1); /* color of the text - search */
+    font-family: 'Roboto', helvetica, sans-serif;
+    border-radius: .2em;
+    border: 1px solid #808080;
+    padding: 0.5% 1% 0.5% 1% ; /*top right bottom left */
+    text-align: center;
+    font-size: .75em;
+    font-weight: 800;
+}
+
 /*styling for the body of the page on the right */
 .bodyPanel .container .col-md-9 {
     height: 100%;
