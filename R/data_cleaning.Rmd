@@ -169,7 +169,11 @@ doc_sum_mn %>% wordcloud(min.freq = 10, max.words = 100,
                       random.order = F, rot.per = .3, colors = pal_1)
 doc_sum_mn %>% wordcloud(max.words = 150, random.order = F, colors = pal_2)
 
-findFreqTerms(dtm_sum, lowfreq = 900)
+findFreqTerms(dtm_rev1, lowfreq = 10000)
+findFreqTerms(dtm_sum, lowfreq = 10000)
+
+
+
 
 findAssocs(dtm_sum, terms = "neighborhood", corlimit = 0.1)
 
@@ -193,7 +197,33 @@ list_cor <- c(0.21, 0.17, 0.15, 0.13, 0.13, 0.13, 0.12, 0.12, 0.12, 0.12, 0.11, 
 list_neighb <- as.data.frame(cbind(list_neigh, list_cor))
 write.csv(list_neighb, "listing_neighborhood_wordcorr.csv")
 ```
+```{R}
 
+findAssocs(dtm_sum, terms = "manhattan", corlimit = 0.1)
+
+findAssocs(dtm_rev1, terms = "manhattan", corlimit = 0.1)
+
+
+rev_man <- c("brooklyn", "minutes", "subway", "williamsburg", "train", "min", "ride", "walk", "away", "station", 
+               "skyline", "bridge", "line", "lower")
+
+rev_man2 <- c(0.23, 0.19, 0.17, 0.15, 0.14, 0.13, 0.13, 0.13, 0.13, 0.12, 0.12, 0.11, 0.1, 0.1)
+
+rev_man <- as.data.frame(cbind(rev_man, rev_man2))
+
+write.csv(rev_man, "reviews_manhattan_cor.csv")
+
+list_man <- c("minutes", "ride", "brooklyn", "skyline", "train", "midtown", "subway", "williamsburg", "downtown", "stop",
+              "away", "min")
+
+list_man2 <- c(0.22, 0.16, 0.15, 0.15, 0.15, 0.14, 0.14, 0.14, 0.14, 0.13, 0.1, 0.13)
+
+listman <- as.data.frame(cbind(list_man, list_man2))      
+write.csv(listman, "listing_manhattan_cor.csv")
+
+
+
+```
 
 ## Initial Plot of Word type
 
@@ -202,8 +232,14 @@ To begin, I've just run a simple ggplot to take a look at the distribution of wo
 ```{r}
 
 
-dist_tab(nchar(colnames(dtm_sum)))
+list_manhattancor <- c("minutes", "ride", "brooklyn", "skyline", "train", "midtown", "subway", "williamsburg", "downtown", "min",
+                       "stop", "away", "mins")
 
+list_manhattancor1 <- c(0.22, 0.16, 0.15, 0.15, 0.15, 0.14, 0.14, 0.14, 0.14, 0.13, 0.13, 0.13, 0.1, 0.1)
+
+
+dist_tab(nchar(colnames(dtm_sum)))
+,
 data.frame(nletters = nchar(colnames(dtm_sum))) %>%
 ggplot(aes(x = nletters)) + geom_histogram(binwidth = 1) +
 geom_vline(xintercept = mean(nchar(colnames(dtm_sum))), 
@@ -216,13 +252,26 @@ labs(x = "Number of Letters", y = "Number of Words") + xlim(c(0, 30))
 ```{r, message = FALSE, warning = FALSE}
 
 # Calculate word frequency 
+
+install.packages("slam")
+library(slam)
+dtm_sum <- rollup(dtm_sum, 2, na.rm=TRUE, FUN = sum)
+
+
 # Brooklyn
+dtm_sum_1
+
+slam::row_sums(dtm_sum, na.rm = T)
+slam::col_sums(tdm, na.rm = T)
+
+
 freq <- colSums(as.matrix(dtm_sum)) 
 len_dtm <- freq %>% length()
 
+dtm_sum < removeSparseTerms(dtm_sum, 0.9999)
 # Word matrix length (no words included in word frequency) 
 len_dtm
-wfreq <- as.data.frame(freq) %>% subset(freq > 2000)
+wfreq <- as.data.frame(freq)
 wfreq <- setNames(cbind(rownames(wfreq), wfreq, row.names = NULL), 
          c("word", "freq"))
 
