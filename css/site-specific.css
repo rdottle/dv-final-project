@@ -1,5 +1,5 @@
 body{
-    font-family: 'Roboto Condensed', helvetica, sans-serif;
+    font-family: 'Roboto', helvetica, sans-serif;
 }
 
 /*styling for side column*/
@@ -8,7 +8,7 @@ body{
     padding: 2% 2% 2% 2%; /*top, right, bottom, left*/ 
     margin: 0;
     overflow: hidden;
-    background-color: rgba(38, 50, 56,0.9);
+    background-color: rgba(0, 0, 0, 0.87);
     position:fixed;
     left: 0;
     color: white; /*font color*/
