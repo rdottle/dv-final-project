@@ -39,8 +39,46 @@ body{
     background-color: rgba(236,239,241,.8));
     position:fixed;
     right: 0;
+    display:block;
 }
 
-.title {
-    text-align: center;
+/*different blocks for the page on the right*/
+.page {
+    display:-webkit-flex;
+    display:flex;
+    flex-flow:row nowrap;
+        flex-direction:row;
+        flex-wrap:nowrap;
+    justify-content:center;
+    align-items:center;
+    min-height:100%;
+    overflow:hidden;
+        overflow-x:hidden;
+        overflow-y:hidden;
+    text-align:center;
+}
+
+#title {
+    background-color: #FFF;
+    
+}
+
+#big_picture {
+    background-color: #FDA02D;
+}
+
+#data {
+    background-color: #99CC66;
+}
+
+#process {
+    background-color: #62ADF2;
+}
+
+#coding {
+    background-color: #F25EA2;
+}
+
+#interface {
+    background-color: #161616;
 }
