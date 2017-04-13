@@ -133,10 +133,24 @@
 
           <div class="page" id="data">
             <h1>DATA</h1>
+            <p>We are using NYC Airbnb data from Inside Airbnb, “an independent, non-commercial set of tools and data that allows you to explore how Airbnb is really being used in cities around the world” (Inside Airbnb).</p>
+            <ul>
+              <li>The data utilizes public information compiled from the Airbnb web-site including the availability calendar for 365 days in the future, and the reviews for each listing. Data is verified, cleansed, analyzed and aggregated.</li>
+              <li>Some reviews may be "spam" allowed by Airbnb. Analysis suggests that spam reviews are small and do not affect the statistics.</li>
+              <li>Neighbourhood names for each listing are compiled by comparing the listing's geographic coordinates with a city's definition of neighbourhoods. Airbnb neighbourhood names are not used because of their inaccuracies.</li>
+            </ul>
+            <p>We will use a compressed csv of host descriptions and guest reviews. A list of explanatory variables are listed below:</p>
+
           </div>
 
           <div class="page" id="process">
             <h1>PROCESS</h1>
+            <p>We will use text analysis of the airbnb host listing descriptions and guest reviews. Specifically, we will use topic modeling to create clusters of similar words (i.e. entertainment = bars, restaurants, clubs; nature = green, space, open) and then see how these topics vary in prominence across neighbourhoods.<br><br>
+
+            In order to provide the user of this website with a narrative instead of just an exploration of a data set, we are analyzing the data first to find the topics that are frequently used in some areas but not in others; and the topics that differ between host and guest within a same neighbourhood. The particular topics and the words from which they are composed will depend on the results of this exploratory analysis. We are particularly interested in seeing whether host and guest perceptions of a neighbourhood differ and how.<br><br>
+
+            The website aims to build a narrative and guide the user through the data story. The interactive piece will allow users to explore the neighbourhoods and topics that most interest them.
+            </p>
           </div>
 
           <div class="page" id="coding">

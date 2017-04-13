@@ -97,6 +97,7 @@ body{
 
 #data {
     background-color: #99CC66;
+    display: block;
 }
 
 #process {
