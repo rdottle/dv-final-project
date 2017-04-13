@@ -4,8 +4,7 @@
     <title>Airbnb | NYC</title>
 
     <!-- Google fonts code -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Quattrocento+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Quattrocento+Sans|Roboto:300,400,700" rel="stylesheet">
 
     <!-- Loading p5.js library -->
     <script language="javascript" type="text/javascript" src="libraries/p5.js"></script>
@@ -23,10 +22,10 @@
     <!-- ensures website has a 1:1 ratio with the viewport (screen size) -->
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
 
-    <!-- Stylesheet link -->
+    <!-- Stylesheet + Bootstrap link -->
     <link href="css/bootstrap.min.css" rel="stylesheet"> 
     <link rel="stylesheet" type="text/css" href="css/site-specific.css">
-
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">  
     <!-- favicon - img for browser -->
     <link rel="shortcut icon" type="image/png" href="img/logo.png"/>
   
@@ -60,10 +59,16 @@
 
             <!-- search bar -->
             <div class="filters_search">
-              
+            
+              <!-- search bar -->
+              <button type="button" class="searchBar">
+                <span class="glyphicon glyphicon-search"> </span> 
+              </button>
+
               <!-- search bar actual input  -->
-              <input type="text" class="filters_search_input"> 
+              <!-- <input type="type" placeholder="Search..." class="filters_search_input">  -->
               
+              <!-- for the subtitle below about and/or -->
               <div class="search-type-selector">
                 <!-- react-text: 32 -->Multiple terms joined by<!-- /react-text -->
                 <select>

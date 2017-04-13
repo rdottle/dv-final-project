@@ -16,10 +16,15 @@ body{
 }
 
 /*search bar styling*/
-.filters_search_input {
+/*.filters_search_input*/ button.searchBar{
     color: rgba(38, 50, 56,0.6); /* color of the typing */
     background-color: #494949;
     border: 0;
+    width: 15em;
+}
+/*moves it in the search box*/
+.glyphicon{
+    left:45%;
 }
 
 /*for checkboxes and stuff*/
