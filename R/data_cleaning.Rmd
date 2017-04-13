@@ -114,8 +114,8 @@ doc_sum_bk <- Corpus(VectorSource(bk_listings$summary)) %>%
   tm_map(removeWords, stopwords("english")) %>% tm_map(PlainTextDocument) 
 
 # Brooklyn 
-dtm_sum <- doc_sum %>% DocumentTermMatrix()
-tdm_sum <- doc_sum %>% TermDocumentMatrix()
+dtm_sum_bk <- doc_sum_bk %>% DocumentTermMatrix()
+tdm_sum_bk <- doc_sum_bk %>% TermDocumentMatrix()
 
 # Remove sparse terms from matrix to minimize size
 dtms_sum <- removeSparseTerms(dtm_sum, 0.90) 
@@ -157,8 +157,13 @@ pal_2 <- wes_palette("Moonrise2", type = "continuous")
 # Word clouds for all listings data 
 doc_sum %>% wordcloud(min.freq = 10, max.words = 100,
                       random.order = F, rot.per = .3, colors = pal_1)
-doc_sum %>% wordcloud(max.words = 150, random.order = F, colors = pal_2)
 
+dev.copy(png, "listingwordcloud.png")
+dev.off()
+
+doc_sum %>% wordcloud(max.words = 150, random.order = F, colors = pal_2)
+dev.copy(png, "listingwordcloud2.png")
+dev.off()
 # Word clouds for Brooklyn only
 doc_sum_bk %>% wordcloud(min.freq = 10, max.words = 100,
                       random.order = F, rot.per = .3, colors = pal_1)
@@ -169,12 +174,19 @@ doc_sum_mn %>% wordcloud(min.freq = 10, max.words = 100,
                       random.order = F, rot.per = .3, colors = pal_1)
 doc_sum_mn %>% wordcloud(max.words = 150, random.order = F, colors = pal_2)
 
-findFreqTerms(dtm_rev1, lowfreq = 10000)
-findFreqTerms(dtm_sum, lowfreq = 10000)
+d<- as.data.frame(findFreqTerms(dtm_rev1, lowfreq = 10000))
+m<- as.data.frame(findFreqTerms(dtm_sum, lowfreq = 1000))
 
+plyr::rename(d, c("'findFreqTerms(dtm_sum, lowfreq = 1000)'" = "listing_freqterms"))
 
+d$freq_words <- d$`findFreqTerms(dtm_rev1, lowfreq = 10000)`
 
+d_1 <- as.data.frame(d$freq_words)
 
+m$freq_words <- m$`findFreqTerms(dtm_sum, lowfreq = 1000)`
+m_1 <- as.data.frame(m$freq_words)
+write.csv(m_1, "listings_mostfrequentwords.csv")
+write.csv(d_1, "reviews_mostfrequentwords.csv")
 findAssocs(dtm_sum, terms = "neighborhood", corlimit = 0.1)
 
 reviews <- findAssocs(dtm_rev1, terms = "neighborhood", corlimit = 0.1)
@@ -239,7 +251,36 @@ list_manhattancor1 <- c(0.22, 0.16, 0.15, 0.15, 0.15, 0.14, 0.14, 0.14, 0.14, 0.
 
 
 dist_tab(nchar(colnames(dtm_sum)))
-,
+
+
+```
+	
+Here's one way to find the top N terms in a document term matrix. Briefly, you convert the dtm to a matrix, then sort by row sums:
+
+
+```{r}
+# load text mining library    
+library(tm)
+
+# make corpus for text mining (data comes from package, for reproducibility) 
+data("crude")
+corpus <- Corpus(VectorSource(crude))
+
+# process text (your methods may differ)
+skipWords <- function(x) removeWords(x, stopwords("english"))
+funcs <- list(tolower, removePunctuation, removeNumbers, stripWhitespace, skipWords)
+a <- tm_map(corpus, FUN = tm_reduce, tmFuns = funcs)
+a.dtm1 <- TermDocumentMatrix(a, control = list(wordLengths = c(3,10))) 
+
+
+N <- 10
+findFreqTerms(dtm_sum, 10000)
+
+
+m <- as.matrix(dtm_sum)
+v <- sort(rowSums(m), decreasing=TRUE)
+head(v, N)
+
 data.frame(nletters = nchar(colnames(dtm_sum))) %>%
 ggplot(aes(x = nletters)) + geom_histogram(binwidth = 1) +
 geom_vline(xintercept = mean(nchar(colnames(dtm_sum))), 
@@ -255,7 +296,7 @@ labs(x = "Number of Letters", y = "Number of Words") + xlim(c(0, 30))
 
 install.packages("slam")
 library(slam)
-dtm_sum <- rollup(dtm_sum, 2, na.rm=TRUE, FUN = sum)
+# dtm_sum <- rollup(dtm_sum, 2, na.rm=TRUE, FUN = sum)
 
 
 # Brooklyn
@@ -265,7 +306,7 @@ slam::row_sums(dtm_sum, na.rm = T)
 slam::col_sums(tdm, na.rm = T)
 
 
-freq <- colSums(as.matrix(dtm_sum)) 
+freq <- colSums(as.matrix(dtm_sum_mn)) 
 len_dtm <- freq %>% length()
 
 dtm_sum < removeSparseTerms(dtm_sum, 0.9999)
@@ -274,6 +315,23 @@ len_dtm
 wfreq <- as.data.frame(freq)
 wfreq <- setNames(cbind(rownames(wfreq), wfreq, row.names = NULL), 
          c("word", "freq"))
+
+wfreq_manhattan <- wfreq %>% filter(freq > 1)
+write.csv(wfreq_manhattan, "word_frequency_manhattan.csv")
+
+#word brooklyn
+freqbk <- colSums(as.matrix(dtm_sum_bk)) 
+len_dtm <- freqbk %>% length()
+
+# Word matrix length (no words included in word frequency) 
+len_dtm
+wfreqbk <- as.data.frame(freqbk)
+wfreqbk <- setNames(cbind(rownames(wfreqbk), wfreqbk, row.names = NULL), 
+         c("word", "freq"))
+
+wfreq_bk <- wfreqbk %>% filter(freq > 1)
+write.csv(wfreq_bk, "word_frequency_brooklyn.csv")
+
 
 
 # Plot word frequency for those words that occur more than 1000 times in the tdm
@@ -291,7 +349,7 @@ len_dtm_mn <- freq_mn %>% length()
 # Word matrix length (no words included in word frequency) 
 len_dtm_mn
 
-wfreq_mn <- as.data.frame(freq_mn) %>% subset(freq_mn > 2000)
+wfreq_mn <- as.data.frame(freq_mn) %>% subset(freq_mn > 5000)
 wfreq_mn <- setNames(cbind(rownames(wfreq_mn), wfreq_mn, row.names = NULL), 
          c("word", "freq"))
 
@@ -302,6 +360,22 @@ plot_mn <- ggplot(wfreq_mn, aes(word, freq)) +
   ggtitle("Word Count")
 
 plot_mn
+
+
+
+
+
+wfreq_bk <- as.data.frame(freqbk) %>% subset(freqbk > 5000)
+wfreq_bk <- setNames(cbind(rownames(wfreq_bk), wfreq_bk, row.names = NULL), 
+         c("word", "freq"))
+
+
+# Plot word frequency for those words that occur more than 1000 times in the tdm
+plot_bk <- ggplot(wfreq_bk, aes(word, freq)) +
+  geom_bar(stat="identity") + theme(axis.text.x = element_text(angle = 45, hjust = 1))+ 
+  ggtitle("Word Count")
+
+plot_bk
 
 
 ```
