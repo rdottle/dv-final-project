@@ -12,6 +12,7 @@ body{
     position:fixed;
     left: 0;
     color: white; /*font color*/
+    font-family: "Quattrocento San", helvetica, sans-serif;
 }
 
 /*search bar*/
@@ -23,7 +24,7 @@ body{
 .filters_search #submit {
     color: rgba(38, 50, 56,0.); /* color of the text - search */
     background-color: rgba(38, 50, 56,0.1); /* color of the text - search */
-    font-family: 'Roboto', helvetica, sans-serif;
+    font-family: "Quattrocento San", helvetica, sans-serif;
     border-radius: .2em;
     border: 1px solid #808080;
     padding: 0.5% 1% 0.5% 1% ; /*top right bottom left */
@@ -38,7 +39,7 @@ body{
     padding-left: 0;
     padding-top: 5%;
     display: list-item;
-    font-family: 'Roboto', helvetica, sans-serif;
+    font-family: "Quattrocento San", helvetica, sans-serif;
 }
 
 #select{
@@ -46,6 +47,8 @@ body{
 }
 
 /*styling for the body of the page on the right */
+/*styling for the body of the page on the right */
+
 .bodyPanel .container .col-md-9 {
     height: 100%;
     padding: 0 0% 0% 0%; /*top, right, bottom, left*/ 
@@ -56,29 +59,40 @@ body{
     overflow: auto;
 }
 
+
 /*different blocks for the page on the right*/
 .page {
     display:-webkit-flex;
     display:flex;
     flex-flow:row nowrap;
-        flex-direction:row;
-        flex-wrap:nowrap;
     justify-content:center;
     align-items:center;
     min-height:100%;
-    overflow:hidden;
-        overflow-x:hidden;
-        overflow-y:hidden;
+    overflow:auto;
     text-align:center;
 }
 
+
+/* Fonts */
+.page h1 {
+    font-family: 'Roboto', helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 5em;
+    color: rgba(0, 0, 0, 0.70);
+}
+
 #title {
-    background-color: #FFF;
-    
+    background-color: #FFF;  
+}
+
+#title h1 {
+    font-size: 8em;
+    color: rgba(0, 0, 0, 0.87);  
 }
 
 #big_picture {
     background-color: #FDA02D;
+    display: block;
 }
 
 #data {
