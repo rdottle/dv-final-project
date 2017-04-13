@@ -32,6 +32,16 @@ body{
     font-weight: 800;
 }
 
+/*for checkbokes and stuff*/
+.selections{
+    list-style: none;
+    padding-left: 0;
+    padding-top: 5%;
+    display: list-item;
+    font-family: 'Roboto', helvetica, sans-serif;
+}
+
+
 /*styling for the body of the page on the right */
 .bodyPanel .container .col-md-9 {
     height: 100%;
@@ -40,6 +50,7 @@ body{
     position:fixed;
     right: 0;
     display:block;
+    overflow: auto;
 }
 
 /*different blocks for the page on the right*/

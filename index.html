@@ -43,24 +43,29 @@
             <h1> FILTER </h1>
 
             <!-- toggle bar -->
-            <div class="source">
+            <div class="source"> <!-- So this is the toggle text -->
               User  
             </div>
 
-            <div class="toggle">
+            <div class="toggle"> <!-- So this is the actual toggling -->
               <input type="checkbox" class="check" value="on">
               <b class="b switch"> </b>
               <b class="b track"> </b> 
             </div>
 
-            <div class="source">
+            <div class="source"> <!-- So this is the toggle text -->
               Host  
             </div>
 
             <!-- search bar -->
             <div class="filters_search">
-              <input type="text" class="filters_search_input"> <!-- search bar  -->
-              <button id='submit'> Search </button> <!-- search button that you click -->
+              
+              <!-- search bar  -->
+              <input type="text" class="filters_search_input"> 
+              
+              <!-- search button that you click -->
+              <button id='submit'> Search </button> 
+              
               <div class="search-type-selector">
                 <!-- react-text: 32 -->Multiple terms joined by<!-- /react-text -->
                 <select>
@@ -68,12 +73,37 @@
                   <option value="AND">AND</option>
                 </select>
               </div>
-              <ul class="existing_terms_list, list-unstyled">
-                <li><button id='submit'> Button 1 </button></li> <!-- has id of sumbit for now for text color etc. -->
-                <li><button id='submit'> Button 2 </button></li> <!-- has id of sumbit for now for text color etc. -->
-                <li><button id='submit'> Button 3 </button></li> <!-- has id of sumbit for now for text color etc. -->
-                <li><button id='submit'> Button 4 </button></li> <!-- has id of sumbit for now for text color etc. -->
-                <li><button id='submit'> Button 5 </button></li> <!-- has id of sumbit for now for text color etc. -->
+
+              <ul class="selections">
+                <li>
+                  <input type="checkbox" class="check" value="on">
+                  Manhattan
+                </li> 
+                
+                <li>
+                  <input type="checkbox" class="check" value="on">
+                  Brooklyn
+                </li> 
+
+                <li>
+                  <input type="checkbox" class="check" value="on">
+                  Stoop
+                </li> 
+
+                <li>
+                  <input type="checkbox" class="check" value="on">
+                  Help
+                </li> 
+
+                <li>
+                  <input type="checkbox" class="check" value="on">
+                  IDK
+                </li> 
+
+                <li>
+                  <input type="checkbox" class="check" value="on">
+                  So-so
+                </li> 
               </ul>
             </div>
               
