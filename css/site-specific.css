@@ -91,28 +91,36 @@ body{
 }
 
 #title h1 {
-    font-size: 8em;
+    font-size: 7em;
     color: rgba(0, 0, 0, 0.87);  
 }
 
 #big_picture {
     background-color: #FDA02D;
     display: block;
+    padding: 20%;
 }
 
 #data {
     background-color: #99CC66;
     display: block;
+    padding: 10%;
 }
 
 #process {
     background-color: #62ADF2;
+    display: block;
+    padding: 10%;
 }
 
 #coding {
     background-color: #F25EA2;
+    display: block;
+    padding: 10%;
 }
 
 #interface {
     background-color: #161616;
+    display: block;
+    padding: 10%;
 }

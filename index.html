@@ -130,7 +130,9 @@
 
           <div class="page" id="data">
             <h1>DATA</h1>
-            <p>We are using NYC Airbnb data from Inside Airbnb, “an independent, non-commercial set of tools and data that allows you to explore how Airbnb is really being used in cities around the world” (Inside Airbnb).</p>
+            <p>We are using NYC Airbnb data from <a href="http://insideairbnb.com/about.html">Inside Airbnb</a>, “an independent, non-commercial set of tools and data that allows you to explore how Airbnb is really being used in cities around the world” (Inside Airbnb).</p>
+
+            <p>Disclaimers about the data from <a href="http://insideairbnb.com/about.html">http://insideairbnb.com/about.html</a></p> 
             <ul>
               <li>The data utilizes public information compiled from the Airbnb web-site including the availability calendar for 365 days in the future, and the reviews for each listing. Data is verified, cleansed, analyzed and aggregated.</li>
               <li>Some reviews may be "spam" allowed by Airbnb. Analysis suggests that spam reviews are small and do not affect the statistics.</li>
@@ -152,11 +154,24 @@
 
           <div class="page" id="coding">
             <h1>CODING</h1>
+            <p>We will be using R to do the text analysis of the data.<br><br>
+
+            Because we are primarily interested in comparing the difference in the perceived character of neighborhoods in New York we are finding the average frequency descriptive words as well as topic clusters in host descriptions and reviews in each neighborhood. This analysis yields a number used to distort the map of New York into a cartogram. An area cartogram, also referred to as a value-by-area map, distorts the shape of predetermined regions on the map to correlate with quantitative information. This is generally done to illustrate relative proportions across areas. In our case, a neighbourhood will swell or shrink based on a particular parameter (i.e. topic).<br><br>
+
+            For example: <a href="http://www.viewsoftheworld.net/?p=2071">http://www.viewsoftheworld.net/?p=2071</a> the cartogram that distorts the shapes of New York based on census data:<br><br>
+
+            We will do the text analysis using R which will then be exported as csv files to visualize using Javascript
+
+            </p>
           </div>
 
           <div class="page" id="interface">
             <h1>INTERFACE</h1>
-              <a href="html/description.html">NEXT</a>
+            <p>The primary visual piece on our website will be the cartogram accompanied by a side panel that the user may use to interact with the data. <br><br>
+
+            Users can start interacting with the website by selecting general quantitative variables such as number of listings or average rating and see how the cartogram becomes distorted based on the relative presence and success of Airbnb across neighbourhoods. Next, using this website as inspiration, <a href="http://dashboard.electome.org">http://dashboard.electome.org</a>, there will be a toggle with which users can select “host” or “visitor”. From there there will be a list of clickable keywords or topics that users can select based on their interests that will distort the cartogram based on our text analysis. This way the user can see both differences in the relative presence of particular topics across neighbourhoods and also toggle back and forth between host and visitor to see if there are differences in each perspective and the presence of these topics in their narrative about the neighbourhood.</p>
+
+              <!-- <a href="html/description.html">NEXT</a> -->
           </div>
 
           </div>
