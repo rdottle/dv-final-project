@@ -42,9 +42,26 @@ body{
     font-family: "Quattrocento San", helvetica, sans-serif;
 }
 
-#select{
-    color:solid black;
+/*this is the styling for the general filter thing - multiple terms joined by*/
+.filters_search .search-type-selector {
+    font-weight: 100;
+    margin-bottom: 1rem;
+    color: rgba(236,239,241,.5);
+    font-size: .9rem;
 }
+
+/* styling for the AND/OR dropdown */
+.filters_search .search-type-selector select {
+    height: 13px;
+    margin-left: .5rem;
+    /* border-bottom: 1px dotted rgba(120,144,156,.5); */
+    color: #000000;
+    background-color: #ffffff;
+    border-radius: 0;
+    /* letter-spacing: 1px; */
+    font-weight: 300;
+}
+
 
 /*styling for the body of the page on the right */
 /*styling for the body of the page on the right */
