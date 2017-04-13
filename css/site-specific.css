@@ -15,25 +15,14 @@ body{
     font-family: "Quattrocento San", helvetica, sans-serif;
 }
 
-/*search bar*/
+/*search bar styling*/
 .filters_search_input {
     color: rgba(38, 50, 56,0.6); /* color of the typing */
+    background-color: #494949;
+    border: 0;
 }
 
-/*submit button - change to that search magnifying glass thing*/
-.filters_search #submit {
-    color: rgba(38, 50, 56,0.); /* color of the text - search */
-    background-color: rgba(38, 50, 56,0.1); /* color of the text - search */
-    font-family: "Quattrocento San", helvetica, sans-serif;
-    border-radius: .2em;
-    border: 1px solid #808080;
-    padding: 0.5% 1% 0.5% 1% ; /*top right bottom left */
-    text-align: center;
-    font-size: .75em;
-    font-weight: 800;
-}
-
-/*for checkbokes and stuff*/
+/*for checkboxes and stuff*/
 .selections{
     list-style: none;
     padding-left: 0;
@@ -61,7 +50,6 @@ body{
     /* letter-spacing: 1px; */
     font-weight: 300;
 }
-
 
 /*styling for the body of the page on the right */
 /*styling for the body of the page on the right */
