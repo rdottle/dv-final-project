@@ -45,7 +45,7 @@ body{
 /*styling for the body of the page on the right */
 .bodyPanel .container .col-md-9 {
     height: 100%;
-    padding: 0 2% 2% 2%; /*top, right, bottom, left*/ 
+    padding: 0 0% 0% 0%; /*top, right, bottom, left*/ 
     background-color: rgba(236,239,241,.8));
     position:fixed;
     right: 0;
