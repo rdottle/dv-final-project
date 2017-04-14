@@ -206,7 +206,7 @@ p{
 }
 
 #interface.page {
-    background-color: rgba(22,22,22,0.4);
+    background-color: #CCCCCC;
     display: block;
     padding: 5%;
 }

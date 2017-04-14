@@ -43,6 +43,9 @@ setwd("C:/Users/racha/Dropbox/Spring_2017/2_QMSS/1_datavis")
 # Read in data
 listings <- read_csv("listings.csv")
 
+count(filter(listings, city == "Queens"))
+count(filter(listings, city == "Queens"))
+
 ```
 
 ##Description of the Data
@@ -432,11 +435,11 @@ as.integer(gsub("fp", "",
 
 ## Topic Modeling
 
-After having done some basic clustering, and seeing the limitations based on the complex text data, which needs to be further cleaned up to really make meaningful clusters at a higher level. I move on to topic modeling, which will allow me to extract and consider what kind of topics are most common in listing descriptions. 
+After having done some basic clustering, and seeing the limitations based on the complex text data, which needs to be further cleaned up to really make meaningful clusters at a higher level. We move on to topic modeling, which will allow me to extract and consider what kind of topics are most common in listing descriptions. 
 
-This information is useful for my further research because it will be interesting to understand the probability of certain listings' topics covered, and be able to associate it with other additional data, like demographics, changing urban planning policy or real-estate markets. 
+This information is useful for further research because it will be interesting to understand the probability of certain listings' topics covered, and be able to associate it with other additional data, like demographics, changing urban planning policy or real-estate markets. 
 
-This initial project involves determining these topics. I choose k = 5, and run a latent dirichlet allocation model. 
+This initial project involves determining these topics. we choose k = 5, and run a latent dirichlet allocation model. 
 
 ```{r}
 library(topicmodels)
@@ -494,9 +497,9 @@ mean(round(posterior(lda_out_bk, dtm_new)$topics, digits = 3))
 
 ## Conclusions and Further Research 
 
-From this project, I have developed an understanding of the structure and topics that generally appear in Airbnb listings, specifically for Brooklyn, and New York City. This is a setting off point for further understanding and analysis into the ways Airbnb data can be used to look into the changing urban environment, and the ways neighborhoods and cities are marketed. While Airbnb data has largely been used to predict pricing and analyze how pricing is determined based on listings, reviews, neighborhood, and other such factors. 
+From this project, we have developed an understanding of the structure and topics that generally appear in Airbnb listings, specifically for Brooklyn, and New York City. This is a setting off point for further understanding and analysis into the ways Airbnb data can be used to look into the changing urban environment, and the ways neighborhoods and cities are marketed. While Airbnb data has largely been used to predict pricing and analyze how pricing is determined based on listings, reviews, neighborhood, and other such factors. 
 
-I am specifically interested not in understanding or predicting pricing or Airbnb use, but the ways one can study the changing landscape of cities and how city residents and visitors perceive them. 
+We specifically interested not in understanding or predicting pricing or Airbnb use, but the ways one can study the changing landscape of cities and how city residents and visitors perceive them. 
 
 Because of this, this initial project has given me the foundations to further dive into this topic. Topic modeling has demonstrated the way in which place is a significant part of Airbnb listings. Furthermore, the neighborhood, place, and relationships between spaces are significant topics that appear and can be used to sort listing data. 
 
