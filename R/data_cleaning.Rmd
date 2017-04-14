@@ -4,9 +4,6 @@ output:
   html_document: default
   html_notebook: default
 ---
-####Rachael Dottle
-####Data Mining for the Social Sciences
-####12/21/2016
 
 --- 
 ##Introduction
