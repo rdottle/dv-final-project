@@ -210,3 +210,15 @@ p{
     display: block;
     padding: 5%;
 }
+
+/*-----------------------*/
+.cartogram{
+    height: auto;
+    width: 100%; /* this is the width of the column specified in html*/
+}
+
+.col-md-12{
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin: auto;
+}
