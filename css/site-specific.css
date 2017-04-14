@@ -15,24 +15,27 @@ body{
     font-family: 'Dosis', sans-serif; 
 }
 
-/*search bar styling*/
-/*.filters_search_input*/ button.searchBar{
-    color: rgba(38, 50, 56,0.6); /* color of the typing */
-    background-color: #494949;
-    border: 0;
-    width: 15em;
-}
-/*moves search icon in the search box*/
-.glyphicon{
-    left:45%;
+.col-md-3 h1{
+    padding-top: 14%;
+    padding-bottom: 3%;
 }
 
-/*for checkboxes and stuff*/
-.selections{
-    list-style: none;
-    padding-left: 0;
-    padding-top: 5%;
-    display: list-item;
+/*search bar styling*/
+.filters_search_input{
+    color: rgba(26, 26, 26, 1); /* color of the typing */
+    background-color: rgb(115,115,115);
+    border: 0;
+    width: 85%;
+    height: 100%;
+    margin-top: 2em;
+    padding: 1% 2% 1% 2%;
+}
+/*search icon in the search box*/
+button.searchBar{
+    /*font-size:.8em; changes size of icon*/
+    background: transparent;
+    border: none;
+    margin-top: 2em;
 }
 
 /*this is the styling for the general filter thing - multiple terms joined by*/
@@ -41,35 +44,27 @@ body{
     margin-bottom: 1%;
     color: rgba(236,239,241,.5);
     font-size: 1em;
+    text-transform: uppercase;
+    padding-top: 5%;
+    padding-bottom: 0;
 }
 
 /* styling for the AND/OR dropdown */
 .filters_search .search-type-selector select {
-    /*height: 13px;
+    height: 2rem;
     margin-left: .5rem;
-    margin-bottom: .5rem;*/
+    margin-top: 2rem;
     color: #000000;
     background-color: #ffffff;
     border-radius: 0;
     font-weight: 300;
 }
 
-/*this is the styling for the general filter thing - multiple terms joined by*/
-.filters_search .search-type-selector {
-    font-weight: 100;
-    margin-bottom: 1rem;
-    color: rgba(236,239,241,.5);
-    font-size: .9em;
-}
-
-/* styling for the AND/OR dropdown */
-.filters_search .search-type-selector select {
-    height: 13px;
-    margin-left: .5rem;
-    color: #000000;
-    background-color: #ffffff;
-    border-radius: 0;
-    font-weight: 300;
+/*for checkboxes and stuff*/
+.selections{
+    list-style: none;
+    padding-left: 0;
+    display: list-item;
 }
 
 /* making the toggle and styling it*/
