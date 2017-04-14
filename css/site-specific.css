@@ -222,3 +222,22 @@ p{
     padding-right: 0 !important;
     margin: auto;
 }
+
+.wcContainer{
+  width: 40%;
+  float: left;
+  margin: 5px;
+  padding: 10px;
+
+}
+
+.wordcloud {
+display: block;
+margin: auto;
+width: 90%;
+
+}
+
+.imgtext{
+    text-align: center;
+}

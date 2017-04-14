@@ -78,7 +78,7 @@ availability_365 | Number of days available in coming year
 
 setwd("C:/Users/racha/Desktop/listings (1).csv")
 listings <- read_csv("listings.csv")
-reviews <- read_csv(("reviews (1).csv/reviews.c"))
+reviews <- read_csv(("reviews (1).csv/reviews.csv"))
 
 # subset listings data to just select out the variables I'm interested in for my initial text analysis prior to moving into any additional exploration with quantitative variables
 
@@ -90,7 +90,7 @@ listings_tm <- select(listings, id, summary, space, description, neighborhood_ov
 # subset data to just Brooklyn and Manhattan, for later 
 bk_listings <- listings_tm[grep("Brooklyn", listings_tm$city), ]
 mn_listings <- listings_tm[grep("New York", listings_tm$city), ]
-
+qn_listings <- listings_tm[grep("Queens", listings_tm$city), ]
 
 
 ```
@@ -121,8 +121,8 @@ tdm_sum_bk <- doc_sum_bk %>% TermDocumentMatrix()
 dtms_sum <- removeSparseTerms(dtm_sum, 0.90) 
 
 # All 
-dtm_sum_l <- doc_sum %>% DocumentTermMatrix()
-tdm_sum_l <- doc_sum %>% TermDocumentMatrix()
+dtm_sum <- doc_sum %>% DocumentTermMatrix()
+tdm_sum <- doc_sum %>% TermDocumentMatrix()
 
 
 # Manhattan 
@@ -149,10 +149,11 @@ tdm_rev <- dtm_rev %>% TermDocumentMatrix()
 ```{r, message = FALSE, warning = FALSE}
 
 # Make some simple word clouds from DocumentTermMatrix 
+?wes_palette()
 
 # Palette 
 pal_1 <- wes_palette("Darjeeling", type = "continuous")
-pal_2 <- wes_palette("Moonrise2", type = "continuous")
+pal_2 <- wes_palette("Moonrise3", type = "continuous")
 
 # Word clouds for all listings data 
 doc_sum %>% wordcloud(min.freq = 10, max.words = 100,
