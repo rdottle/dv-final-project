@@ -157,7 +157,7 @@ pal_2 <- wes_palette("Moonrise3", type = "continuous")
 
 # Word clouds for all listings data 
 doc_sum %>% wordcloud(min.freq = 10, max.words = 100,
-                      random.order = F, rot.per = .3, colors = pal_1)
+                      random.order = F, rot.per = .3, colors = pal_2)
 
 dev.copy(png, "listingwordcloud.png")
 dev.off()
