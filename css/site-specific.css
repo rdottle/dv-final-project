@@ -3,7 +3,7 @@ body{
 }
 
 /*styling for side column*/
-.sidePanel .container .col-md-3 {
+.sidePanel .container .col-md-2 {
     height: 100%;
     padding: 2% 2% 2% 2%; /*top, right, bottom, left*/ 
     margin: 0;
@@ -133,7 +133,7 @@ button.searchBar{
 
 /*--------------------------------------------------------*/
 /*styling for the body of the page on the right */
-.bodyPanel .container .col-md-9 {
+.bodyPanel .container .col-md-10 {
     height: 100%;
     padding: 0 0% 0% 0%; /*top, right, bottom, left*/ 
     position:fixed;
