@@ -3,15 +3,25 @@
   <head>
     <meta charset="utf-8">
     <title>Cloropleth Mapping with D3</title>
-    <style>
+    <style type="text/css">
     /*CSS goes here */
 
-    .boroughs{
+    /*so that empty cells will have no color*/
+    .nta { 
       fill: none;
-      stroke: #ebebeb;
-      stroke-linejoin: round;
-      stroke-weight:10;
     }
+
+    /*styling for borough boundaries*/
+    .boroughs{
+      stroke: black;
+      stroke-width:1;
+      fill: none;
+    }
+    /*svg{
+      stroke: blue;
+      stroke-linejoin: round;
+      stroke-width:10;
+    }*/
         
     </style>
 
@@ -91,11 +101,9 @@
           .style("stroke", "white")
           .style("stroke-width", "0.1");
     
-      //adding outline
+      //adding outline for borough boundaries 
       svg.append("path")
-        .datum(topojson.mesh(nyc, nyc.objects.nybb, function(a, b) {
-            return a.id !== b.id;
-        }))
+        .datum(topojson.mesh(nyc, nyc.objects.nybb)) //using a datum+mesh lets us do this without data join, usind data+features would only work with the first borough i.e. brooklyn
         .attr("class", "boroughs") //i define the class
         .attr("d", path)
     }
