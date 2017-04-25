@@ -1,117 +1,95 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Airbnb|NYC</title>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Cloropleth</title>
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+        <script src="//d3js.org/topojson.v1.min.js"></script>
 
-    <!-- Google fonts code -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700" rel="stylesheet">
+    </head>
+    <body>
 
-    <!-- Loading p5.js library -->
-    <script language="javascript" type="text/javascript" src="../libraries/p5.js"></script>
+        <script type="text/javascript">
 
-    <!-- Loading p5.js dom library -->
-    <script language="javascript" type="text/javascript" src="../libraries/addons/p5.dom.js"></script>
+        //     //Width and height
+        //     var w = 500;
+        //     var h = 500;
 
-    <!-- Link to p5 sketch file -->
-    <script language="javascript" type="text/javascript" src="../js/sketch.js"></script>
-    
-    <!-- bootstrap set up--> 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        //     var projection = d3.geoMercator()
+        //                     // .center([0,0]) //where to focus the map from in the world
+        //                     .translate([w/2, h/2])
+        //                     .scale(500); //scale
 
-    <!-- ensures website has a 1:1 ratio with the viewport (screen size) -->
-    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+        //     //Define default path generator
+        //     var path = d3.geoPath()
+        //                 .projection(projection);
 
-    <!-- Stylesheet link -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet"> 
-    <link rel="stylesheet" type="text/css" href="../css/site-specific.css">
 
-    <!-- favicon - img for browser -->
-    <link rel="shortcut icon" type="image/png" href="../img/logo.png"/>
-  
-  </head>
+        //     //Create SVG element
+        //     var svg = d3.select("body")
+        //                 .append("svg")
+        //                 .attr("width", w)
+        //                 .attr("height", h);
 
-  <body>
-    <!-- side panel -->
-    <div class="sidePanel">
-      <div class = "container" >
-        <div class="row">
-          <!-- divides into 4, takes first left one  -->
-          <div class="col-md-3">
-            
-            <!-- heading -->
-            <h1> FILTER </h1>
+        //     var rectangle = svg.append("rect")
+        //                 .attr("height", h).attr("width", w)
+        //                 .attr("fill", "transparent")
+        //                 .attr("stroke", "black")
+        //                 .attr("stroke-width", 1);
 
-            <!-- toggle bar -->
-            <div class="source">
-              User  
-            </div>
+        //     //Load in GeoJSON data
+        //     d3.json("NY_NTA.json", function(json) {
 
-            <div class="toggle">
-              <input type="checkbox" class="check" value="on">
-              <b class="b switch"> </b>
-              <b class="b track"> </b> 
-            </div>
+        //         //Bind data and create one path per GeoJSON feature
+        //         svg.selectAll("path")
+        //            .data(json.features)
+        //            .enter()
+        //            .append("path")
+        //            .attr("d", path)
 
-            <div class="source">
-              Host  
-            </div>
+        // });
 
-            <!-- search bar -->
-            <div class="filters_search">
-              <input type="text" class="filters_search_input"> <!-- search bar  -->
-              <button id='submit'> Search </button> <!-- search button that you click -->
-              <div class="search-type-selector">
-                <!-- react-text: 32 -->Multiple terms joined by<!-- /react-text -->
-                <select>
-                  <option class="multi_terms" value="OR">OR</option>
-                  <option class="multi_terms" value="AND">AND</option>
-                </select>
-              </div>
-              <ul class="existing_terms_list, list-unstyled">
-                <li><button id='submit'> Button 1 </button></li> <!-- has id of sumbit for now for text color etc. -->
-                <li><button id='submit'> Button 2 </button></li> <!-- has id of sumbit for now for text color etc. -->
-                <li><button id='submit'> Button 3 </button></li> <!-- has id of sumbit for now for text color etc. -->
-                <li><button id='submit'> Button 4 </button></li> <!-- has id of sumbit for now for text color etc. -->
-                <li><button id='submit'> Button 5 </button></li> <!-- has id of sumbit for now for text color etc. -->
-              </ul>
-            </div>
 
-          </div>
-        </div>
-      </div>
-    </div> 
 
-    <!-- body panel-->
-    <div class="bodyPanel">
-      <div class = "container" >
-        <div class="row">
+var width = 960,
+    height = 700;
 
-          <div class="col-md-9">
-            
-            <div class="title">
-              
-              <h1>WELCOME TO AIRBNB NYC</h1> 
-              
-              <h2>DESCRIPTION OF PROJECT</h2>
+var path = d3.geo.path()
+    .projection(null);
 
-              <p> whatever </p>
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
 
-              <a href="../index.html">BACK</a>
+d3.json("NY_NTA.json", function(error, ny) {
+  if (error) throw error;
 
-            </div>
+  var tracts = ny.objects.tracts;
 
-          </div>
+  // strip water counties
+  tracts.geometries = tracts.geometries
+    .filter(function(d) { return (d.id / 10000 | 0) !== 99; });
 
-        </div>
-      </div>
-    </div> 
+  svg.append("g")
+    .selectAll("path")
+      .data(topojson.feature(ny, tracts).features)
+    .enter().append("path")
+      .attr("class", "tract")
+      .attr("d", path)
+    .append("title")
+      .text(function(d, i) { return d.id; });
 
-    <!--jQuery via Google CDN -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  svg.append("path")
+      .attr("class", "tract-border")
+      .datum(topojson.mesh(ny, tracts, function(a, b) { return a !== b; }))
+      .attr("d", path);
+});
 
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+d3.select(self.frameElement).style("height", height + "px");
 
-  </body>
+        </script>
+
+    </body>
+
+
 </html>
