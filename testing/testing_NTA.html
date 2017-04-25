@@ -6,10 +6,11 @@
     <style>
     /*CSS goes here */
 
-    .Boroughs {
+    .boroughs{
       fill: none;
-      stroke: #fff;
+      stroke: #ebebeb;
       stroke-linejoin: round;
+      stroke-weight:10;
     }
         
     </style>
@@ -45,14 +46,14 @@
         .attr("height", height)
 
     //setting the color range using a color function
-    var color= d3.scaleThreshold()
+    var colors= d3.scaleThreshold()
         .domain([0, 5000, 30000, 60000, 80000]) //this is the input break values 
         .range(["#f2f0f7", "#dadaeb", "#bcbddc", "#9e9ac8", "#756bb1", "#54278f"]);
 
     //Binding data from topojson
     //queues up datasets with d3 function - binding 
     d3.queue()  
-        .defer(d3.json, "NY_NTA.json") //load neighborhood tabulation area file
+        .defer(d3.json, "nyc_nta_bb.json") //load file containing neighborhood tabulation area and borough boundaries as layers
         .defer(d3.csv, "Pop_NTA.csv") //load population file
         .await(ready); //Run 'ready' when JSONs are loaded
 
@@ -65,33 +66,38 @@
       //creating object for tabular dataset 
       var popByID = {}; // Create empty object for holding dataset
       population.forEach(function(d) {
-        popByID[d.ntacode] = +d.pop; // Create property for each ID which is a unique field in the table and the json ie this is like a table join, give it value from "Population" which is an attribute in the csv
+        popByID[d.ntaname] = +d.pop; // Create property for each ID which is a unique field in the table and the json ie this is like a table join, give it value from "Population" which is an attribute in the csv
         //important:cast rate to numeric value (+)
       });
       console.log(popByID);
 
       //here we are seperating the features so we can style them through svg.selectAll(".newclasswearemaking")
       svg.append("g")
-          .attr("class", "ntaname") //the property the data is grouped on
+          .attr("class", "nta") //i define the class 
         .selectAll("path")
           .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) // Bind TopoJSON data elements - this has to be basically the name of the file under the objects in the json 
         .enter().append("path")
           .attr("d", path)
-          //put color based on population value using the color function
-          .style( "fill", function(d) {
-            return color(popByID[d.ntacode]); //get population value for specific object based on selected fieldname earlier
-            //pass population to color function, return color based on scale 
+          // put color based on population value using the color function
+          .style("fill", function(d) {
+            if(d){
+              return colors(popByID[d.properties.ntaname]);
+            } else {
+              return "white";
+            }
           })
-          .style("stroke", "black");
-          console.log(color);
+            // get population value for specific object based on selected fieldname earlier
+            // pass population to color function, return color based on scale 
+          .style("stroke", "white")
+          .style("stroke-width", "0.1");
     
       //adding outline
       svg.append("path")
-        .datum(topojson.mesh(nyc, nyc.objects.NY_NTA, function(a, b) {
+        .datum(topojson.mesh(nyc, nyc.objects.nybb, function(a, b) {
             return a.id !== b.id;
         }))
-        .attr("class", "Borough")
-        .attr("d", path);
+        .attr("class", "boroughs") //i define the class
+        .attr("d", path)
     }
 
     </script>   
