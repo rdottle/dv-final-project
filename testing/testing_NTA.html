@@ -5,11 +5,16 @@
     <title>Cloropleth Mapping with D3</title>
     <style>
     /*CSS goes here */
+
+    .Boroughs {
+      fill: none;
+      stroke: #fff;
+      stroke-linejoin: round;
+    }
+        
     </style>
 
     <script src="http://d3js.org/d3.v4.min.js"></script>
-    <script src="https://d3js.org/d3-array.v1.min.js"></script>
-    <script src="https://d3js.org/d3-geo.v1.min.js"></script>
     <script src="http://d3js.org/d3-queue.v3.min.js"></script>  
     <script src="http://d3js.org/topojson.v1.min.js"></script>    
   </head>
@@ -35,16 +40,15 @@
         .projection(projection);
 
     //sets/creates svg window  
-    var svg = d3.select("body")
-        .append("svg")
+    var svg = d3.select("body").append("svg")
         .attr("width", width)
         .attr("height", height)
 
     //setting the color range using a color function
-    var color = d3.scaleThreshold()
+    var color= d3.scaleThreshold()
         .domain([0, 5000, 30000, 60000, 80000]) //this is the input break values 
-        .range(['#f2f0f7', "#dadaeb", "#bcbddc", "#9e9ac8", "#756bb1", "#54278f"]);
-        
+        .range(["#f2f0f7", "#dadaeb", "#bcbddc", "#9e9ac8", "#756bb1", "#54278f"]);
+
     //Binding data from topojson
     //queues up datasets with d3 function - binding 
     d3.queue()  
@@ -68,7 +72,7 @@
 
       //here we are seperating the features so we can style them through svg.selectAll(".newclasswearemaking")
       svg.append("g")
-          .attr("class", "ntacode") //the property the data is grouped on
+          .attr("class", "ntaname") //the property the data is grouped on
         .selectAll("path")
           .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) // Bind TopoJSON data elements - this has to be basically the name of the file under the objects in the json 
         .enter().append("path")
@@ -78,14 +82,15 @@
             return color(popByID[d.ntacode]); //get population value for specific object based on selected fieldname earlier
             //pass population to color function, return color based on scale 
           })
-          .style("stroke", "grey");
+          .style("stroke", "black");
+          console.log(color);
     
-    //adding outline
+      //adding outline
       svg.append("path")
         .datum(topojson.mesh(nyc, nyc.objects.NY_NTA, function(a, b) {
             return a.id !== b.id;
         }))
-        .attr("class", "ntaname")
+        .attr("class", "Borough")
         .attr("d", path);
     }
 
