@@ -2,66 +2,99 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Cloropleth Map</title>
+    <title>Cloropleth Mapping with D3</title>
     <style>
     /*CSS goes here */
      /* path {
-        stroke: white;
+        stroke: black;
         stroke-width: 0.5px;
-        fill: black;
-      }
-*/
+        fill: white;
+      }*/
+
     /*computing "class" attribute as a function of data, in addition to the subunit class each country has a three letter class from a field in the attribute table so this is calling based on that*/
-    .subunit.SCT { fill: #ebebeb; }
+/*    .subunit.SCT { fill: #ddc; }
     .subunit.WLS { fill: #cdd; }
     .subunit.NIR { fill: #cdc; }
     .subunit.ENG { fill: #dcd; }
-    .subunit.IRL { display: none; }
-
+    .subunit.IRL { display: none; }*/
     </style>
-    <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script src="http://d3js.org/topojson.v0.min.js"></script>    
-    <script language="javascript" type="text/javascript" src="../topojson/topojson.min.js"></script>
 
+    <script src="http://d3js.org/d3.v4.min.js"></script>
+    <script src="http://d3js.org/d3-queue.v3.min.js"></script>  
+    <script src="http://d3js.org/topojson.v1.min.js"></script>    
+
+    <script language="javascript" type="text/javascript" src="../topojson/topojson.min.js"></script>
   </head>
   
   <body>
+    <!-- page elements go here -->
+
     <script type="text/javascript">
-    
+    //d3 goes here 
+
     //using svg element to display the map on 
     var width = 960,
         height = 1160;
 
     //here you can change the projection and scale and location (through center) and so on 
-    var projection = d3.geo.albers()
-        .center([0, 55.4])
-        .rotate([4.4, 0])
+    var projection = d3.geoAlbers()
+        .center([0, 55.4]) //sets a single standard parallel at selected lat 
+        .rotate([4.4, 0]) //sets the longitude of origin for the projection
         .parallels([50, 60])
-        .scale(1200*5)
-        .translate([width / 2, height / 2]);
+        .scale(1200*5) //obvi scale of the map 
+        .translate([width / 2, height / 2]); //a pixel offset that's commonly specified to ensure that the center of the projection is in the center of the viewing area
 
-    //sets the path of projection to the projection we defined earlier
-    var path = d3.geo.path()
+    //sets the path of projection to the projection we defined earlier ie sets up the path generator/geo path
+    var path = d3.geoPath()
         .projection(projection);
 
-    var svg = d3.select("body").append("svg")
+    //sets/creates svg window  
+    var svg = d3.select("body")
+        .append("svg")
         .attr("width", width)
-        .attr("height", height);
+        .attr("height", height)
+        .attr("fill", "pink"); //background color 
 
+    //Binding data from topojson
+    //queues up datasets with d3 function - binding 
+    d3.queue()  
+        .defer(d3.json, "subunits.json") //load subunits file
+        .await(ready); //Run 'ready' when JSONs are loaded
+
+    //In this function, we pass our data (the TopoJSON) as an argument, then create SVG elements using a classic D3 append. Selecting all paths, the TopoJSON is bound in the data method. From here, we can perform work on each element. In this circumstance, we apply a fill and stroke.
+    // Ready Function, runs when data is loaded - reads data as arguments
+    function ready(error, uk) {
+      if (error) throw error;
+      //declaring g as appended svg - this will contain geometry elements
+      svg.append("g")
+          .attr("class", "subunit") //the property the data is grouped on
+        .selectAll("path")
+          .data(topojson.feature(uk, uk.objects.ne_10m_admin_0_map_subunits).features) // Bind TopoJSON data elements
+        .enter().append("path")
+          .attr("d", path)
+          .style("fill", "white")
+          .style("stroke", "black");
+    }
+
+    //Binding the data to the svg canvas
+    // Classic D3... Select non-existent elements, bind the data, append the elements, and apply attributes
     //drawing topojson file 
-    d3.json("../testing/places.json", function(error, uk) {
-        if (error) return console.error(error);
-        console.log(uk);
+    // d3.json("../testing/places.json", function(error, uk) {
+    //     if (error) return console.error(error);
+    //     console.log(uk);
         
-        //here we are seperating the features so we can style them through svg.selectAll(".newclasswearemaking")
-        //so we are creating the path element called subunit for each future
-        //and this is adding a path to that feature that contains the thing we specified 
-        svg.selectAll(".subunit")
-            .data(topojson.feature(uk, uk.objects.ne_10m_admin_0_map_subunits).features) //pulling out the features array
-          .enter().append("path") //this is creating a new path element for each feature through a data join
-            .attr("class", function(d) { return "subunit" + d.id; }) //return "whatever you want to call it .." + the id 
-            .attr("d", path); //uses selection.attr to set the "d" attrubute to the formatted path data - this is bound to the geojson data 
-    });
+    //     //here we are seperating the features so we can style them through svg.selectAll(".newclasswearemaking")
+    //     //so we are creating the path element called subunit for each future
+    //     //and this is adding a path to that feature that contains the thing we specified 
+    //     svg.selectAll(".subunit")
+    //         .data(topojson.feature(uk, uk.objects.ne_10m_admin_0_map_subunits).features) //pulling out the features array
+    //       .enter()
+    //         .append("path") //this is creating a new path element for each feature through a data join
+    //         .attr("class", function(d) { 
+    //             return "subunit " + d.id; 
+    //         }) //return "whatever you want to call it .." + the id 
+    //         .attr("d", path); //uses selection.attr to set the "d" attrubute to the formatted path data - this is bound to the geojson data 
+    // });
 
     </script>   
   </body>

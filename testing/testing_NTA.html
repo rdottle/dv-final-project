@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Cloropleth Mapping with D3</title>
+    <style>
+    /*CSS goes here */
+    </style>
+
+    <script src="http://d3js.org/d3.v4.min.js"></script>
+    <script src="http://d3js.org/d3-queue.v3.min.js"></script>  
+    <script src="http://d3js.org/topojson.v1.min.js"></script>    
+  </head>
+  
+  <body>
+    <!-- page elements go here -->
+
+    <script type="text/javascript">
+    //d3 goes here 
+
+    //using svg element to display the map on 
+    var width = 670,
+        height = 560;
+
+    //here you can change the projection and scale and location (through center) and so on 
+    var projection = d3.geoMercator()
+        .center([-73.94, 40.70]) //sets a single standard parallel at selected lat 
+        .scale(50000) //obvi scale of the map 
+        .translate([width / 2, height / 2]); //a pixel offset that's commonly specified to ensure that the center of the projection is in the center of the viewing area
+
+    //sets the path of projection to the projection we defined earlier ie sets up the path generator/geo path
+    var path = d3.geoPath()
+        .projection(projection);
+
+    //sets/creates svg window  
+    var svg = d3.select("body")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("fill", "pink"); //background color 
+
+    //Binding data from topojson
+    //queues up datasets with d3 function - binding 
+    d3.queue()  
+        .defer(d3.json, "NY_NTA.json") //load neighborhood tabulation area file
+        .defer(d3.csv, "Pop_NTA.csv") //load population file
+        .await(ready); //Run 'ready' when JSONs are loaded
+
+    //In this function, we pass our data (the TopoJSON) as an argument, then create SVG elements using a classic D3 append. Selecting all paths, the TopoJSON is bound in the data method. From here, we can perform work on each element. In this circumstance, we apply a fill and stroke.
+    // Ready Function, runs when data is loaded - reads data as arguments
+    function ready(error, nyc, population) {
+      if (error) throw error;
+      console.log(nyc);
+
+      // var popById = {}; // Create empty object for holding dataset
+      // population.forEach(function(d) {
+      //   popById[d.id] = +d.Population; // Create property for each ID, give it value from Population which is an attribute in the csv
+      // });
+      // console.log(popByID);
+      //declaring g as appended svg - this will contain geometry elements
+      //here we are seperating the features so we can style them through svg.selectAll(".newclasswearemaking")
+      svg.append("g")
+          .attr("class", "ntaname") //the property the data is grouped on
+        .selectAll("path")
+          .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) // Bind TopoJSON data elements - this has to be basically the name of the file under the objects in the json 
+        .enter().append("path")
+          .attr("d", path)
+          .style("fill", "white")
+          .style("stroke", "black");
+    }
+
+        
+        
+    </script>   
+  </body>
+</html>
