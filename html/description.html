@@ -1,95 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Cloropleth</title>
-        <script src="https://d3js.org/d3.v4.min.js"></script>
-        <script src="//d3js.org/topojson.v1.min.js"></script>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Cloropleth Map</title>
+    <style>
+      path {
+        stroke: white;
+        stroke-width: 0.5px;
+        fill: black;
+      }
+    </style>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://d3js.org/topojson.v0.min.js"></script>    
+    <script language="javascript" type="text/javascript" src="../topojson/topojson.min.js"></script>
 
-    </head>
-    <body>
+  </head>
+  
+  <body>
+    <script type="text/javascript">
+    
+    var width = 960,
+        height = 1160;
 
-        <script type="text/javascript">
+    var svg = d3.select("body").append("svg")
+        .attr("width", width)
+        .attr("height", height);
 
-        //     //Width and height
-        //     var w = 500;
-        //     var h = 500;
+    //loading json file - calls nyc as 
+    d3.json("../testing/places.json", function(error, nyc) {
+        if (error) return console.error(error);
+        console.log(nyc);
 
-        //     var projection = d3.geoMercator()
-        //                     // .center([0,0]) //where to focus the map from in the world
-        //                     .translate([w/2, h/2])
-        //                     .scale(500); //scale
+        svg.append("path")
+            .datum(topojson.feature(nyc, nyc.objects.ne_10m_admin_0_map_subunits))
+            .attr("d", d3.geo.path().projection(d3.geo.mercator()));
+    });
 
-        //     //Define default path generator
-        //     var path = d3.geoPath()
-        //                 .projection(projection);
+    //transforms back to topojson
+    var subunits = topojson.feature(nyc, nyc.objects.ne_10m_admin_0_map_subunits);
 
+    //
+    var projection = d3.geo.mercator()
+    .scale(500)
+    .translate([width / 2, height / 2]);
+   
+    //
+    var path = d3.geo.path()
+        .projection(projection);
+    
+    //
+    svg.append("path")
+        .datum(uk)
+        .attr("d", path);
 
-        //     //Create SVG element
-        //     var svg = d3.select("body")
-        //                 .append("svg")
-        //                 .attr("width", w)
-        //                 .attr("height", h);
+    //
+    var projection = d3.geo.albers()
+        .center([0, 55.4])
+        .rotate([4.4, 0])
+        .parallels([50, 60])
+        .scale(6000)
+        .translate([width / 2, height / 2]);
 
-        //     var rectangle = svg.append("rect")
-        //                 .attr("height", h).attr("width", w)
-        //                 .attr("fill", "transparent")
-        //                 .attr("stroke", "black")
-        //                 .attr("stroke-width", 1);
-
-        //     //Load in GeoJSON data
-        //     d3.json("NY_NTA.json", function(json) {
-
-        //         //Bind data and create one path per GeoJSON feature
-        //         svg.selectAll("path")
-        //            .data(json.features)
-        //            .enter()
-        //            .append("path")
-        //            .attr("d", path)
-
-        // });
-
-
-
-var width = 960,
-    height = 700;
-
-var path = d3.geo.path()
-    .projection(null);
-
-var svg = d3.select("body").append("svg")
-    .attr("width", width)
-    .attr("height", height);
-
-d3.json("NY_NTA.json", function(error, ny) {
-  if (error) throw error;
-
-  var tracts = ny.objects.tracts;
-
-  // strip water counties
-  tracts.geometries = tracts.geometries
-    .filter(function(d) { return (d.id / 10000 | 0) !== 99; });
-
-  svg.append("g")
-    .selectAll("path")
-      .data(topojson.feature(ny, tracts).features)
-    .enter().append("path")
-      .attr("class", "tract")
-      .attr("d", path)
-    .append("title")
-      .text(function(d, i) { return d.id; });
-
-  svg.append("path")
-      .attr("class", "tract-border")
-      .datum(topojson.mesh(ny, tracts, function(a, b) { return a !== b; }))
-      .attr("d", path);
-});
-
-d3.select(self.frameElement).style("height", height + "px");
-
-        </script>
-
-    </body>
-
-
+    </script>   
+  </body>
 </html>

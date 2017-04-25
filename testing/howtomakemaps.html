@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Cloropleth Map</title>
+    <style>
+    /*CSS goes here */
+     /* path {
+        stroke: white;
+        stroke-width: 0.5px;
+        fill: black;
+      }
+*/
+    /*computing "class" attribute as a function of data, in addition to the subunit class each country has a three letter class from a field in the attribute table so this is calling based on that*/
+    .subunit.SCT { fill: #ebebeb; }
+    .subunit.WLS { fill: #cdd; }
+    .subunit.NIR { fill: #cdc; }
+    .subunit.ENG { fill: #dcd; }
+    .subunit.IRL { display: none; }
+
+    </style>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://d3js.org/topojson.v0.min.js"></script>    
+    <script language="javascript" type="text/javascript" src="../topojson/topojson.min.js"></script>
+
+  </head>
+  
+  <body>
+    <script type="text/javascript">
+    
+    //using svg element to display the map on 
+    var width = 960,
+        height = 1160;
+
+    //here you can change the projection and scale and location (through center) and so on 
+    var projection = d3.geo.albers()
+        .center([0, 55.4])
+        .rotate([4.4, 0])
+        .parallels([50, 60])
+        .scale(1200*5)
+        .translate([width / 2, height / 2]);
+
+    //sets the path of projection to the projection we defined earlier
+    var path = d3.geo.path()
+        .projection(projection);
+
+    var svg = d3.select("body").append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    //drawing topojson file 
+    d3.json("../testing/places.json", function(error, uk) {
+        if (error) return console.error(error);
+        console.log(uk);
+        
+        //here we are seperating the features so we can style them through svg.selectAll(".newclasswearemaking")
+        //so we are creating the path element called subunit for each future
+        //and this is adding a path to that feature that contains the thing we specified 
+        svg.selectAll(".subunit")
+            .data(topojson.feature(uk, uk.objects.ne_10m_admin_0_map_subunits).features) //pulling out the features array
+          .enter().append("path") //this is creating a new path element for each feature through a data join
+            .attr("class", function(d) { return "subunit" + d.id; }) //return "whatever you want to call it .." + the id 
+            .attr("d", path); //uses selection.attr to set the "d" attrubute to the formatted path data - this is bound to the geojson data 
+    });
+
+    </script>   
+  </body>
+</html>
