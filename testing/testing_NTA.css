@@ -1,0 +1,49 @@
+
+body { 
+  font-family: 'Proxima Nova', sans-serif;
+  font-size: 14px;
+}
+
+.chloroplethMap {
+	padding:0;
+	border: 1px solid black;
+	background: yellow;
+}
+
+/*so that empty cells will have no color*/
+.nta { 
+  fill: none;
+}
+
+/*styling for borough boundaries*/
+.boroughs{
+  stroke: black;
+  stroke-width:1;
+  fill: none;
+}
+
+.legendText{
+
+}
+
+.legendHeading{
+
+}
+
+.hoverStyle{
+  background-color: rgba(255,255,255,0.8);
+  color: black;
+  /*width: 30%;*/
+  height: auto;
+  padding: 1%;
+  position: fixed;
+  border: 1px solid black; 
+} 
+
+.sourceTitle{
+	font-size: 11px;
+}
+
+.sourceText{
+	font-size: 10px;
+}

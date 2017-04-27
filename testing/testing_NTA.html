@@ -3,216 +3,197 @@
   <head>
     <meta charset="utf-8">
     <title>Cloropleth Mapping with D3</title>
-    <style type="text/css">
-    /*CSS goes here */
-    body { 
-      font-family: 'Proxima Nova', sans-serif;
-      font-size: 14px;
-    }
-
-    /*so that empty cells will have no color*/
-    .nta { 
-      fill: none;
-    }
-
-    /*styling for borough boundaries*/
-    .boroughs{
-      stroke: black;
-      stroke-width:1;
-      fill: none;
-    }
-    
-    .legendText{
-
-    }
-    
-    .legendHeading{
-
-    }
-
-    .hoverStyle{
-      background-color: rgba(255,255,255,0.8);
-      color: black;
-      /*width: 30%;*/
-      height: auto;
-      padding: 1%;
-      position: fixed;
-      border: 1px solid black; 
-    } 
-
-    </style>
-
-    <script src="http://d3js.org/d3.v4.min.js"></script>
-    <script src="http://d3js.org/d3-queue.v3.min.js"></script>  
-    <script src="http://d3js.org/topojson.v1.min.js"></script>    
   </head>
+
+  <style type="text/css">
+    /*CSS goes here */
+  </style>
   
   <body>
     <!-- page elements go here -->
+    <h1> map headline goes here </h1>
+    <div class="chloroplethMap"> </div>
+    <div class="source">
+      <span class="sourceTitle"></span>
+      <span class="sourceText"></span>
+    </div>
 
-    <script type="text/javascript">
-    //d3 goes here 
-
-
-    //Creates tooltip and makes it invisiblae
-var div = d3.select("body").append("div")
-  .attr("class", "tooltip")
-  .style("opacity", 0);
-
-    //using svg element to display the map on 
-    var width = 970,
-        height = 560;
-
-    //here you can change the projection and scale and location (through center) and so on 
-    var projection = d3.geoMercator()
-        .center([-73.94, 40.70]) //sets a single standard parallel at selected lat 
-        .scale(50000) //obvi scale of the map 
-        .translate([width / 2, height / 2]); //a pixel offset that's commonly specified to ensure that the center of the projection is in the center of the viewing area
-
-    //sets the path of projection to the projection we defined earlier ie sets up the path generator/geo path
-    var path = d3.geoPath()
-        .projection(projection);
-
-    //sets/creates svg window  
-    var svg = d3.select("body").append("svg")
-        .attr("width", width)
-        .attr("height", height)
-
-    //SETTING COLORS FOR THE LEGEND
-    var legend_color_domain = [1000, 5000, 30000, 60000, 80000] //LOWER LIMIT
-    var legend_labels = ["1000", "5000", "30000", "60000", "80000"]  
-
-    //setting the color range using a color function
-    var color= d3.scaleThreshold()
-        .domain([1000, 5000, 30000, 60000, 80000]) //this is the input break values 
-        .range(["#f2f0f7", "#dadaeb", "#bcbddc", "#9e9ac8", "#756bb1", "#54278f"]);
-
-    //Binding data from topojson
-    //queues up datasets with d3 function - binding 
-    d3.queue()  
-        .defer(d3.json, "nyc_nta_bb.json") //load file containing neighborhood tabulation area and borough boundaries as layers
-        .defer(d3.csv, "Pop_NTA.csv") //load population file
-        .await(ready); //Run 'ready' when JSONs are loaded
-
-    //Moves selection to front
-    d3.selection.prototype.moveToFront = function() {
-      return this.each(function(){
-        this.parentNode.appendChild(this);
-      });
-    }; 
-
-    //Moves selection to back
-    d3.selection.prototype.moveToBack = function() { 
-      return this.each(function() { 
-      var firstChild = this.parentNode.firstChild; 
-        if (firstChild) { 
-          this.parentNode.insertBefore(this, firstChild); 
-        } 
-      }); 
-    };    
-    
-    //In this function, we pass our data (the TopoJSON) as an argument, then create SVG elements using a classic D3 append. Selecting all paths, the TopoJSON is bound in the data method. From here, we can perform work on each element. In this circumstance, we apply a fill and stroke.
-    // Ready Function, runs when data is loaded - reads data as arguments
-    function ready(error, nyc, population) {
-      if (error) throw error;
-      console.log(nyc);
-
-      //creating object for tabular dataset 
-      var popByID = {}; // Create empty object for holding dataset
-      population.forEach(function(d) {
-        popByID[d.ntaname] = +d.pop; // Create property for each ID which is a unique field in the table [d.whatever] and the json ie this is like a table join, give it value from "pop" which is an attribute in the csv
-        //important:cast rate to numeric value (+)
-      });
-      console.log(popByID);
-
-      //Pair data with population for hover
-      var dataPOP= {};
-      population.forEach(function(d) { 
-        dataPOP[d.ntaname] = +d.pop; //whhen ntaname goes into this function population comes out
-      });
-
-      //Pair name with state id for hover
-      var neighborhoodbyNTA = {};
-      population.forEach(function(d) { 
-        neighborhoodbyNTA[d.ntaname] = d.ntaname; 
-      });
-
-      //here we are seperating the features so we can style them through svg.selectAll(".newclasswearemaking")
-      svg.append("g")
-          .attr("class", "nta") //i define the class 
-        .selectAll("path")
-          .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) // Bind TopoJSON data elements - this has to be basically the name of the file under the objects in the json 
-        .enter().append("path")
-          .attr("d", path)
-          // get population value for specific object based on selected fieldname earlier
-          // pass population to color function, return color based on scale 
-          .style("fill", function(d) {
-            if(d){
-              return color(popByID[d.properties.ntaname]);
-            } else {
-              return "white";
-            }
-          })
-          .style("stroke", "white")
-          .style("stroke-width", "0.1")
-          
-          //CLICK
-          // .on("mouseover", function(d) {
-          .on("click", function(d) {
-          var sel = d3.select(this);
-          sel.moveToFront();
-          d3.select(this).transition().duration(30).style("opacity", 0.8);
-          div.transition().duration(30)
-          .style("opacity", 1)
-          div.text(neighborhoodbyNTA[d.properties.ntaname] + ": " + dataPOP[d.properties.ntaname] + " people") //so on hover it feeds the ntaname into the defined function
-          .style("left", (d3.event.pageX) + "px") //location of callout box
-          .style("top", (d3.event.pageY -30) + "px")
-          .attr("class","hoverStyle");
-        });
-    //       .on("mouseout", function() {
-    //       var sel = d3.select(this);
-    //       sel.moveToBack();
-    //       d3.select(this)
-    //       .transition().duration(300)
-    //       .style("opacity", 1);
-    //       div.transition().duration(300)
-    //       .style("opacity", 0);
-    // };
-        //adding outline for borough boundaries 
-        svg.append("path")
-          .datum(topojson.mesh(nyc, nyc.objects.nybb)) //using a datum+mesh lets us do this without data join, usind data+features would only work with the first borough i.e. brooklyn
-          .attr("class", "boroughs") //i define the class
-          .attr("d", path)
-        };
-
-    //drawing legend for chloropleth
-     var legend = svg.selectAll("g.legend")
-      .data(legend_color_domain)
-      .enter().append("g")
-      .attr("class", "legend");
-
-      var legendRectWidth = 20, legendRectHeight = 20; //width and height
-
-      legend.append("rect") //legend boxes
-      .attr("x", 20) //horizontal location
-      .attr("y", function(d, i){ return height - (i*legendRectHeight) - 2*legendRectHeight;}) //vertical location
-      .attr("width", legendRectWidth)
-      .attr("height", legendRectHeight)
-      .style("fill", function(d, i) { return color(d); })
-      .style("opacity", 0.8);
-
-      legend.append("text") //legend text
-      .attr("class", "legendText") //gives it class so can edit in css
-      .attr("x", 50) //positioning
-      .attr("y", function(d, i){ return height - (i*legendRectHeight) - legendRectHeight - 4;}) //multiplying by i puts all the boxes
-      .text(function(d, i){ return legend_labels[i]; });
-
-      legend.append("text")
-      .attr("class", "legendHeading")
-      .attr("x", 20)
-      .attr("y", function(d){ return height - 6 - legendRectHeight * 6;}) //multiplying and subtractingincreases the height vertically
-      .text("Population in New York City")
-
-    </script>   
   </body>
+  
+  <script src="http://d3js.org/d3.v4.min.js"></script>
+  <script src="http://d3js.org/d3-queue.v3.min.js"></script>  
+  <script src="http://d3js.org/topojson.v1.min.js"></script>    
+  <link rel="stylesheet" type="text/css" href="testing_NTA.css">
+
+  <script type="text/javascript">
+  //Creates tooltip and makes it invisiblae
+  var div = d3.select(".chloroplethMap").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+
+  //using svg element to display the map on 
+  var width = 970;
+      height = 560;
+
+  //here you can change the projection and scale and location (through center) and so on 
+  var projection = d3.geoMercator()
+      .center([-73.94, 40.70]) //sets a single standard parallel at selected lat 
+      .scale(50000) //obvi scale of the map 
+      .translate([width / 2, height / 2]); //a pixel offset that's commonly specified to ensure that the center of the projection is in the center of the viewing area
+
+  //sets the path of projection to the projection we defined earlier ie sets up the path generator/geo path
+  var path = d3.geoPath()
+      .projection(projection);
+
+  //sets/creates svg window  
+  var svg = d3.select(".chloroplethMap").append("svg")
+      .attr("width", width)
+      .attr("height", height)
+
+  //SETTING COLORS FOR THE LEGEND
+  var legend_color_domain = [1000, 5000, 30000, 60000, 80000] //LOWER LIMIT
+  var legend_labels = ["1000", "5000", "30000", "60000", "80000"]  
+
+  //setting the color range using a color function
+  var color= d3.scaleThreshold()
+      .domain([1000, 5000, 30000, 60000, 80000]) //this is the input break values 
+      .range(["#f2f0f7", "#dadaeb", "#bcbddc", "#9e9ac8", "#756bb1", "#54278f"]);
+
+  //Binding data from topojson
+  //queues up datasets with d3 function - binding 
+  d3.queue()  
+      .defer(d3.json, "nyc_nta_bb.json") //load file containing neighborhood tabulation area and borough boundaries as layers
+      .defer(d3.csv, "Pop_NTA.csv") //load population file
+      .await(ready); //Run 'ready' when JSONs are loaded
+
+  //Moves selection to front
+  d3.selection.prototype.moveToFront = function() {
+    return this.each(function(){
+      this.parentNode.appendChild(this);
+    });
+  }; 
+
+  //Moves selection to back
+  d3.selection.prototype.moveToBack = function() { 
+    return this.each(function() { 
+    var firstChild = this.parentNode.firstChild; 
+      if (firstChild) { 
+        this.parentNode.insertBefore(this, firstChild); 
+      } 
+    }); 
+  };    
+  
+  //In this function, we pass our data (the TopoJSON) as an argument, then create SVG elements using a classic D3 append. Selecting all paths, the TopoJSON is bound in the data method. From here, we can perform work on each element. In this circumstance, we apply a fill and stroke.
+  // Ready Function, runs when data is loaded - reads data as arguments
+  function ready(error, nyc, population) {
+    if (error) throw error;
+    console.log(nyc);
+
+    //creating object for tabular dataset 
+    var popByID = {}; // Create empty object for holding dataset
+    population.forEach(function(d) {
+      popByID[d.ntaname] = +d.pop; // Create property for each ID which is a unique field in the table [d.whatever] and the json ie this is like a table join, give it value from "pop" which is an attribute in the csv
+      //important:cast rate to numeric value (+)
+    });
+    console.log(popByID);
+
+    //Pair data with population for hover
+    var dataPOP= {};
+    population.forEach(function(d) { 
+      dataPOP[d.ntaname] = +d.pop; //whhen ntaname goes into this function population comes out
+    });
+
+    //Pair name with state id for hover
+    var neighborhoodbyNTA = {};
+    population.forEach(function(d) { 
+      neighborhoodbyNTA[d.ntaname] = d.ntaname; 
+    });
+
+    //here we are seperating the features so we can style them through svg.selectAll(".newclasswearemaking")
+    svg.append("g")
+        .attr("class", "nta") //i define the class 
+      .selectAll("path")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) // Bind TopoJSON data elements - this has to be basically the name of the file under the objects in the json 
+      .enter().append("path")
+        .attr("d", path)
+        // get population value for specific object based on selected fieldname earlier
+        // pass population to color function, return color based on scale 
+        .style("fill", function(d) {
+          if(d){
+            return color(popByID[d.properties.ntaname]);
+          } else {
+            return "white";
+          }
+        })
+        .style("stroke", "white")
+        .style("stroke-width", "0.1")
+        
+        //CLICK
+        // .on("mouseover", function(d) {
+        .on("click", function(d) {
+        var sel = d3.select(this);
+        sel.moveToFront();
+        d3.select(this).transition().duration(30).style("opacity", 0.8);
+        div.transition().duration(30)
+        .style("opacity", 1)
+        div.text(neighborhoodbyNTA[d.properties.ntaname] + ": " + dataPOP[d.properties.ntaname] + " people") //so on hover it feeds the ntaname into the defined function
+        .style("left", (d3.event.pageX) + "px") //location of callout box
+        .style("top", (d3.event.pageY -30) + "px")
+        .attr("class","hoverStyle");
+      });
+  //       .on("mouseout", function() {
+  //       var sel = d3.select(this);
+  //       sel.moveToBack();
+  //       d3.select(this)
+  //       .transition().duration(300)
+  //       .style("opacity", 1);
+  //       div.transition().duration(300)
+  //       .style("opacity", 0);
+  // };
+  //adding outline for borough boundaries 
+  svg.append("path")
+    .datum(topojson.mesh(nyc, nyc.objects.nybb)) //using a datum+mesh lets us do this without data join, usind data+features would only work with the first borough i.e. brooklyn
+    .attr("class", "boroughs") //i define the class
+    .attr("d", path)
+  };
+  
+  //appends chart source
+  d3.select(".sourceTitle")
+    .text("SOURCE: ")
+    .attr("class", "sourceTitle");
+
+  d3.select(".sourceText")
+    .text("Department of City Planning (2017), Inside AirBnB (2017)")
+    .attr("class", "sourceText");
+
+  //drawing legend for chloropleth
+   var legend = svg.selectAll("g.legend")
+    .data(legend_color_domain)
+    .enter().append("g")
+    .attr("class", "legend");
+
+    var legendRectWidth = 20, legendRectHeight = 20; //width and height
+
+    legend.append("rect") //legend boxes
+    .attr("x", 20) //horizontal location
+    .attr("y", function(d, i){ return height - (i*legendRectHeight) - 2*legendRectHeight;}) //vertical location
+    .attr("width", legendRectWidth)
+    .attr("height", legendRectHeight)
+    .style("fill", function(d, i) { return color(d); })
+    .style("opacity", 0.8);
+
+    legend.append("text") //legend text
+    .attr("class", "legendText") //gives it class so can edit in css
+    .attr("x", 50) //positioning
+    .attr("y", function(d, i){ return height - (i*legendRectHeight) - legendRectHeight - 4;}) //multiplying by i puts all the boxes
+    .text(function(d, i){ return legend_labels[i]; });
+
+    legend.append("text")
+    .attr("class", "legendHeading")
+    .attr("x", 20)
+    .attr("y", function(d){ return height - 6 - legendRectHeight * 6;}) //multiplying and subtractingincreases the height vertically
+    .text("Population in New York City")
+
+  </script>   
+
 </html>
