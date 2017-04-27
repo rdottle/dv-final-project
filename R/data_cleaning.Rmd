@@ -91,7 +91,9 @@ listings_tm <- select(listings, id, summary, space, description, neighborhood_ov
 bk_listings <- listings_tm[grep("Brooklyn", listings_tm$city), ]
 mn_listings <- listings_tm[grep("New York", listings_tm$city), ]
 qn_listings <- listings_tm[grep("Queens", listings_tm$city), ]
+bx_listings <- listings_tm[grep("Bronx", listings_tm$city), ]
 
+si_listings <- listings_tm[grep("Staten Island", listings_tm$city), ]
 
 ```
 
@@ -143,6 +145,40 @@ dtm_rev1 <- dtm_rev %>% DocumentTermMatrix()
 tdm_rev <- dtm_rev %>% TermDocumentMatrix()
 
 
+
+
+# Queens
+doc_sum_qn <- Corpus(VectorSource(qn_listings$summary)) %>%
+  tm_map(removePunctuation) %>% tm_map(removeNumbers) %>% tm_map(tolower) %>%
+  tm_map(removeWords, stopwords("english")) %>% tm_map(PlainTextDocument) 
+
+# Queens 
+dtm_sum_qn <- doc_sum_qn %>% DocumentTermMatrix()
+tdm_sum_qn <- doc_sum_qn %>% TermDocumentMatrix()
+
+# Bronx
+
+doc_sum_bx <- Corpus(VectorSource(bx_listings$summary)) %>%
+  tm_map(removePunctuation) %>% tm_map(removeNumbers) %>% tm_map(tolower) %>%
+  tm_map(removeWords, stopwords("english")) %>% tm_map(PlainTextDocument) 
+
+# Bronx 
+dtm_sum_bx <- doc_sum_bx %>% DocumentTermMatrix()
+tdm_sum_bx <- doc_sum_bx %>% TermDocumentMatrix()
+
+
+# Staten Island
+
+doc_sum_si <- Corpus(VectorSource(si_listings$summary)) %>%
+  tm_map(removePunctuation) %>% tm_map(removeNumbers) %>% tm_map(tolower) %>%
+  tm_map(removeWords, stopwords("english")) %>% tm_map(PlainTextDocument) 
+
+# Staten Island 
+dtm_sum_si <- doc_sum_si %>% DocumentTermMatrix()
+tdm_sum_si <- doc_sum_si %>% TermDocumentMatrix()
+
+
+
 ```
 
 
@@ -175,6 +211,67 @@ doc_sum_mn %>% wordcloud(min.freq = 10, max.words = 100,
                       random.order = F, rot.per = .3, colors = pal_1)
 doc_sum_mn %>% wordcloud(max.words = 150, random.order = F, colors = pal_2)
 
+#bronx
+temp <- inspect(tdm_sum_bx)
+FreqMat_bronx <- data.frame(ST = rownames(temp), Freq = rowSums(temp))
+row.names(FreqMat) <- NULL
+#FreqMat_bronx
+
+
+#brooklyn
+temp <- inspect(bk_tdm_2)
+FreqMat_bk <- data.frame(ST = rownames(temp), Freq = rowSums(temp))
+row.names(FreqMat_bk) <- NULL
+#FreqMat_bk
+
+bk_tdm_2 <- removeSparseTerms(tdm_sum_bk, 0.95)
+bk_list_top_20 <- FreqMat_bk %>% filter(Freq > 3240)
+
+
+#manhattan
+temp <- inspect(tdm_sum_mn)
+FreqMat_mn <- data.frame(ST = rownames(temp), Freq = rowSums(temp))
+row.names(FreqMat_mn) <- NULL
+
+mn_tdm_2 <- removeSparseTerms(tdm_sum_mn, 0.95)
+mn_list_top_20 <- FreqMat_mn %>% filter(Freq > 3600)
+
+
+
+#queens
+temp <- inspect(tdm_sum_qn)
+FreqMat_qn <- data.frame(ST = rownames(temp), Freq = rowSums(temp))
+row.names(FreqMat_qn) <- NULL
+
+
+qn_tdm_2 <- removeSparseTerms(tdm_sum_mn, 0.95)
+qn_list_top_20 <- FreqMat_mn %>% filter(Freq > 3600)
+
+
+
+
+#staten island
+temp <- inspect(tdm_sum_si)
+FreqMat_si <- data.frame(ST = rownames(temp), Freq = rowSums(temp))
+row.names(FreqMat_qn) <- NULL
+
+
+
+```
+
+```{r}
+
+#calculate the top frequency words listings
+
+
+
+
+
+
+```
+
+
+```{r}
 d<- as.data.frame(findFreqTerms(dtm_rev1, lowfreq = 10000))
 m<- as.data.frame(findFreqTerms(dtm_sum, lowfreq = 1000))
 
@@ -212,7 +309,7 @@ write.csv(list_neighb, "listing_neighborhood_wordcorr.csv")
 ```
 ```{R}
 
-findAssocs(dtm_sum, terms = "manhattan", corlimit = 0.1)
+findAssocs(dtm_sum, terms = "sketchy", corlimit = 0.1)
 
 findAssocs(dtm_rev1, terms = "manhattan", corlimit = 0.1)
 
