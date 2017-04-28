@@ -299,18 +299,6 @@
     });
     console.log(popByID);
 
-    //Pair data with population for hover
-    var dataPOP= {};
-    population.forEach(function(d) { 
-      dataPOP[d.ntaname] = +d.pop; //whhen ntaname goes into this function population comes out
-    });
-
-    //Pair name with state id for hover
-    var neighborhoodbyNTA = {};
-    population.forEach(function(d) { 
-      neighborhoodbyNTA[d.ntaname] = d.ntaname; 
-    });
-
     //here we are seperating the features so we can style them through svg.selectAll(".newclasswearemaking")
     svg.append("g")
         .attr("class", "nta") //i define the class 
@@ -330,28 +318,6 @@
         .style("stroke", "white")
         .style("stroke-width", "0.1")
         
-        //CLICK
-        // .on("mouseover", function(d) {
-        .on("click", function(d) {
-        var sel = d3.select(this);
-        sel.moveToFront();
-        d3.select(this).transition().duration(30).style("opacity", 0.8);
-        div.transition().duration(30)
-        .style("opacity", 1)
-        div.text(neighborhoodbyNTA[d.properties.ntaname] + ": " + dataPOP[d.properties.ntaname] + " people") //so on hover it feeds the ntaname into the defined function
-        .style("left", (d3.event.pageX) + "px") //location of callout box
-        .style("top", (d3.event.pageY -30) + "px")
-        .attr("class","hoverStyle");
-      });
-  //       .on("mouseout", function() {
-  //       var sel = d3.select(this);
-  //       sel.moveToBack();
-  //       d3.select(this)
-  //       .transition().duration(300)
-  //       .style("opacity", 1);
-  //       div.transition().duration(300)
-  //       .style("opacity", 0);
-  // };
   //adding outline for borough boundaries 
   svg.append("path")
     .datum(topojson.mesh(nyc, nyc.objects.nybb)) //using a datum+mesh lets us do this without data join, usind data+features would only work with the first borough i.e. brooklyn
