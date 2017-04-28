@@ -38,7 +38,7 @@
 
    <script type="text/javascript">
 
-        d3.csv("../data/BarGraphData/allListings.csv", function (data) {
+        d3.json("../data/BarGraphData/allListings.json", function (data) {
 
             var canvas = d3.select("body").append("svg")
                 .attr("width", 1000)
@@ -49,8 +49,12 @@
                 .data(data)
                 .enter()
                     .append("rect")
-                    .attr("height", function (d) {return d.})
-                    .attr("width")
+                    .attr("height", function (d) {return d.MnRelFreq * 100; })
+                    .attr("width", 30)
+                    .attr("x", function (d, i) {return i * 40; })
+                    .attr("y", )
+                    .attr("fill", "blue")
+
 
         })    
 
