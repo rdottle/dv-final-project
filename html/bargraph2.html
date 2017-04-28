@@ -38,20 +38,9 @@
 
    <script type="text/javascript">
 
-        d3.csv("../data/BarGraphData/allListings.csv", function (data) {
+        d3.csv("../data/BarGraphData/allReviews.csv", function (data) {
 
-            var canvas = d3.select("body").append("svg")
-                .attr("width", 1000)
-                .attr("height", 1000)
-                .attr("fill", "#333333")
-
-            canvas.selectAll("rect")
-                .data(data)
-                .enter()
-                    .append("rect")
-                    .attr("height", function (d) {return d.})
-                    .attr("width")
-
+            var
         })    
 
    </script>
