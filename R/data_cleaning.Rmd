@@ -86,6 +86,9 @@ listings_tm <- select(listings, id, summary, space, description, neighborhood_ov
                       host_about, neighbourhood, city, latitude, longitude, property_type,
                       availability_365, number_of_reviews, reviews_per_month)
 
+reviews_tm <- select(reviews, comments, listing_id, date, reviewer_name)
+reviews_tm$id <- reviews_tm$listing_id
+
 
 # subset data to just Brooklyn and Manhattan, for later 
 bk_listings <- listings_tm[grep("Brooklyn", listings_tm$city), ]
@@ -95,9 +98,19 @@ bx_listings <- listings_tm[grep("Bronx", listings_tm$city), ]
 
 si_listings <- listings_tm[grep("Staten Island", listings_tm$city), ]
 
+
+reviews_join <- left_join(reviews_tm, listings_tm, by='id')
+
+# reviews 
+bk_reviews <- reviews_join[grep("Brooklyn", reviews_join$city), ]
+mn_reviews <- reviews_join[grep("New York", reviews_join$city), ]
+qn_reviews <- reviews_join[grep("Queens", reviews_join$city), ]
+bx_reviews <- reviews_join[grep("Bronx", reviews_join$city), ]
+si_reviews <- reviews_join[grep("Staten Island", reviews_join$city), ]
+
 ```
 
-I've subset my listings data into Brooklyn and New York data frames, in order to play around with their differences, but also to make it easier to read into R faster, since my DocumentTermMatrices are rather large and take up a lot of memory. In this way I will begin create my corpus of text, starting with just the summary field. I am more interested in the neighborhood field, which presents how the Airbnb listers' are representing their area, so I will run the same textual analyses on both the summary and the neighborhood fields. 
+<!-- I've subset my listings data into Brooklyn and New York data frames, in order to play around with their differences, but also to make it easier to read into R faster, since my DocumentTermMatrices are rather large and take up a lot of memory. In this way I will begin create my corpus of text, starting with just the summary field. I am more interested in the neighborhood field, which presents how the Airbnb listers' are representing their area, so I will run the same textual analyses on both the summary and the neighborhood fields.  -->
 
 
 ```{r}
@@ -144,9 +157,6 @@ dtm_rev <- Corpus(VectorSource(reviews$comments)) %>% tm_map(removePunctuation) 
 dtm_rev1 <- dtm_rev %>% DocumentTermMatrix()
 tdm_rev <- dtm_rev %>% TermDocumentMatrix()
 
-
-
-
 # Queens
 doc_sum_qn <- Corpus(VectorSource(qn_listings$summary)) %>%
   tm_map(removePunctuation) %>% tm_map(removeNumbers) %>% tm_map(tolower) %>%
@@ -177,7 +187,7 @@ doc_sum_si <- Corpus(VectorSource(si_listings$summary)) %>%
 dtm_sum_si <- doc_sum_si %>% DocumentTermMatrix()
 tdm_sum_si <- doc_sum_si %>% TermDocumentMatrix()
 
-
+tdm_sum_si
 
 ```
 
@@ -215,6 +225,12 @@ doc_sum_mn %>% wordcloud(max.words = 150, random.order = F, colors = pal_2)
 temp <- inspect(tdm_sum_bx)
 FreqMat_bronx <- data.frame(ST = rownames(temp), Freq = rowSums(temp))
 row.names(FreqMat) <- NULL
+
+
+
+bx_tdm_2 <- removeSparseTerms(tdm_sum_bk, 0.95)
+bx_list_top_20 <- FreqMat_bronx %>% filter(Freq > 100)
+
 #FreqMat_bronx
 
 
@@ -245,9 +261,7 @@ row.names(FreqMat_qn) <- NULL
 
 
 qn_tdm_2 <- removeSparseTerms(tdm_sum_mn, 0.95)
-qn_list_top_20 <- FreqMat_mn %>% filter(Freq > 3600)
-
-
+qn_list_top_20 <- FreqMat_qn %>% filter(Freq > 510)
 
 
 #staten island
@@ -256,17 +270,125 @@ FreqMat_si <- data.frame(ST = rownames(temp), Freq = rowSums(temp))
 row.names(FreqMat_qn) <- NULL
 
 
+si_tdm_2 <- removeSparseTerms(tdm_sum_mn, 0.95)
+si_list_top_20 <- FreqMat_si %>% filter(Freq > 39)
+
+
+write.csv(si_list_top_20, "staten_island_listings_top20.csv")
+write.csv(bk_list_top_20, "brooklyn_listings_top20.csv")
+write.csv(bx_list_top_20, "bronx_listings_top20.csv")
+write.csv(mn_list_top_20, "manhattan_listings_top20.csv")
+write.csv(qn_list_top_20, "queens_listings_top20.csv")
 
 ```
 
 ```{r}
 
-#calculate the top frequency words listings
+doc_sum_bk_revs <- Corpus(VectorSource(bk_reviews$comments)) %>%
+  tm_map(removePunctuation) %>% tm_map(removeNumbers) %>% tm_map(tolower) %>%
+  tm_map(removeWords, stopwords("english")) %>% tm_map(PlainTextDocument) 
+
+# Brooklyn 
+dtm_sum_bk <- doc_sum_bk_revs %>% DocumentTermMatrix()
+tdm_sum_bk <- doc_sum_bk_revs %>% TermDocumentMatrix()
+
+
+# Queens
+doc_sum_qn_revs <- Corpus(VectorSource(qn_reviews$comments)) %>%
+  tm_map(removePunctuation) %>% tm_map(removeNumbers) %>% tm_map(tolower) %>%
+  tm_map(removeWords, stopwords("english")) %>% tm_map(PlainTextDocument) 
+
+# Queens 
+dtm_sum_qn <- doc_sum_qn_revs %>% DocumentTermMatrix()
+tdm_sum_qn <- doc_sum_qn_revs %>% TermDocumentMatrix()
+
+
+# Manhattan
+doc_sum_mn_revs <- Corpus(VectorSource(mn_reviews$comments)) %>%
+  tm_map(removePunctuation) %>% tm_map(removeNumbers) %>% tm_map(tolower) %>%
+  tm_map(removeWords, stopwords("english")) %>% tm_map(PlainTextDocument) 
+
+# Manhattan
+dtm_sum_mn <- doc_sum_mn_revs %>% DocumentTermMatrix()
+tdm_sum_mn <- doc_sum_mn_revs %>% TermDocumentMatrix()
+
+# Staten Island 
+doc_sum_si_revs <- Corpus(VectorSource(si_reviews$comments)) %>%
+  tm_map(removePunctuation) %>% tm_map(removeNumbers) %>% tm_map(tolower) %>%
+  tm_map(removeWords, stopwords("english")) %>% tm_map(PlainTextDocument) 
+
+# Staten Island 
+dtm_sum_si <- doc_sum_si_revs %>% DocumentTermMatrix()
+tdm_sum_si <- doc_sum_si_revs %>% TermDocumentMatrix()
+
+# Bronx
+doc_sum_bx_revs <- Corpus(VectorSource(bx_reviews$comments)) %>%
+  tm_map(removePunctuation) %>% tm_map(removeNumbers) %>% tm_map(tolower) %>%
+  tm_map(removeWords, stopwords("english")) %>% tm_map(PlainTextDocument) 
+
+# Bronx
+dtm_sum_bx <- doc_sum_bx_revs %>% DocumentTermMatrix()
+tdm_sum_bx <- doc_sum_bx_revs %>% TermDocumentMatrix()
+
+
+#bronx
+temp <- inspect(tdm_sum_bx)
+FreqMat_bxreviews <- data.frame(ST = rownames(temp), Freq = rowSums(temp))
+row.names(FreqMat_bxreviews) <- NULL
 
 
 
+bx_tdm_revs <- removeSparseTerms(tdm_sum_bk, 0.95)
+bx_revs_top_20 <- FreqMat_bxreviews %>% filter(Freq > 1200)
+#FreqMat_bronx
 
 
+#brooklyn
+tempbk <- inspect(bk_tdm_2)
+FreqMat_bkrevs <- data.frame(ST = rownames(tempbk), Freq = rowSums(tempbk))
+row.names(FreqMat_bkrevs) <- NULL
+#FreqMat_bk
+
+bk_tdm_2 <- removeSparseTerms(tdm_sum_bk, 0.95)
+bk_revs_top_20 <- FreqMat_bkrevs %>% filter(Freq > 41000)
+
+
+#manhattan
+mn_tdm_2 <- removeSparseTerms(tdm_sum_mn, 0.95)
+tempmn <- inspect(mn_tdm_2)
+FreqMat_mnrevs <- data.frame(ST = rownames(tempmn), Freq = rowSums(tempmn))
+row.names(FreqMat_mn) <- NULL
+
+mn_rev_top_20 <- FreqMat_mn %>% filter(Freq > 48000)
+
+
+
+#queens
+qn_tdm_2 <- removeSparseTerms(tdm_sum_qn, 0.95)
+tempqn <- inspect(qn_tdm_2)
+FreqMat_qnrev <- data.frame(ST = rownames(tempqn), Freq = rowSums(tempqn))
+row.names(FreqMat_qnrev) <- NULL
+qn_rev_top_20 <- FreqMat_qnrev %>% filter(Freq > 5700)
+
+
+#staten island
+si_tdm_2 <- removeSparseTerms(tdm_sum_si, 0.95)
+tempsi <- inspect(si_tdm_2)
+FreqMat_sirev <- data.frame(ST = rownames(tempsi), Freq = rowSums(tempsi))
+row.names(FreqMat_sirev) <- NULL
+
+
+# si_tdm_2 <- removeSparseTerms(tdm_sum_mn, 0.95)
+si_rev_top_20 <- FreqMat_sirev %>% filter(Freq > 790)
+
+
+write.csv(si_rev_top_20, "staten_island_reviews_top20.csv")
+write.csv(bk_revs_top_20, "brooklyn_reviews_top20.csv")
+write.csv(bx_revs_top_20, "bronx_reviews_top20.csv")
+write.csv(mn_rev_top_20, "manhattan_reviews_top20.csv")
+write.csv(qn_rev_top_20, "queens_reviews_top20.csv")
+
+si_tdm_2
 
 ```
 
