@@ -12,12 +12,18 @@
   <body>
     <!-- page elements go here -->
     <h1> map headline goes here </h1>
+<li><a class="test" value="test" href="#">Test</a></li>
+<div id="option">
+  <input name="updateButton" 
+    type="button" 
+    value="Update" 
+    onclick="updateData()">happy
+</div>
     <div class="chloroplethMap"> </div>
     <div class="source">
       <span class="sourceTitle"></span>
       <span class="sourceText"></span>
     </div>
-
   </body>
   
   <script src="http://d3js.org/d3.v4.min.js"></script>
@@ -61,7 +67,7 @@
 
   //Binding data from topojson
   //queues up datasets with d3 function - binding 
-  d3.queue()  
+  d3.queue(2)  
       .defer(d3.json, "nyc_nta_bb.json") //load file containing neighborhood tabulation area and borough boundaries as layers
       .defer(d3.csv, "Pop_NTA.csv") //load population file
       .await(ready); //Run 'ready' when JSONs are loaded
@@ -85,30 +91,40 @@
   
   //In this function, we pass our data (the TopoJSON) as an argument, then create SVG elements using a classic D3 append. Selecting all paths, the TopoJSON is bound in the data method. From here, we can perform work on each element. In this circumstance, we apply a fill and stroke.
   // Ready Function, runs when data is loaded - reads data as arguments
-  function ready(error, nyc, population) {
+  function ready(error, nyc, population) { //error, var1, var2
     if (error) throw error;
     console.log(nyc);
 
     //creating object for tabular dataset 
+    // var popByID = {}; // Create empty object for holding dataset
+    // var dataPOP= {};
+    // var neighborhoodbyNTA = {};
+    // population.forEach(function(d) {
+    //   popByID[d.ntaname] = +d.pop; // Create property for each ID which is a unique field in the table [d.whatever] and the json ie this is like a table join, give it value from "pop" which is an attribute in the csv
+    //   //important:cast rate to numeric value (+)
+    //   dataPOP[d.ntaname] = +d.pop; //for hover 
+    //   neighborhoodbyNTA[d.ntaname] = d.ntaname; 
+    // });
+    // console.log(popByID);
+
     var popByID = {}; // Create empty object for holding dataset
-    population.forEach(function(d) {
-      popByID[d.ntaname] = +d.pop; // Create property for each ID which is a unique field in the table [d.whatever] and the json ie this is like a table join, give it value from "pop" which is an attribute in the csv
-      //important:cast rate to numeric value (+)
-    });
-    console.log(popByID);
+    var fipsByID= {};
+    var yearByID = {};
+    
+population.forEach(function(d) {
+  popByID[d.ntaname] = +d.pop; // Create property for each ID which is a unique field in the table [d.whatever] and the json ie this is like a table join, give it value from "pop" which is an attribute in the csv
+  //important:cast rate to numeric value (+)
+  fipsByID[d.ntaname] = +d.county_fips;
+  yearByID[d.ntaname] = +d.Year; 
+});
 
-    //Pair data with population for hover
-    var dataPOP= {};
-    population.forEach(function(d) { 
-      dataPOP[d.ntaname] = +d.pop; //whhen ntaname goes into this function population comes out
-    });
+if(population=="pop"){
+  population=popByID;
+}
 
-    //Pair name with state id for hover
-    var neighborhoodbyNTA = {};
-    population.forEach(function(d) { 
-      neighborhoodbyNTA[d.ntaname] = d.ntaname; 
-    });
-
+if(population=="county_fips"){
+  population=fipsByID;
+}
     //here we are seperating the features so we can style them through svg.selectAll(".newclasswearemaking")
     svg.append("g")
         .attr("class", "nta") //i define the class 
@@ -120,7 +136,7 @@
         // pass population to color function, return color based on scale 
         .style("fill", function(d) {
           if(d){
-            return color(popByID[d.properties.ntaname]);
+            return color(fipsByID[d.properties.ntaname]);
           } else {
             return "white";
           }
@@ -128,41 +144,50 @@
         .style("stroke", "white")
         .style("stroke-width", "0.1")
         
-        //CLICK
-        // .on("mouseover", function(d) {
-        .on("click", function(d) {
-        var sel = d3.select(this);
-        sel.moveToFront();
-        d3.select(this).transition().duration(30).style("opacity", 0.8);
-        div.transition().duration(30)
-        .style("opacity", 1)
-        div.text(neighborhoodbyNTA[d.properties.ntaname] + ": " + dataPOP[d.properties.ntaname] + " people") //so on hover it feeds the ntaname into the defined function
-        .style("left", (d3.event.pageX) + "px") //location of callout box
-        .style("top", (d3.event.pageY -30) + "px")
-        .attr("class","hoverStyle");
-      });
-  //       .on("mouseout", function() {
-  //       var sel = d3.select(this);
-  //       sel.moveToBack();
-  //       d3.select(this)
-  //       .transition().duration(300)
-  //       .style("opacity", 1);
-  //       div.transition().duration(300)
-  //       .style("opacity", 0);
-  // };
+      // //CLICK 
+      //   .on("mouseover", function(d) {
+      //   .on("click", function(d) {
+      //   var sel = d3.select(this);
+      //   sel.moveToFront();
+      //   d3.select(this).transition().duration(30).style("opacity", 0.8);
+      //   div.transition().duration(30)
+      //   .style("opacity", 1)
+      //   div.text(neighborhoodbyNTA[d.properties.ntaname] + ": " + dataPOP[d.properties.ntaname] + " people") //so on hover it feeds the ntaname into the defined function
+      //   .style("left", (d3.event.pageX) + "px") //location of callout box
+      //   .style("top", (d3.event.pageY -30) + "px")
+      //   .attr("class","hoverStyle");
+      // });
+
+      // //HOVER  
+      //   .on("mouseout", function() {
+      //   var sel = d3.select(this);
+      //   sel.moveToBack();
+      //   d3.select(this)
+      //   .transition().duration(300)
+      //   .style("opacity", 1);
+      //   div.transition().duration(300)
+      //   .style("opacity", 0);
+      // };
+  
   //adding outline for borough boundaries 
-  svg.append("path")
+   svg.append("path")
     .datum(topojson.mesh(nyc, nyc.objects.nybb)) //using a datum+mesh lets us do this without data join, usind data+features would only work with the first borough i.e. brooklyn
     .attr("class", "boroughs") //i define the class
     .attr("d", path)
-  };
+   };
   
-  //appends chart source
-  d3.select(".sourceTitle")
+d3.selectAll(".test")
+  .on("click", function(){
+    var population=this.getAttribute("value");
+    ready(population);
+});
+
+  //appends chart source text 
+   d3.select(".sourceTitle")
     .text("SOURCE: ")
     .attr("class", "sourceTitle");
 
-  d3.select(".sourceText")
+   d3.select(".sourceText")
     .text("Department of City Planning (2017), Inside AirBnB (2017)")
     .attr("class", "sourceText");
 
