@@ -43,10 +43,13 @@
 
         d3.json("../data/BarGraphData/allListings.json", function (data) {
 
+            var w = "150"
+            var h = "550"
+
             //Manhattan code//
             var canvas1 = d3.select("body").append("svg")
-                .attr("width", 150)
-                .attr("height", 550)
+                .attr("width", w)
+                .attr("height", h)
                 .style("background-color", "#212121")
 
             var Manhattan = canvas1.selectAll("rect").append("g")
@@ -71,12 +74,19 @@
                         .style("font-size", "1em")
                         .style("font-family", "Dosis")
                         .style("fill", "B7B7B7")
-
+            
+            var Mntitle = canvas1.append("text")
+                    .text("Manhattan")
+                    .attr("x", 75)
+                    .attr("y", 40)
+                    .style("font-size", "1em")
+                    .style("font-family", "Dosis")
+                    .style("fill", "B7B7B7")
 
             //Bronx code//
             var canvas2 =  d3.selectAll("body").append("svg")
-                .attr("width", 150)
-                .attr("height", 550)
+                .attr("width", w)
+                .attr("height", h)
                 .style("background-color", "#212121")
 
             var Bronx = canvas2.selectAll("rect").append("g")
@@ -102,10 +112,18 @@
                         .style("font-family", "Dosis")
                         .style("fill", "B7B7B7")
 
+            var Bxtitle = canvas2.append("text")
+                    .text("Bronx")
+                    .attr("x", 75)
+                    .attr("y", 40)
+                    .style("font-size", "1em")
+                    .style("font-family", "Dosis")
+                    .style("fill", "B7B7B7")
+
             //Queens Code//
             var canvas3 =  d3.selectAll("body").append("svg")
-                .attr("width", 150)
-                .attr("height", 550)
+                .attr("width", w)
+                .attr("height", h)
                 .style("background-color", "#212121")
 
             var Queens = canvas3.selectAll("rect").append("g")
@@ -131,10 +149,18 @@
                         .style("font-family", "Dosis")
                         .style("fill", "B7B7B7")
 
+            var Qntitle = canvas3.append("text")
+                    .text("Queens")
+                    .attr("x", 75)
+                    .attr("y", 40)
+                    .style("font-size", "1em")
+                    .style("font-family", "Dosis")
+                    .style("fill", "B7B7B7")
+
             //Brooklyn//
             var canvas4 =  d3.selectAll("body").append("svg")
-                .attr("width", 150)
-                .attr("height", 550)
+                .attr("width", w)
+                .attr("height", h)
                 .style("background-color", "#212121")
 
             var Brooklyn = canvas4.selectAll("rect").append("g")
@@ -160,10 +186,18 @@
                         .style("font-family", "Dosis")
                         .style("fill", "B7B7B7")
 
+            var Bktitle = canvas4.append("text")
+                    .text("Brooklyn")
+                    .attr("x", 75)
+                    .attr("y", 40)
+                    .style("font-size", "1em")
+                    .style("font-family", "Dosis")
+                    .style("fill", "B7B7B7")
+
             //Staten Island//
             var canvas5 =  d3.selectAll("body").append("svg")
-                .attr("width", 150)
-                .attr("height", 550)
+                .attr("width", w)
+                .attr("height", h)
                 .style("background-color", "#212121")
 
             var StatenIsland = canvas5.selectAll("rect").append("g")
@@ -188,6 +222,14 @@
                         .style("font-size", "1em")
                         .style("font-family", "Dosis")
                         .style("fill", "B7B7B7")
+
+            var Sititle = canvas5.append("text")
+                    .text("Staten Island")
+                    .attr("x", 55)
+                    .attr("y", 40)
+                    .style("font-size", "1em")
+                    .style("font-family", "Dosis")
+                    .style("fill", "B7B7B7")
 
 
         })    
