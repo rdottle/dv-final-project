@@ -21,11 +21,19 @@
 <option value="popByID">yearyear</option>
 <option value="county_fips">fipsfips</option>
 </select>
+      <div id="option">
+    <input name="updateButton" 
+                 type="button" 
+                value="Update" 
+                onclick="updateData()">
+</div>
+
     <div class="chloroplethMap"> </div>
     <div class="source">
       <span class="sourceTitle"></span>
       <span class="sourceText"></span>
     </div>
+
   </body>
   
   <script src="http://d3js.org/d3.v4.min.js"></script>
@@ -74,22 +82,22 @@
       .defer(d3.csv, "Pop_NTA.csv") //load population file
       .await(ready); //Run 'ready' when JSONs are loaded
 
-  //Moves selection to front
-  d3.selection.prototype.moveToFront = function() {
-    return this.each(function(){
-      this.parentNode.appendChild(this);
-    });
-  }; 
+  // //Moves selection to front
+  // d3.selection.prototype.moveToFront = function() {
+  //   return this.each(function(){
+  //     this.parentNode.appendChild(this);
+  //   });
+  // }; 
 
-  //Moves selection to back
-  d3.selection.prototype.moveToBack = function() { 
-    return this.each(function() { 
-    var firstChild = this.parentNode.firstChild; 
-      if (firstChild) { 
-        this.parentNode.insertBefore(this, firstChild); 
-      } 
-    }); 
-  };    
+  // //Moves selection to back
+  // d3.selection.prototype.moveToBack = function() { 
+  //   return this.each(function() { 
+  //   var firstChild = this.parentNode.firstChild; 
+  //     if (firstChild) { 
+  //       this.parentNode.insertBefore(this, firstChild); 
+  //     } 
+  //   }); 
+  // };    
   
   //In this function, we pass our data (the TopoJSON) as an argument, then create SVG elements using a classic D3 append. Selecting all paths, the TopoJSON is bound in the data method. From here, we can perform work on each element. In this circumstance, we apply a fill and stroke.
   // Ready Function, runs when data is loaded - reads data as arguments
@@ -97,38 +105,23 @@
     if (error) throw error;
     console.log(nyc);
 
-   // //creating object for tabular dataset 
-   //  var popByID = {}; // Create empty object for holding dataset
-   //  var dataPOP= {};
-   //  var neighborhoodbyNTA = {};
-   // // Create property for each ID which is a unique field in the table [d.whatever] and the json ie this is like a table join, give it value from "pop" which is an attribute in the csv 
-   //  population.forEach(function(d) {
-   //    popByID[d.ntaname] = +d.pop; 
-   //    //important:cast rate to numeric value (+)
-   //    dataPOP[d.ntaname] = +d.pop; //for hover 
-   //    neighborhoodbyNTA[d.ntaname] = d.ntaname; 
-   //  });
-   //  console.log(popByID);
-
     var popByID = {}; // Create empty object for holding dataset
     var fipsByID= {};
     var yearByID = {};
-    
-population.forEach(function(d) {
-  popByID[d.ntaname] = +d.pop; // Create property for each ID which is a unique field in the table [d.whatever] and the json ie this is like a table join, give it value from "pop" which is an attribute in the csv
-  //important:cast rate to numeric value (+)
-  fipsByID[d.ntaname] = +d.county_fips;
-  yearByID[d.ntaname] = +d.Year; 
-});
+    var neighborhoodbyNTA = {};
+    var currentColor = {};
+ 
+    //i know this works - just gotta connect it so the value of population in function d is popByID or whatever - based on what you select   
+    population.forEach(function(d) {
+      popByID[d.ntaname] = +d.pop; // Create property for each ID which is a unique field in the table [d.whatever] and the json ie this is like a table join, give it value from "pop" which is an attribute in the csv
+      //important:cast rate to numeric value (+)
+      fipsByID[d.ntaname] = +d.county_fips;
+      yearByID[d.ntaname] = +d.Year; 
+      neighborhoodbyNTA[d.ntaname] = +d.ntaname; 
+      // console.log(popByID)
+    });
 
-if(population=="pop"){
-  population=popByID;
-}
-
-if(population=="county_fips"){
-  population=fipsByID;
-}
-
+//need to find how to link input via selection to the color function
     //here we are seperating the features so we can style them through svg.selectAll(".newclasswearemaking")
     svg.append("g")
         .attr("class", "nta") //i define the class 
@@ -138,39 +131,19 @@ if(population=="county_fips"){
         .attr("d", path)
         // get population value for specific object based on selected fieldname earlier
         // pass population to color function, return color based on scale 
-        // .style("fill", function(d) {
-        //   if(d){
-        //     return color(fipsByID[d.properties.ntaname]); //need to get the fips by id here to change on different click
-        //   } else {
-        //     return "white";
-        //   }
-        // })
+        .style("fill", function(d) {
+          // return color(popByID[d.properties.ntaname]); //need to get the fips by id here to change on different click
+          return color(currentColor);
+        })
         .style("stroke", "white")
         .style("stroke-width", "0.1")
+      
+         var currentColor = d3.select("body")
+      .append("svg")
+      .style("color", function(){
+        return color(popByID[d.properties.ntaname]);
+      });
 
-        d3.select("g")
-                        .selectAll("path")
-                        .remove();
-        var appending = svg.selectAll("g")
-                        .attr("class", "trytry")
-                        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features);
-    
-                        // add new elements
-                        appending.enter().append("path");
-                          // .attr("d", path)
-                        // update existing elements
-                        appending.style("fill",
-                        function (d) {
-                            return color(population[d.properties.ntaname]);
-                        })
-                        .style("stroke", "white")
-                        .style("stroke-width", 0.3)
-                        .attr("d", path)
-                        // d3.selectAll(".test")
-  .on("click", function(){
-    var population=this.getAttribute("value");
-});
-        
       // //CLICK 
       //   .on("mouseover", function(d) {
       //   .on("click", function(d) {
@@ -201,45 +174,14 @@ if(population=="county_fips"){
     .datum(topojson.mesh(nyc, nyc.objects.nybb)) //using a datum+mesh lets us do this without data join, usind data+features would only work with the first borough i.e. brooklyn
     .attr("class", "boroughs") //i define the class
     .attr("d", path)
-   };
-function updateMap(newData) {
 
-    // bind data
-    var appending = canvas.selectAll('path')
-       .data(newData);
+    function updateData(){
+      document.getElementsByClassName("nta")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) // Bind TopoJSON data elements - this has to be basically the name of the file under the objects in the json 
+      .enter().append("path")
 
-    // add new elements
-    appending.enter().append('path');
-
-    // update existing elements
-    appending.transition()
-        .duration(0)
-        .style("fill", function(d){
-          return color(yearByID[d.properties.ntaname]);
-        });
-
-    // remove old elements
-    appending.exit().remove();
-
+  };
 }
-
-// handle on click event
-d3.select('#test')
-  .on('change', function() {
-    var newData = eval(d3.select(this).property('value'));
-    updateMap(newData);
-});
-
-d3.selectAll(".test")
-  .on("click", function(){
-    var population=this.getAttribute("value");
-});
-
-// d3.selectAll(".test")
-//   .on("click", function(){
-//     var population=this.getAttribute("value");
-//     ready(population);
-// });
 
   //appends chart source text 
    d3.select(".sourceTitle")
