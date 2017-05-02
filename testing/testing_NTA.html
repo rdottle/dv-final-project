@@ -12,20 +12,21 @@
   <body>
     <!-- page elements go here -->
     <h1> map headline goes here </h1>
-<ul class="test">
-  <li><a class="test" value="pop" href="#">population</a></li>
-  <li><a class="test" value="yearByID" href="#">year</a></li>
-  <li><a class="test" value="county_fips" href="#">fips</a></li>
-</ul>
-<select id = "test">
-<option value="popByID">yearyear</option>
-<option value="county_fips">fipsfips</option>
-</select>
       <div id="option">
     <input name="updateButton" 
                  type="button" 
-                value="Update" 
-                onclick="updateData()">
+                value="FIPS Code" 
+                onclick="updateDataFIPS()">
+</div>
+  <input name="updateButton" 
+                 type="button" 
+                value="Year" 
+                onclick="updateDataYear()">
+</div>
+  <input name="updateButton" 
+                 type="button" 
+                value="Population" 
+                onclick="updateDataPop()">
 </div>
 
     <div class="chloroplethMap"> </div>
@@ -98,7 +99,8 @@
   //     } 
   //   }); 
   // };    
-  
+ 
+ //BASIC 
   //In this function, we pass our data (the TopoJSON) as an argument, then create SVG elements using a classic D3 append. Selecting all paths, the TopoJSON is bound in the data method. From here, we can perform work on each element. In this circumstance, we apply a fill and stroke.
   // Ready Function, runs when data is loaded - reads data as arguments
   function ready(error, nyc, population) { //error, var1, var2
@@ -109,19 +111,15 @@
     var fipsByID= {};
     var yearByID = {};
     var neighborhoodbyNTA = {};
-    var currentColor = {};
  
-    //i know this works - just gotta connect it so the value of population in function d is popByID or whatever - based on what you select   
     population.forEach(function(d) {
       popByID[d.ntaname] = +d.pop; // Create property for each ID which is a unique field in the table [d.whatever] and the json ie this is like a table join, give it value from "pop" which is an attribute in the csv
       //important:cast rate to numeric value (+)
       fipsByID[d.ntaname] = +d.county_fips;
       yearByID[d.ntaname] = +d.Year; 
-      neighborhoodbyNTA[d.ntaname] = +d.ntaname; 
       // console.log(popByID)
     });
 
-//need to find how to link input via selection to the color function
     //here we are seperating the features so we can style them through svg.selectAll(".newclasswearemaking")
     svg.append("g")
         .attr("class", "nta") //i define the class 
@@ -132,17 +130,10 @@
         // get population value for specific object based on selected fieldname earlier
         // pass population to color function, return color based on scale 
         .style("fill", function(d) {
-          // return color(popByID[d.properties.ntaname]); //need to get the fips by id here to change on different click
-          return color(currentColor);
+          return color(popByID[d.properties.ntaname]);
         })
         .style("stroke", "white")
         .style("stroke-width", "0.1")
-      
-         var currentColor = d3.select("body")
-      .append("svg")
-      .style("color", function(){
-        return color(popByID[d.properties.ntaname]);
-      });
 
       // //CLICK 
       //   .on("mouseover", function(d) {
@@ -174,14 +165,112 @@
     .datum(topojson.mesh(nyc, nyc.objects.nybb)) //using a datum+mesh lets us do this without data join, usind data+features would only work with the first borough i.e. brooklyn
     .attr("class", "boroughs") //i define the class
     .attr("d", path)
+};
 
-    function updateData(){
-      document.getElementsByClassName("nta")
-        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) // Bind TopoJSON data elements - this has to be basically the name of the file under the objects in the json 
+//FIPS
+  d3.queue()  
+      .defer(d3.json, "nyc_nta_bb.json") //load file containing neighborhood tabulation area and borough boundaries as layers
+      .defer(d3.csv, "Pop_NTA.csv") //load population file
+      .await(updateDataFIPS);
+
+ function updateDataFIPS(error, nyc, population) { //error, var1, var2
+    if (error) throw error;
+    console.log(nyc);
+
+    var fipsByID= {};
+ 
+    population.forEach(function(d) {
+      fipsByID[d.ntaname] = +d.county_fips;
+    });
+
+    svg.append("g")
+        .attr("class", "nta") 
+      .selectAll("path")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
       .enter().append("path")
+        .attr("d", path)
+        .style("fill", function(d) {
+          return color(fipsByID[d.properties.ntaname]); 
+        })
+        .style("stroke", "white")
+        .style("stroke-width", "0.1")
+  
+  //adding outline for borough boundaries 
+   svg.append("path")
+    .datum(topojson.mesh(nyc, nyc.objects.nybb)) 
+    .attr("class", "boroughs") 
+    .attr("d", path)
+};
 
-  };
-}
+//YEAR
+  d3.queue()  
+      .defer(d3.json, "nyc_nta_bb.json") //load file containing neighborhood tabulation area and borough boundaries as layers
+      .defer(d3.csv, "Pop_NTA.csv") //load population file
+      .await(updateDataYear);
+
+ function updateDataYear(error, nyc, population) { //error, var1, var2
+    if (error) throw error;
+    console.log(nyc);
+
+    var yearByID= {};
+ 
+    population.forEach(function(d) {
+      yearByID[d.ntaname] = +d.Year;
+    });
+
+    svg.append("g")
+        .attr("class", "nta") 
+      .selectAll("path")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
+      .enter().append("path")
+        .attr("d", path)
+        .style("fill", function(d) {
+          return color(yearByID[d.properties.ntaname]); 
+        })
+        .style("stroke", "white")
+        .style("stroke-width", "0.1")
+  
+  //adding outline for borough boundaries 
+   svg.append("path")
+    .datum(topojson.mesh(nyc, nyc.objects.nybb)) 
+    .attr("class", "boroughs") 
+    .attr("d", path)
+};
+
+//POP
+  d3.queue()  
+      .defer(d3.json, "nyc_nta_bb.json") //load file containing neighborhood tabulation area and borough boundaries as layers
+      .defer(d3.csv, "Pop_NTA.csv") //load population file
+      .await(updateDataPop);
+
+ function updateDataPop(error, nyc, population) { //error, var1, var2
+    if (error) throw error;
+    console.log(nyc);
+
+    var popByID= {};
+ 
+    population.forEach(function(d) {
+      popByID[d.ntaname] = +d.Year;
+    });
+
+    svg.append("g")
+        .attr("class", "nta") 
+      .selectAll("path")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
+      .enter().append("path")
+        .attr("d", path)
+        .style("fill", function(d) {
+          return color(popByID[d.properties.ntaname]); 
+        })
+        .style("stroke", "white")
+        .style("stroke-width", "0.1")
+  
+  //adding outline for borough boundaries 
+   svg.append("path")
+    .datum(topojson.mesh(nyc, nyc.objects.nybb)) 
+    .attr("class", "boroughs") 
+    .attr("d", path)
+};
 
   //appends chart source text 
    d3.select(".sourceTitle")
