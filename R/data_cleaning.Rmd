@@ -101,6 +101,8 @@ si_listings <- listings_tm[grep("Staten Island", listings_tm$city), ]
 
 reviews_join <- left_join(reviews_tm, listings_tm, by='id')
 
+write.csv(reviews_join, "reviews_join.csv")
+
 # reviews 
 bk_reviews <- reviews_join[grep("Brooklyn", reviews_join$city), ]
 mn_reviews <- reviews_join[grep("New York", reviews_join$city), ]
@@ -128,12 +130,28 @@ doc_sum_bk <- Corpus(VectorSource(bk_listings$summary)) %>%
   tm_map(removePunctuation) %>% tm_map(removeNumbers) %>% tm_map(tolower) %>%
   tm_map(removeWords, stopwords("english")) %>% tm_map(PlainTextDocument) 
 
-# Brooklyn 
+install.packages("quanteda")
+library(quanteda)
+
+install.packages("tidytext")
+library(tidytext)
+
+tidytest_Bk_list <- tidy(doc_sum_bk)
+
+tidytest_wordsbk <- tidytest_Bk_list %>%
+  unnest_tokens(word, text)
+
+tidytest_wordsbk
+
+test_hipster <- tidytest_wordsbk[grep("hipster", tidytest_wordsbk$), ]
+
+
+  # Brooklyn 
 dtm_sum_bk <- doc_sum_bk %>% DocumentTermMatrix()
 tdm_sum_bk <- doc_sum_bk %>% TermDocumentMatrix()
 
 # Remove sparse terms from matrix to minimize size
-dtms_sum <- removeSparseTerms(dtm_sum, 0.90) 
+tdm_sum <- removeSparseTerms(tdm_sum_bk, 0.90) 
 
 # All 
 dtm_sum <- doc_sum %>% DocumentTermMatrix()
@@ -173,13 +191,13 @@ doc_sum_bx <- Corpus(VectorSource(bx_listings$summary)) %>%
   tm_map(removeWords, stopwords("english")) %>% tm_map(PlainTextDocument) 
 
 # Bronx 
-dtm_sum_bx <- doc_sum_bx %>% DocumentTermMatrix()
+dtm_sum_bx_list <- doc_sum_bx %>% DocumentTermMatrix()
 tdm_sum_bx <- doc_sum_bx %>% TermDocumentMatrix()
 
 
 # Staten Island
 
-doc_sum_si <- Corpus(VectorSource(si_listings$summary)) %>%
+doc_sum_si_list <- Corpus(VectorSource(si_listings$summary)) %>%
   tm_map(removePunctuation) %>% tm_map(removeNumbers) %>% tm_map(tolower) %>%
   tm_map(removeWords, stopwords("english")) %>% tm_map(PlainTextDocument) 
 
@@ -188,7 +206,7 @@ dtm_sum_si <- doc_sum_si %>% DocumentTermMatrix()
 tdm_sum_si <- doc_sum_si %>% TermDocumentMatrix()
 
 tdm_sum_si
-
+tdm_sum_bx
 ```
 
 
@@ -199,7 +217,7 @@ tdm_sum_si
 
 # Palette 
 pal_1 <- wes_palette("Darjeeling", type = "continuous")
-pal_2 <- wes_palette("Moonrise3", type = "continuous")
+pal_3 <- wes_palette("Moonrise3", type = "continuous")
 
 # Word clouds for all listings data 
 doc_sum %>% wordcloud(min.freq = 10, max.words = 100,
@@ -352,6 +370,7 @@ row.names(FreqMat_bkrevs) <- NULL
 bk_tdm_2 <- removeSparseTerms(tdm_sum_bk, 0.95)
 bk_revs_top_20 <- FreqMat_bkrevs %>% filter(Freq > 41000)
 
+findAssocs(bk_tdm_2, "cozy", corlimit = 0.05)
 
 #manhattan
 mn_tdm_2 <- removeSparseTerms(tdm_sum_mn, 0.95)
@@ -361,7 +380,7 @@ row.names(FreqMat_mn) <- NULL
 
 mn_rev_top_20 <- FreqMat_mn %>% filter(Freq > 48000)
 
-
+findAssocs(mn_tdm_2, "cozy", corlimit = 0.05)
 
 #queens
 qn_tdm_2 <- removeSparseTerms(tdm_sum_qn, 0.95)
@@ -370,6 +389,7 @@ FreqMat_qnrev <- data.frame(ST = rownames(tempqn), Freq = rowSums(tempqn))
 row.names(FreqMat_qnrev) <- NULL
 qn_rev_top_20 <- FreqMat_qnrev %>% filter(Freq > 5700)
 
+findAssocs(qn_tdm_2, "cozy", corlimit = 0.05)
 
 #staten island
 si_tdm_2 <- removeSparseTerms(tdm_sum_si, 0.95)
@@ -377,6 +397,7 @@ tempsi <- inspect(si_tdm_2)
 FreqMat_sirev <- data.frame(ST = rownames(tempsi), Freq = rowSums(tempsi))
 row.names(FreqMat_sirev) <- NULL
 
+findAssocs(si_tdm_2, "cozy", corlimit = 0.1)
 
 # si_tdm_2 <- removeSparseTerms(tdm_sum_mn, 0.95)
 si_rev_top_20 <- FreqMat_sirev %>% filter(Freq > 790)
@@ -412,6 +433,8 @@ findAssocs(dtm_sum, terms = "neighborhood", corlimit = 0.1)
 reviews <- findAssocs(dtm_rev1, terms = "neighborhood", corlimit = 0.1)
 
 
+tdm_sum_bk
+
 word <- c("safe", "quiet", "restaurants", "apartment", "felt", "subway", "around", "nice")
 cor <- c(0.23, 0.15, 0.13, 0.12, 0.12, 0.11, 0.1, 0.1)
 
@@ -431,7 +454,7 @@ write.csv(list_neighb, "listing_neighborhood_wordcorr.csv")
 ```
 ```{R}
 
-findAssocs(dtm_sum, terms = "sketchy", corlimit = 0.1)
+findAssocs(tdm_sum_si, terms = "cozy", corlimit = 0.1)
 
 findAssocs(dtm_rev1, terms = "manhattan", corlimit = 0.1)
 
@@ -606,7 +629,7 @@ These two plots demonstrate the slight differences in the wording used to repres
 
 # Look at some word associations for words I'm specifically interested in in my further research 
 # Brooklyn
-findAssocs(dtm_sum, c("access","train", "neighborhood"), corlimit = 0.1)   
+findAssocs(mn_tdm_2, c("diverse"), corlimit = 0.01)   
 
 #Manhattan 
 findAssocs(dtm_sum_mn, c("access", "train", "neighborhood"), corlimit = 0.1)
@@ -728,3 +751,9 @@ Further research in this direction will focus on spatially understanding how the
 Furthermore, diving into the ways in which review data might be matched to listing data, to be able to look at both sides of representation of neighborhood or place, would be a useful further direction. 
 
 
+```{r}
+
+
+
+
+```
