@@ -77,7 +77,7 @@
 
   d3.queue()  
       .defer(d3.json, "nybb.json")
-      .defer(d3.json, "nta_review_wordfreqs.json") 
+      .defer(d3.json, "nta_review_relative_word_freqs.json") 
       .await(ready); //Run 'ready' when JSONs are loaded
 
 //FREQS: affordable, barfreq, busyfreq, cozyfreq, diversefre, hipsterfre, historicfr, luxuryfreq, modernfreq, parkfreq, quietfreq
@@ -87,27 +87,25 @@
     if (error) throw error;
     console.log(nyc)
     console.log(frequency)
-    console.log(frequency.value)
-    console.log(nyc.value);
+    // console.log(frequency.value)
 
-    // var affordableFreq = {};
+    var affordableFreq = {};
  
-    // frequency.forEach(function(d) {
-    //   affordableFreq[d.ntaname] = +d.affordable; 
-    // });
+    Array.prototype.forEach.call(frequency, function(d) {
+      affordableFreq[d.ntaname] = +d.properties.affordable; 
+      console.log(affordableFreq)
+    });
 
     //here we are seperating the features so we can style them through svg.selectAll(".newclasswearemaking")
     svg.append("g")
         .attr("class", "nta") //i define the class 
       .selectAll("path")
-        .data(topojson.feature(frequency, frequency.objects.nta_review_wordfreqs).features) // Bind TopoJSON data elements - this has to be basically the name of the file under the objects in the json 
+        .data(topojson.feature(frequency, frequency.object).features) // Bind TopoJSON data elements - this has to be basically the name of the file under the objects in the json 
       .enter().append("path")
         .attr("d", path)
-        // get population value for specific object based on selected fieldname earlier
-        // pass population to color function, return color based on scale 
-        // .style("fill", function(d) {
-        //   return color(affordableFreq[d.properties.ntaname]);
-        // })
+        .style("fill", function(d) {
+          return color(affordableFreq[d.properties.ntaname]);
+        })
         .style("fill", "black")
         .style("stroke", "white")
         .style("stroke-width", "0.1")
