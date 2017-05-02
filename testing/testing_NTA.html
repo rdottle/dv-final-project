@@ -79,7 +79,7 @@
   //Binding data from topojson
   //queues up datasets with d3 function - binding 
   d3.queue()  
-      .defer(d3.json, "nyc_nta_bb.json") //load file containing neighborhood tabulation area and borough boundaries as layers
+      .defer(d3.json, "NY_NTA.json") //load file containing neighborhood tabulation area and borough boundaries as layers
       .defer(d3.csv, "Pop_NTA.csv") //load population file
       .await(ready); //Run 'ready' when JSONs are loaded
 
@@ -105,7 +105,8 @@
   // Ready Function, runs when data is loaded - reads data as arguments
   function ready(error, nyc, population) { //error, var1, var2
     if (error) throw error;
-    console.log(nyc);
+    console.log(nyc)
+    console.log(population);
 
     var popByID = {}; // Create empty object for holding dataset
     var fipsByID= {};
