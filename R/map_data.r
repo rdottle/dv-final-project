@@ -63,12 +63,14 @@ orignrevs <- revslist_bynab %>%
   group_by(ntaname)
 
 
-text_revs2 <- revslist_bynab %>% unnest_tokens(word, comments)
+text_revs <- revslist_bynab %>% unnest_tokens(word, comments)
 
 data("stop_words")
 
 stop_words
-cleaned_revs <- anti_join(text_revs, stop_words, by = c("words" = "word"))
+cleaned_revs <- anti_join(text_revs, stop_words, by = c("word" = "word"))
+
+count_words <- cleaned_revs %>% group_by(ntacode) %>% summarise(n = n())
 
 
 topwords <- cleaned_revs %>% group_by(ntaname) %>% count(words, sort = TRUE)
@@ -106,10 +108,30 @@ nta_join1 <- nta %>% left_join(hipster, by = "ntaname") %>% left_join(historic, 
   left_join(busy, by = "ntaname") %>% left_join(quiet, by = "ntaname") %>% left_join(bar, by = "ntaname") %>% left_join(park, by = "ntaname")
 
 
-nta_join1[is.na(nta_join1)] <- 0
+nta_join2[is.na(nta_join2)] <- 0
 
 nta_join1 <- nta_join1 %>% select(ntacode, county_fips, ntaname, hipsterfreq, historicfreq, diversefreq, 
                                   cozyfreq, modernfreq, affordablefreq, luxuryfreq, busyfreq, quietfreq, barfreq, parkfreq)
 
-write.csv(nta_join1, "nta_join.csv")
+write.csv(nta_join2, "nta_join2.csv")
 getwd()
+
+
+nta_join2 <- left_join(nta_join1, count_words, by = "ntacode")
+
+
+nta_join2$hipsterfreq <- nta_join2$hipsterfreq/nta_join2$n
+nta_join2$hipsterfreq <- nta_join2$hipsterfreq*100
+
+nta_join2$historicfreq <- nta_join2$historicfreq/nta_join2$n * 100
+nta_join2$diversefreq <- nta_join2$diversefreq/nta_join2$n * 100
+nta_join2$cozyfreq <- nta_join2$cozyfreq/nta_join2$n * 100
+nta_join2$modernfreq <- nta_join2$modernfreq/nta_join2$n * 100
+nta_join2$affordablefreq <- nta_join2$affordablefreq/nta_join2$n * 100
+nta_join2$luxuryfreq <- nta_join2$luxuryfreq/nta_join2$n * 100
+nta_join2$busyfreq <- nta_join2$busyfreq/nta_join2$n * 100
+nta_join2$quietfreq <- nta_join2$quietfreq/nta_join2$n * 100
+nta_join2$barfreq <- nta_join2$barfreq/nta_join2$n * 100
+nta_join2$parkfreq <- nta_join2$parkfreq/nta_join2$n * 100
+
+
