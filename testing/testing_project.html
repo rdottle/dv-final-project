@@ -116,42 +116,42 @@
     .range(["#f4f4f8","#f4f4f8"])
   //REVIEWS 
   var colorPriceAffordable = d3.scaleLinear()
-    .domain([0.003748688, 0.407608696])
-    .range(["#f4f4f8","#dbdbdd"])
+    .domain([0, 0.407608696])
+    .range(["#ffffff","#06063B"]) //super dark blue like almost black 
   var colorPriceLuxury = d3.scaleLinear()
-    .domain([0.001279198, 0.201612903])
-    .range(["#f4f4f8","#dbdbdd"])
+    .domain([0, 0.201612903])
+    .range(["#ffffff","#06063B"])
 
   var colorInteriorCozy = d3.scaleLinear()
-    .domain([0.055788006, 1.52284264])
-    .range(["#f4f4f8","#a38082"])
+    .domain([0, 1.52284264])
+    .range(["#ffffff","#330003"]) //super dark red like almost black 
   var colorInteriorModern = d3.scaleLinear()
-    .domain([0.009391876, 0.337837838])
-    .range(["#f4f4f8","#a38082"])
+    .domain([0, 0.337837838])
+    .range(["#ffffff","#330003"])
 
   var colorIdentityDiverse = d3.scaleLinear()
-    .domain([0.000860178, 0.200722601])
-    .range(["#f4f4f8","#4f3536"])
+    .domain([0, 0.200722601])
+    .range(["#ffffff","#100026"])
   var colorIdentityHipster = d3.scaleLinear()
-    .domain([0.000309425, 0.10384216])
-    .range(["#f4f4f8","#4f3536"])
+    .domain([0, 0.10384216])
+    .range(["#ffffff","#100026"])
   var colorIdentityHistoric = d3.scaleLinear()
-    .domain([0.000536104, 0.063417728])
-    .range(["#f4f4f8","#4f3536"])
+    .domain([0, 0.063417728])
+    .range(["#ffffff","#100026"])
 
   var colorAmenitiesBar = d3.scaleLinear()
-    .domain([0.019908421, 5.555555556])
-    .range(["#f4f4f8","#1a0105"])
+    .domain([0, 5.555555556])
+    .range(["#ffffff","#220024"])
   var colorAmenitiesPark = d3.scaleLinear()
-    .domain([0.036737693, 2.030456853])
-    .range(["#f4f4f8","#1a0105"])
+    .domain([0, 2.030456853])
+    .range(["#ffffff","#220024"])
 
   var colorPaceQuiet = d3.scaleLinear()
-    .domain([0.130089762, 1.411290323])
-    .range(["#f4f4f8","#ff4d4d"])
+    .domain([0, 1.411290323])
+    .range(["#ffffff","#570E0E"])
   var colorPaceBusy = d3.scaleLinear()
-    .domain([0.005167959, 0.21905805])
-    .range(["#f4f4f8","#ff4d4d"])
+    .domain([0, 0.21905805])
+    .range(["#ffffff","#570E0E"])
 
   d3.queue()  
       .defer(d3.json, "boroughs_NTA.json")
@@ -244,8 +244,8 @@
         .style("fill", function(d) {
           return colorPriceAffordable(affordableFreq[d.properties.ntacode]);
         })
-        .style("stroke", "white")
-        .style("stroke-width", "0.1")
+        .style("stroke", "lightgrey")
+        .style("stroke-width", "0.2")
       }
     d3.select("#luxuryfrequency").on("click", luxuryfrequency);
       function luxuryfrequency(d){
@@ -258,8 +258,8 @@
         .style("fill", function(d) {
           return colorPriceLuxury(luxuryFreq[d.properties.ntacode]);
         })
-        .style("stroke", "white")
-        .style("stroke-width", "0.1")
+        .style("stroke", "lightgrey")
+        .style("stroke-width", "0.2")
       }
 
     d3.select("#modernfrequency").on("click", modernfrequency);
@@ -273,8 +273,8 @@
         .style("fill", function(d) {
           return colorInteriorModern(modernFreq[d.properties.ntacode]);
         })
-        .style("stroke", "white")
-        .style("stroke-width", "0.1")
+        .style("stroke", "lightgrey")
+        .style("stroke-width", "0.2")
       }
     d3.select("#cozyfrequency").on("click", cozyfrequency);
       function cozyfrequency(d){
@@ -287,8 +287,8 @@
         .style("fill", function(d) {
           return colorInteriorCozy(cozyFreq[d.properties.ntacode]);
         })
-        .style("stroke", "white")
-        .style("stroke-width", "0.1")
+        .style("stroke", "lightgrey")
+        .style("stroke-width", "0.2")
       }
 
       d3.select("#diversefrequency").on("click", diversefrequency);
@@ -302,8 +302,8 @@
         .style("fill", function(d) {
           return colorIdentityDiverse(diverseFreq[d.properties.ntacode]);
         })
-        .style("stroke", "white")
-        .style("stroke-width", "0.1")
+        .style("stroke", "lightgrey")
+        .style("stroke-width", "0.2")
       }
     d3.select("#hipsterfrequency").on("click", hipsterfrequency);
       function hipsterfrequency(d){
@@ -316,8 +316,8 @@
         .style("fill", function(d) {
           return colorIdentityHipster(hipsterFreq[d.properties.ntacode]);
         })
-        .style("stroke", "white")
-        .style("stroke-width", "0.1")
+        .style("stroke", "lightgrey")
+        .style("stroke-width", "0.2")
       }
     d3.select("#historicfrequency").on("click", historicfrequency);
       function historicfrequency(d){
@@ -330,8 +330,8 @@
         .style("fill", function(d) {
           return colorIdentityHistoric(historicFreq[d.properties.ntacode]);
         })
-        .style("stroke", "white")
-        .style("stroke-width", "0.1")
+        .style("stroke", "lightgrey")
+        .style("stroke-width", "0.2")
       }
     
     d3.select("#barfrequency").on("click", barfrequency);
@@ -345,8 +345,8 @@
         .style("fill", function(d) {
           return colorAmenitiesBar(barFreq[d.properties.ntacode]);
         })
-        .style("stroke", "white")
-        .style("stroke-width", "0.1")
+        .style("stroke", "lightgrey")
+        .style("stroke-width", "0.2")
       }
     d3.select("#parkfrequency").on("click", parkfrequency);
       function parkfrequency(d){
@@ -359,8 +359,8 @@
         .style("fill", function(d) {
           return colorAmenitiesPark(parkFreq[d.properties.ntacode]);
         })
-        .style("stroke", "white")
-        .style("stroke-width", "0.1")
+        .style("stroke", "lightgrey")
+        .style("stroke-width", "0.2")
       }
 
     d3.select("#quietfrequency").on("click", quietfrequency);
@@ -374,8 +374,8 @@
         .style("fill", function(d) {
           return colorPaceQuiet(quietFreq[d.properties.ntacode]);
         })
-        .style("stroke", "white")
-        .style("stroke-width", "0.1")
+        .style("stroke", "lightgrey")
+        .style("stroke-width", "0.2")
       }
     d3.select("#busyfrequency").on("click", busyfrequency);
       function busyfrequency(d){
@@ -388,8 +388,8 @@
         .style("fill", function(d) {
           return colorPaceBusy(busyFreq[d.properties.ntacode]);
         })
-        .style("stroke", "white")
-        .style("stroke-width", "0.1")
+        .style("stroke", "lightgrey")
+        .style("stroke-width", "0.2")
       }
       
   //adding outline for borough boundaries 
