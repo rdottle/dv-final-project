@@ -101,14 +101,6 @@
   var path = d3.geoPath()
       .projection(projection);
 
-  var projectionListing = d3.geoMercator()
-      .center([-73.94, 40.70])
-      .scale(50000)
-      .translate([width / 4, height / 2]); 
-
-  var pathListing = d3.geoPath()
-      .projection(projectionListing);
-
   //sets/creates svg window and draws first map  
   var svg = d3.select(".chloroplethMap").append("svg")
       .attr("width", width)
@@ -232,8 +224,8 @@ function ready(error, nyc, frequency) { //error, var1, var2
       .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
     .enter().append("path")
       .attr("d", path)
-      .style("fill", "lightsalmon")
-      .style("fill-opacity", "0.5")
+      .style("fill", "gold")
+      .style("fill-opacity", "0.2")
     svg.append("text")
     .attr("class", "mapTitle")
     .attr("x", 20)
@@ -274,7 +266,13 @@ function ready(error, nyc, frequency) { //error, var1, var2
     .attr("x", width/7 + 5)
     .attr("y", function(d){ return height * 210 / 300;}) 
     .text("Staten Island")
-    
+  //adding source
+   svg.append("text")
+    .attr("class", "sourceText")
+    .attr("x", 10)
+    .attr("y", function(d){ return height/2 + 300;}) 
+    .text("SOURCE: Department of City Planning (2017), Inside AirBnB (2017)")
+
 // Add mouse events
     d3.select("#affordablefrequency").on("click", affordablefrequency);
       function affordablefrequency(d){
@@ -436,15 +434,6 @@ function ready(error, nyc, frequency) { //error, var1, var2
       }
       
 };
-
-  //appends chart source text 
-   d3.select(".sourceTitle")
-    .text("SOURCE: ")
-    .attr("class", "sourceTitle");
-
-   d3.select(".sourceText")
-    .text("Department of City Planning (2017), Inside AirBnB (2017)")
-    .attr("class", "sourceText");
 
   // //drawing legend for chloropleth
   //  var legend = svg.selectAll("g.legend")
