@@ -12,30 +12,62 @@
   <body>
     <!-- page elements go here -->
     <h1> map headline goes here </h1>
-  <input name="updateButton" id="reset"
-                 type="button" 
-                value="B">
-</div>
-  <input name="updateButton" 
-                 type="button" 
-                value="C" 
-                onclick="updateDataPop()">
-</div>
+    <!-- side panel -->
+    <div class="sidePanel">
+      <div class = "container" >
+        <div class="row">
+          <div class="col-md-2">
+            <!-- heading -->
+            <h1> FILTER </h1>
+            <!-- list of tags to select  -->
+            <ul class="selections">
+              <li><input name="updateButton" id="affordablefrequency" type="button" value="Affordable"></li>             
+              <li><input name="updateButton" id="luxuryfrequency" type="button" value="Luxury"></li> 
 
-  <div class="chloroplethMap"> </div>
-    <div class="source">
-      <span class="sourceTitle"></span>
-      <span class="sourceText"></span>
+              <li><input name="updateButton" id="barfrequency" type="button" value="Bar"></li> 
+              <li><input name="updateButton" id="busyfrequency" type="button" value="Busy"></li> 
+              <li><input name="updateButton" id="cozyfrequency" type="button" value="Cozy"></li> 
+              <li><input name="updateButton" id="diversefrequency" type="button" value="Diverse"></li> 
+              <li><input name="updateButton" id="hipsterfrequency" type="button" value="Hipster"></li> 
+              <li><input name="updateButton" id="historicfrequency" type="button" value="Historic"></li> 
+              <li><input name="updateButton" id="modernfrequency" type="button" value="Modern"></li> 
+              <li><input name="updateButton" id="parkfrequency" type="button" value="Park"></li> 
+              <li><input name="updateButton" id="quietfrequency" type="button" value="Quiet"></li> 
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="bodyPanel">
+      <div class = "container" >
+        <div class="row">
+          <div class="col-md-10">
+            <div class="chloroplethMap"> </div>
+              <div class="source">
+                <span class="sourceTitle"></span>
+                <span class="sourceText"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
   </body>
-<!--  links -->
+<!--  links  to bootstrap and d3 and stylesheet-->
   <script src="http://d3js.org/d3.v4.min.js"></script>
   <script src="http://d3js.org/d3-queue.v3.min.js"></script>  
   <script src="http://d3js.org/topojson.v1.min.js"></script>    
+
+  <!-- Stylesheet + Bootstrap link -->
+  <!-- <link href="css/bootstrap.min.css" rel="stylesheet">  -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">  
   <link rel="stylesheet" type="text/css" href="testing_NTA.css">
+  <link rel="stylesheet" type="text/css" href="../css/site-specific.css">
 
   <script type="text/javascript">
+
 //map basics
   //Creates tooltip and makes it invisiblae
   var div = d3.select(".chloroplethMap").append("div")
@@ -84,10 +116,28 @@
 
     var affordableFreq = {};
     var barFreq = {};
+    var busyFreq = {};
+    var cozyFreq = {};
+    var diverseFreq = {};
+    var hipsterFreq = {};
+    var historicFreq = {};
+    var luxuryFreq = {};
+    var modernFreq = {};
+    var parkFreq = {};
+    var quietFreq = {};
  
     frequency.forEach(function(d) {
       affordableFreq[d.ntaname] = +d.affordable;
       barFreq[d.ntaname] = +d.barfreq;
+      busyFreq[d.ntaname] = +d.busyfreq;
+      cozyFreq[d.ntaname] = +d.cozyfreq;
+      diverseFreq[d.ntaname] = +d.diversefre;
+      hipsterFreq[d.ntaname] = +d.hipsterfre;
+      historicFreq[d.ntaname] = +d.historicfr;
+      luxuryFreq[d.ntaname] = +d.luxuryfreq;
+      modernFreq[d.ntaname] = +d.modernfreq;
+      parkFreq[d.ntaname] = +d.parkfreq;
+      quietFreq[d.ntaname] = +d.quietfreq;
       // console.log(affordableFreq)
     });
 
@@ -106,11 +156,24 @@
         .style("stroke-width", "0.1")
 
 // Add mouse events
-   // .on('click', mouseclick);
-   //    function mouseclick(d){
-    d3.select("#reset").on("click", mouseclick);
-      function mouseclick(d){
-svg.append("g")
+    d3.select("#affordablefrequency").on("click", affordablefrequency);
+      function affordablefrequency(d){
+      svg.append("g")
+        .attr("class", "nta") //i define the class 
+      .selectAll("path")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) // Bind TopoJSON data elements - this has to be basically the name of the file under the objects in the json 
+      .enter().append("path")
+        .attr("d", path)
+        .style("fill", function(d) {
+          return color(affordableFreq[d.properties.ntaname]);
+        })
+        .style("stroke", "white")
+        .style("stroke-width", "0.1")
+      }
+
+      d3.select("#barfrequency").on("click", barfrequency);
+      function barfrequency(d){
+      svg.append("g")
         .attr("class", "nta") //i define the class 
       .selectAll("path")
         .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) // Bind TopoJSON data elements - this has to be basically the name of the file under the objects in the json 
@@ -122,6 +185,142 @@ svg.append("g")
         .style("stroke", "white")
         .style("stroke-width", "0.1")
       }
+
+      d3.select("#busyfrequency").on("click", busyfrequency);
+      function busyfrequency(d){
+      svg.append("g")
+        .attr("class", "nta")  
+      .selectAll("path")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
+      .enter().append("path")
+        .attr("d", path)
+        .style("fill", function(d) {
+          return color(busyFreq[d.properties.ntaname]);
+        })
+        .style("stroke", "white")
+        .style("stroke-width", "0.1")
+      }
+
+      d3.select("#cozyfrequency").on("click", cozyfrequency);
+      function cozyfrequency(d){
+      svg.append("g")
+        .attr("class", "nta") //i define the class 
+      .selectAll("path")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
+      .enter().append("path")
+        .attr("d", path)
+        .style("fill", function(d) {
+          return color(cozyFreq[d.properties.ntaname]);
+        })
+        .style("stroke", "white")
+        .style("stroke-width", "0.1")
+      }
+
+      d3.select("#diversefrequency").on("click", diversefrequency);
+      function diversefrequency(d){
+      svg.append("g")
+        .attr("class", "nta") 
+      .selectAll("path")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
+      .enter().append("path")
+        .attr("d", path)
+        .style("fill", function(d) {
+          return color(diverseFreq[d.properties.ntaname]);
+        })
+        .style("stroke", "white")
+        .style("stroke-width", "0.1")
+      }
+
+      d3.select("#hipsterfrequency").on("click", hipsterfrequency);
+      function hipsterfrequency(d){
+      svg.append("g")
+        .attr("class", "nta") 
+      .selectAll("path")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
+      .enter().append("path")
+        .attr("d", path)
+        .style("fill", function(d) {
+          return color(hipsterFreq[d.properties.ntaname]);
+        })
+        .style("stroke", "white")
+        .style("stroke-width", "0.1")
+      }
+
+      d3.select("#historicfrequency").on("click", historicfrequency);
+      function historicfrequency(d){
+      svg.append("g")
+        .attr("class", "nta") 
+      .selectAll("path")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
+      .enter().append("path")
+        .attr("d", path)
+        .style("fill", function(d) {
+          return color(historicFreq[d.properties.ntaname]);
+        })
+        .style("stroke", "white")
+        .style("stroke-width", "0.1")
+      }
+
+      d3.select("#luxuryfrequency").on("click", luxuryfrequency);
+      function luxuryfrequency(d){
+      svg.append("g")
+        .attr("class", "nta") 
+      .selectAll("path")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
+      .enter().append("path")
+        .attr("d", path)
+        .style("fill", function(d) {
+          return color(luxuryFreq[d.properties.ntaname]);
+        })
+        .style("stroke", "white")
+        .style("stroke-width", "0.1")
+      }
+
+      d3.select("#modernfrequency").on("click", modernfrequency);
+      function modernfrequency(d){
+      svg.append("g")
+        .attr("class", "nta") 
+      .selectAll("path")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
+      .enter().append("path")
+        .attr("d", path)
+        .style("fill", function(d) {
+          return color(modernFreq[d.properties.ntaname]);
+        })
+        .style("stroke", "white")
+        .style("stroke-width", "0.1")
+      }
+
+      d3.select("#parkfrequency").on("click", parkfrequency);
+      function parkfrequency(d){
+      svg.append("g")
+        .attr("class", "nta") 
+      .selectAll("path")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
+      .enter().append("path")
+        .attr("d", path)
+        .style("fill", function(d) {
+          return color(parkFreq[d.properties.ntaname]);
+        })
+        .style("stroke", "white")
+        .style("stroke-width", "0.1")
+      }
+
+      d3.select("#quietfrequency").on("click", quietfrequency);
+      function quietfrequency(d){
+      svg.append("g")
+        .attr("class", "nta") 
+      .selectAll("path")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
+      .enter().append("path")
+        .attr("d", path)
+        .style("fill", function(d) {
+          return color(quietFreq[d.properties.ntaname]);
+        })
+        .style("stroke", "white")
+        .style("stroke-width", "0.1")
+      }
+
   //adding outline for borough boundaries 
    svg.append("path")
     .datum(topojson.mesh(nyc, nyc.objects.nybb))
@@ -164,7 +363,7 @@ svg.append("g")
     .attr("class", "legendHeading")
     .attr("x", 20)
     .attr("y", function(d){ return height - 6 - legendRectHeight * 6;}) //multiplying and subtractingincreases the height vertically
-    .text("Population in New York City")
+    .text("Relative Frequency")
 
   </script>   
 
