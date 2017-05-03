@@ -90,18 +90,26 @@
     .style("opacity", 0);
 
   //using svg element to display the map on 
-  var width = 970;
-      height = 560;
+  var width = 600;
+      height = 600;
 
   var projection = d3.geoMercator()
-      .center([-73.94, 40.70]) //sets a single standard parallel at selected lat 
-      .scale(50000) //obvi scale of the map 
-      .translate([width / 2, height / 2]); //a pixel offset that's commonly specified to ensure that the center of the projection is in the center of the viewing area
+      .center([-73.94, 40.70])
+      .scale(50000)
+      .translate([width / 2, height / 2]); 
 
   var path = d3.geoPath()
       .projection(projection);
 
-  //sets/creates svg window  
+  var projectionListing = d3.geoMercator()
+      .center([-73.94, 40.70])
+      .scale(50000)
+      .translate([width / 4, height / 2]); 
+
+  var pathListing = d3.geoPath()
+      .projection(projectionListing);
+
+  //sets/creates svg window and draws first map  
   var svg = d3.select(".chloroplethMap").append("svg")
       .attr("width", width)
       .attr("height", height)
@@ -110,7 +118,8 @@
   var legend_color_domain = [5, 10, 15, 20, 25] //LOWER LIMIT
   var legend_labels = ["1000", "5000", "30000", "60000", "80000"]  
 
-  //setting colors - should it ramp from white or f4f4f8 to the actual color or how to do the actual colors it is ramping? 
+//setting colors for maps
+
   var color = d3.scaleLinear()
     .domain([0.000152036, 7.142857143])
     .range(["#f4f4f8","#f4f4f8"])
@@ -158,13 +167,11 @@
       .defer(d3.csv, "nta_updated_reviews_listings.csv") 
       .await(ready); //Run 'ready' when JSONs are loaded
 
-//FREQS: affordable, barfreq, busyfreq, cozyfreq, diversefre, hipsterfre, historicfr, luxuryfreq, modernfreq, parkfreq, quietfreq
- //BASIC 
-  function ready(error, nyc, frequency) { //error, var1, var2
+function ready(error, nyc, frequency) { //error, var1, var2
     if (error) throw error;
     console.log(nyc)
     console.log(frequency)
-
+  //variables
     //reviews
     var affordableFreq = {};
     var barFreq = {};
@@ -189,7 +196,7 @@
     var modernListFreq = {};
     var parkListFreq = {};
     var quietListFreq = {};
- 
+    
     frequency.forEach(function(d) {
       //these are for reviews
       affordableFreq[d.ntacode] = +d.affordablefreq; 
@@ -217,21 +224,57 @@
       quietListFreq[d.ntacode] = +d.quietlistfreq;
       // console.log(affordableFreq)
     });
-
-    //here we are seperating the features so we can style them through svg.selectAll(".newclasswearemaking")
+    
+  //drawing first map 
     svg.append("g")
-        .attr("class", "nta") //i define the class 
-      .selectAll("path")
-        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) // Bind TopoJSON data elements - this has to be basically the name of the file under the objects in the json 
-      .enter().append("path")
-        .attr("d", path)
-        .style("fill", function(d) {
-          return color(affordableFreq[d.properties.ntacode]);
-        })
-        // .style("fill", "black")
-        .style("stroke", "white")
-        .style("stroke-width", "0.1")
+      .attr("class", "nta") //i define the class 
+    .selectAll("path")
+      .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
+    .enter().append("path")
+      .attr("d", path)
+      .style("fill", "lightsalmon")
+      .style("fill-opacity", "0.5")
+    svg.append("text")
+    .attr("class", "mapTitle")
+    .attr("x", 20)
+    .attr("y", function(d){ return height / 10;}) 
+    .text("New York City")
 
+  //adding outline for borough boundaries  
+   svg.append("path")
+    .datum(topojson.mesh(nyc, nyc.objects.nybb))
+    .attr("class", "boroughs") 
+    .attr("d", path)
+    .style("stroke", "grey")
+    .style("stroke-width", "1")
+    .style("stroke-opacity", "1")
+  //adding borough titles 
+   svg.append("text")
+    .attr("class", "boroughName")
+    .attr("x", width/3 - 10)
+    .attr("y", function(d){ return height * 60 /180;}) 
+    .text("Manhattan")
+   svg.append("text")
+    .attr("class", "boroughName")
+    .attr("x", width/2 - 40)
+    .attr("y", function(d){ return height * 90 / 150;}) 
+    .text("Brooklyn")
+   svg.append("text")
+    .attr("class", "boroughName")
+    .attr("x", width/2 + 80)
+    .attr("y", function(d){ return height * 70 / 150;})
+    .text("Queens") 
+   svg.append("text")
+    .attr("class", "boroughName")
+    .attr("x", width/2 + 30)
+    .attr("y", function(d){ return height * 60 / 300;}) 
+    .text("The Bronx")
+   svg.append("text")
+    .attr("class", "boroughName")
+    .attr("x", width/7 + 5)
+    .attr("y", function(d){ return height * 210 / 300;}) 
+    .text("Staten Island")
+    
 // Add mouse events
     d3.select("#affordablefrequency").on("click", affordablefrequency);
       function affordablefrequency(d){
@@ -392,11 +435,6 @@
         .style("stroke-width", "0.2")
       }
       
-  //adding outline for borough boundaries 
-   svg.append("path")
-    .datum(topojson.mesh(nyc, nyc.objects.nybb))
-    .attr("class", "boroughs") 
-    .attr("d", path)
 };
 
   //appends chart source text 
@@ -408,34 +446,34 @@
     .text("Department of City Planning (2017), Inside AirBnB (2017)")
     .attr("class", "sourceText");
 
-  //drawing legend for chloropleth
-   var legend = svg.selectAll("g.legend")
-    .data(legend_color_domain)
-    .enter().append("g")
-    .attr("class", "legend");
+  // //drawing legend for chloropleth
+  //  var legend = svg.selectAll("g.legend")
+  //   .data(legend_color_domain)
+  //   .enter().append("g")
+  //   .attr("class", "legend");
 
-    var legendRectWidth = 20, legendRectHeight = 20; //width and height
+  //   var legendRectWidth = 20, legendRectHeight = 20; //width and height
 
-    legend.append("rect") //legend boxes
-    .attr("x", 20) //horizontal location
-    .attr("y", function(d, i){ return height - (i*legendRectHeight) - 2*legendRectHeight;}) //vertical location
-    .attr("width", legendRectWidth)
-    .attr("height", legendRectHeight)
-    .style("fill", function(d, i) { return color(d); })
-    .style("opacity", 0.8);
+  //   legend.append("rect") //legend boxes
+  //   .attr("x", 20) //horizontal location
+  //   .attr("y", function(d, i){ return height - (i*legendRectHeight) - 2*legendRectHeight;}) //vertical location
+  //   .attr("width", legendRectWidth)
+  //   .attr("height", legendRectHeight)
+  //   .style("fill", function(d, i) { return color(d); })
+  //   .style("opacity", 0.8);
     
-    var legend_items = ["Low", "", "", "", "", "", "", "", "High"];
-    legend.append("text") //legend text
-    .attr("class", "legendText") //gives it class so can edit in css
-    .attr("x", 50) //positioning
-    .attr("y", function(d, i){ return height - (i*legendRectHeight) - legendRectHeight - 4;}) //multiplying by i puts all the boxes
-    .text(function(d, i){ return legend_labels[i]; });
+  //   var legend_items = ["Low", "", "", "", "", "", "", "", "High"];
+  //   legend.append("text") //legend text
+  //   .attr("class", "legendText") //gives it class so can edit in css
+  //   .attr("x", 50) //positioning
+  //   .attr("y", function(d, i){ return height - (i*legendRectHeight) - legendRectHeight - 4;}) //multiplying by i puts all the boxes
+  //   .text(function(d, i){ return legend_labels[i]; });
 
-    legend.append("text")
-    .attr("class", "legendHeading")
-    .attr("x", 20)
-    .attr("y", function(d){ return height - 6 - legendRectHeight * 6;}) //multiplying and subtractingincreases the height vertically
-    .text("Relative Frequency")
+  //   legend.append("text")
+  //   .attr("class", "legendHeading")
+  //   .attr("x", 20)
+  //   .attr("y", function(d){ return height - 6 - legendRectHeight * 6;}) //multiplying and subtractingincreases the height vertically
+  //   .text("Relative Frequency")
 
   </script>   
 
