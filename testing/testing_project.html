@@ -110,25 +110,48 @@
   var legend_color_domain = [5, 10, 15, 20, 25] //LOWER LIMIT
   var legend_labels = ["1000", "5000", "30000", "60000", "80000"]  
 
-  //setting colors - should it ramp to black or white or how to do the actual colors it is ramping? 
+  //setting colors - should it ramp from white or f4f4f8 to the actual color or how to do the actual colors it is ramping? 
   var color = d3.scaleLinear()
     .domain([0.000152036, 7.142857143])
-    .range(["#f4f4f8","#000000"])
-  var colorPrice = d3.scaleLinear()
-    .domain([0.000152036, 7.142857143])
-    .range(["#f4f4f8","#000000"])
-  var colorInterior = d3.scaleLinear()
-    .domain([0.000152036, 7.142857143])
-    .range(["#f4f4f8","#000000"])
-  var colorIdentity = d3.scaleLinear()
-    .domain([0.000152036, 7.142857143])
-    .range(["#f4f4f8","#000000"])
-  var colorAmenities = d3.scaleLinear()
-    .domain([0.000152036, 7.142857143])
-    .range(["#f4f4f8","#000000"])
-  var colorPace = d3.scaleLinear()
-    .domain([0.000152036, 7.142857143])
-    .range(["#f4f4f8","#000000"])
+    .range(["#f4f4f8","#f4f4f8"])
+  //REVIEWS 
+  var colorPriceAffordable = d3.scaleLinear()
+    .domain([0.003748688, 0.407608696])
+    .range(["#f4f4f8","#dbdbdd"])
+  var colorPriceLuxury = d3.scaleLinear()
+    .domain([0.001279198, 0.201612903])
+    .range(["#f4f4f8","#dbdbdd"])
+
+  var colorInteriorCozy = d3.scaleLinear()
+    .domain([0.055788006, 1.52284264])
+    .range(["#f4f4f8","#a38082"])
+  var colorInteriorModern = d3.scaleLinear()
+    .domain([0.009391876, 0.337837838])
+    .range(["#f4f4f8","#a38082"])
+
+  var colorIdentityDiverse = d3.scaleLinear()
+    .domain([0.000860178, 0.200722601])
+    .range(["#f4f4f8","#4f3536"])
+  var colorIdentityHipster = d3.scaleLinear()
+    .domain([0.000309425, 0.10384216])
+    .range(["#f4f4f8","#4f3536"])
+  var colorIdentityHistoric = d3.scaleLinear()
+    .domain([0.000536104, 0.063417728])
+    .range(["#f4f4f8","#4f3536"])
+
+  var colorAmenitiesBar = d3.scaleLinear()
+    .domain([0.019908421, 5.555555556])
+    .range(["#f4f4f8","#1a0105"])
+  var colorAmenitiesPark = d3.scaleLinear()
+    .domain([0.036737693, 2.030456853])
+    .range(["#f4f4f8","#1a0105"])
+
+  var colorPaceQuiet = d3.scaleLinear()
+    .domain([0.130089762, 1.411290323])
+    .range(["#f4f4f8","#ff4d4d"])
+  var colorPaceBusy = d3.scaleLinear()
+    .domain([0.005167959, 0.21905805])
+    .range(["#f4f4f8","#ff4d4d"])
 
   d3.queue()  
       .defer(d3.json, "boroughs_NTA.json")
@@ -168,7 +191,8 @@
     var quietListFreq = {};
  
     frequency.forEach(function(d) {
-      affordableFreq[d.ntacode] = +d.affordablefreq; //these are for reviews
+      //these are for reviews
+      affordableFreq[d.ntacode] = +d.affordablefreq; 
       barFreq[d.ntacode] = +d.barfreq;
       busyFreq[d.ntacode] = +d.busyfreq;
       cozyFreq[d.ntacode] = +d.cozyfreq;
@@ -179,7 +203,8 @@
       modernFreq[d.ntacode] = +d.modernfreq;
       parkFreq[d.ntacode] = +d.parkfreq;
       quietFreq[d.ntacode] = +d.quietfreq;
-      affordableListFreq[d.ntacode] = +d.affordablelistfreq; //these are for listings
+      //these are for listings
+      affordableListFreq[d.ntacode] = +d.affordablelistfreq; 
       barListFreq[d.ntacode] = +d.barlistfreq;
       busyListFreq[d.ntacode] = +d.busylistfreq;
       cozyListFreq[d.ntacode] = +d.cozylistfreq;
@@ -217,43 +242,41 @@
       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
-          return color(affordableFreq[d.properties.ntacode]);
+          return colorPriceAffordable(affordableFreq[d.properties.ntacode]);
         })
         .style("stroke", "white")
         .style("stroke-width", "0.1")
       }
-
-      d3.select("#barfrequency").on("click", barfrequency);
-      function barfrequency(d){
+    d3.select("#luxuryfrequency").on("click", luxuryfrequency);
+      function luxuryfrequency(d){
       svg.append("g")
-        .attr("class", "nta") //i define the class 
-      .selectAll("path")
-        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) // Bind TopoJSON data elements - this has to be basically the name of the file under the objects in the json 
-      .enter().append("path")
-        .attr("d", path)
-        .style("fill", function(d) {
-          return color(barFreq[d.properties.ntacode]);
-        })
-        .style("stroke", "white")
-        .style("stroke-width", "0.1")
-      }
-
-      d3.select("#busyfrequency").on("click", busyfrequency);
-      function busyfrequency(d){
-      svg.append("g")
-        .attr("class", "nta")  
+        .attr("class", "nta") 
       .selectAll("path")
         .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
-          return color(busyFreq[d.properties.ntacode]);
+          return colorPriceLuxury(luxuryFreq[d.properties.ntacode]);
         })
         .style("stroke", "white")
         .style("stroke-width", "0.1")
       }
 
-      d3.select("#cozyfrequency").on("click", cozyfrequency);
+    d3.select("#modernfrequency").on("click", modernfrequency);
+      function modernfrequency(d){
+      svg.append("g")
+        .attr("class", "nta") 
+      .selectAll("path")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
+      .enter().append("path")
+        .attr("d", path)
+        .style("fill", function(d) {
+          return colorInteriorModern(modernFreq[d.properties.ntacode]);
+        })
+        .style("stroke", "white")
+        .style("stroke-width", "0.1")
+      }
+    d3.select("#cozyfrequency").on("click", cozyfrequency);
       function cozyfrequency(d){
       svg.append("g")
         .attr("class", "nta") //i define the class 
@@ -262,7 +285,7 @@
       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
-          return color(cozyFreq[d.properties.ntacode]);
+          return colorInteriorCozy(cozyFreq[d.properties.ntacode]);
         })
         .style("stroke", "white")
         .style("stroke-width", "0.1")
@@ -277,13 +300,12 @@
       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
-          return color(diverseFreq[d.properties.ntacode]);
+          return colorIdentityDiverse(diverseFreq[d.properties.ntacode]);
         })
         .style("stroke", "white")
         .style("stroke-width", "0.1")
       }
-
-      d3.select("#hipsterfrequency").on("click", hipsterfrequency);
+    d3.select("#hipsterfrequency").on("click", hipsterfrequency);
       function hipsterfrequency(d){
       svg.append("g")
         .attr("class", "nta") 
@@ -292,13 +314,12 @@
       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
-          return color(hipsterFreq[d.properties.ntacode]);
+          return colorIdentityHipster(hipsterFreq[d.properties.ntacode]);
         })
         .style("stroke", "white")
         .style("stroke-width", "0.1")
       }
-
-      d3.select("#historicfrequency").on("click", historicfrequency);
+    d3.select("#historicfrequency").on("click", historicfrequency);
       function historicfrequency(d){
       svg.append("g")
         .attr("class", "nta") 
@@ -307,43 +328,27 @@
       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
-          return color(historicFreq[d.properties.ntacode]);
+          return colorIdentityHistoric(historicFreq[d.properties.ntacode]);
         })
         .style("stroke", "white")
         .style("stroke-width", "0.1")
       }
-
-      d3.select("#luxuryfrequency").on("click", luxuryfrequency);
-      function luxuryfrequency(d){
+    
+    d3.select("#barfrequency").on("click", barfrequency);
+      function barfrequency(d){
       svg.append("g")
-        .attr("class", "nta") 
+        .attr("class", "nta") //i define the class 
       .selectAll("path")
-        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) // Bind TopoJSON data elements - this has to be basically the name of the file under the objects in the json 
       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
-          return color(luxuryFreq[d.properties.ntacode]);
+          return colorAmenitiesBar(barFreq[d.properties.ntacode]);
         })
         .style("stroke", "white")
         .style("stroke-width", "0.1")
       }
-
-      d3.select("#modernfrequency").on("click", modernfrequency);
-      function modernfrequency(d){
-      svg.append("g")
-        .attr("class", "nta") 
-      .selectAll("path")
-        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
-      .enter().append("path")
-        .attr("d", path)
-        .style("fill", function(d) {
-          return color(modernFreq[d.properties.ntacode]);
-        })
-        .style("stroke", "white")
-        .style("stroke-width", "0.1")
-      }
-
-      d3.select("#parkfrequency").on("click", parkfrequency);
+    d3.select("#parkfrequency").on("click", parkfrequency);
       function parkfrequency(d){
       svg.append("g")
         .attr("class", "nta") 
@@ -352,13 +357,13 @@
       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
-          return color(parkFreq[d.properties.ntacode]);
+          return colorAmenitiesPark(parkFreq[d.properties.ntacode]);
         })
         .style("stroke", "white")
         .style("stroke-width", "0.1")
       }
 
-      d3.select("#quietfrequency").on("click", quietfrequency);
+    d3.select("#quietfrequency").on("click", quietfrequency);
       function quietfrequency(d){
       svg.append("g")
         .attr("class", "nta") 
@@ -367,12 +372,26 @@
       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
-          return color(quietFreq[d.properties.ntacode]);
+          return colorPaceQuiet(quietFreq[d.properties.ntacode]);
         })
         .style("stroke", "white")
         .style("stroke-width", "0.1")
       }
-
+    d3.select("#busyfrequency").on("click", busyfrequency);
+      function busyfrequency(d){
+      svg.append("g")
+        .attr("class", "nta")  
+      .selectAll("path")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
+      .enter().append("path")
+        .attr("d", path)
+        .style("fill", function(d) {
+          return colorPaceBusy(busyFreq[d.properties.ntacode]);
+        })
+        .style("stroke", "white")
+        .style("stroke-width", "0.1")
+      }
+      
   //adding outline for borough boundaries 
    svg.append("path")
     .datum(topojson.mesh(nyc, nyc.objects.nybb))
