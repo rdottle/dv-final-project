@@ -235,5 +235,8 @@ nta_joinlist <- nta_joinlist %>% select(ntacode, county_fips, ntaname, hipsterli
 nta_joinlist[is.na(nta_joinlist)] <- 0
 
 
-write.csv(nta_joinlist, "nta_joinlist.csv")
+write.csv(nta_rev_list, "nta_updated_reviews_listings.csv")
 getwd()
+
+
+nta_rev_list <- left_join(nta_join_rel2, nta_joinlist, by = "ntacode")
