@@ -12,16 +12,9 @@
   <body>
     <!-- page elements go here -->
     <h1> map headline goes here </h1>
-      <div id="option">
-    <input name="updateButton" 
+  <input name="updateButton" id="reset"
                  type="button" 
-                value="A" 
-                onclick="updateDataFIPS()">
-</div>
-  <input name="updateButton" 
-                 type="button" 
-                value="B" 
-                onclick="updateDataYear()">
+                value="B">
 </div>
   <input name="updateButton" 
                  type="button" 
@@ -29,20 +22,21 @@
                 onclick="updateDataPop()">
 </div>
 
-    <div class="chloroplethMap"> </div>
+  <div class="chloroplethMap"> </div>
     <div class="source">
       <span class="sourceTitle"></span>
       <span class="sourceText"></span>
     </div>
 
   </body>
-  
+<!--  links -->
   <script src="http://d3js.org/d3.v4.min.js"></script>
   <script src="http://d3js.org/d3-queue.v3.min.js"></script>  
   <script src="http://d3js.org/topojson.v1.min.js"></script>    
   <link rel="stylesheet" type="text/css" href="testing_NTA.css">
 
   <script type="text/javascript">
+//map basics
   //Creates tooltip and makes it invisiblae
   var div = d3.select(".chloroplethMap").append("div")
     .attr("class", "tooltip")
@@ -76,7 +70,7 @@
 
 
   d3.queue()  
-      .defer(d3.json, "NY_NTA.json")
+      .defer(d3.json, "boroughs_NTA.json")
       .defer(d3.csv, "nta_review_relative_word_freqs.csv") 
       .await(ready); //Run 'ready' when JSONs are loaded
 
@@ -89,10 +83,12 @@
     console.log(frequency)
 
     var affordableFreq = {};
+    var barFreq = {};
  
     frequency.forEach(function(d) {
-      affordableFreq[d.ntaname] = +d.affordable; 
-      console.log(affordableFreq)
+      affordableFreq[d.ntaname] = +d.affordable;
+      barFreq[d.ntaname] = +d.barfreq;
+      // console.log(affordableFreq)
     });
 
     //here we are seperating the features so we can style them through svg.selectAll(".newclasswearemaking")
@@ -109,13 +105,29 @@
         .style("stroke", "white")
         .style("stroke-width", "0.1")
 
+// Add mouse events
+   // .on('click', mouseclick);
+   //    function mouseclick(d){
+    d3.select("#reset").on("click", mouseclick);
+      function mouseclick(d){
+svg.append("g")
+        .attr("class", "nta") //i define the class 
+      .selectAll("path")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) // Bind TopoJSON data elements - this has to be basically the name of the file under the objects in the json 
+      .enter().append("path")
+        .attr("d", path)
+        .style("fill", function(d) {
+          return color(barFreq[d.properties.ntaname]);
+        })
+        .style("stroke", "white")
+        .style("stroke-width", "0.1")
+      }
   //adding outline for borough boundaries 
    svg.append("path")
-    .datum(topojson.mesh(nyc, nyc.objects.NY_NTA))
+    .datum(topojson.mesh(nyc, nyc.objects.nybb))
     .attr("class", "boroughs") 
     .attr("d", path)
 };
-
 
   //appends chart source text 
    d3.select(".sourceTitle")
