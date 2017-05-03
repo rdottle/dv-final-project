@@ -110,11 +110,25 @@
   var legend_color_domain = [5, 10, 15, 20, 25] //LOWER LIMIT
   var legend_labels = ["1000", "5000", "30000", "60000", "80000"]  
 
-  //setting the color range using a color function
-  var color= d3.scaleThreshold()
-      .domain([0.001, 0.005, 0.1, 0.2, 25]) //this is the input break values 
-      .range(["#f2f0f7", "#dadaeb", "#bcbddc", "#9e9ac8", "#756bb1", "#54278f"]);
-
+  //setting colors - should it ramp to black or white or how to do the actual colors it is ramping? 
+  var color = d3.scaleLinear()
+    .domain([0.000152036, 7.142857143])
+    .range(["#f4f4f8","#000000"])
+  var colorPrice = d3.scaleLinear()
+    .domain([0.000152036, 7.142857143])
+    .range(["#f4f4f8","#000000"])
+  var colorInterior = d3.scaleLinear()
+    .domain([0.000152036, 7.142857143])
+    .range(["#f4f4f8","#000000"])
+  var colorIdentity = d3.scaleLinear()
+    .domain([0.000152036, 7.142857143])
+    .range(["#f4f4f8","#000000"])
+  var colorAmenities = d3.scaleLinear()
+    .domain([0.000152036, 7.142857143])
+    .range(["#f4f4f8","#000000"])
+  var colorPace = d3.scaleLinear()
+    .domain([0.000152036, 7.142857143])
+    .range(["#f4f4f8","#000000"])
 
   d3.queue()  
       .defer(d3.json, "boroughs_NTA.json")
@@ -127,6 +141,7 @@
     if (error) throw error;
     console.log(nyc)
     console.log(frequency)
+
     //reviews
     var affordableFreq = {};
     var barFreq = {};
