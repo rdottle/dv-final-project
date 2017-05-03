@@ -118,17 +118,16 @@
 
   d3.queue()  
       .defer(d3.json, "boroughs_NTA.json")
-      .defer(d3.csv, "nta_review_relative_word_freqs.csv") 
+      .defer(d3.csv, "nta_updated_reviews_listings.csv") 
       .await(ready); //Run 'ready' when JSONs are loaded
 
 //FREQS: affordable, barfreq, busyfreq, cozyfreq, diversefre, hipsterfre, historicfr, luxuryfreq, modernfreq, parkfreq, quietfreq
-//county_fip, ntacode, ntaname
  //BASIC 
   function ready(error, nyc, frequency) { //error, var1, var2
     if (error) throw error;
     console.log(nyc)
     console.log(frequency)
-
+    //reviews
     var affordableFreq = {};
     var barFreq = {};
     var busyFreq = {};
@@ -140,19 +139,42 @@
     var modernFreq = {};
     var parkFreq = {};
     var quietFreq = {};
+    //listings
+    var affordableListFreq = {};
+    var barListFreq = {};
+    var busyListFreq = {};
+    var cozyListFreq = {};
+    var diverseListFreq = {};
+    var hipsterListFreq = {};
+    var historicListFreq = {};
+    var luxuryListFreq = {};
+    var modernListFreq = {};
+    var parkListFreq = {};
+    var quietListFreq = {};
  
     frequency.forEach(function(d) {
-      affordableFreq[d.ntaname] = +d.affordable;
-      barFreq[d.ntaname] = +d.barfreq;
-      busyFreq[d.ntaname] = +d.busyfreq;
-      cozyFreq[d.ntaname] = +d.cozyfreq;
-      diverseFreq[d.ntaname] = +d.diversefre;
-      hipsterFreq[d.ntaname] = +d.hipsterfre;
-      historicFreq[d.ntaname] = +d.historicfr;
-      luxuryFreq[d.ntaname] = +d.luxuryfreq;
-      modernFreq[d.ntaname] = +d.modernfreq;
-      parkFreq[d.ntaname] = +d.parkfreq;
-      quietFreq[d.ntaname] = +d.quietfreq;
+      affordableFreq[d.ntacode] = +d.affordablefreq; //these are for reviews
+      barFreq[d.ntacode] = +d.barfreq;
+      busyFreq[d.ntacode] = +d.busyfreq;
+      cozyFreq[d.ntacode] = +d.cozyfreq;
+      diverseFreq[d.ntacode] = +d.diversefreq;
+      hipsterFreq[d.ntacode] = +d.hipsterfreq;
+      historicFreq[d.ntacode] = +d.historicfreq;
+      luxuryFreq[d.ntacode] = +d.luxuryfreq;
+      modernFreq[d.ntacode] = +d.modernfreq;
+      parkFreq[d.ntacode] = +d.parkfreq;
+      quietFreq[d.ntacode] = +d.quietfreq;
+      affordableListFreq[d.ntacode] = +d.affordablelistfreq; //these are for listings
+      barListFreq[d.ntacode] = +d.barlistfreq;
+      busyListFreq[d.ntacode] = +d.busylistfreq;
+      cozyListFreq[d.ntacode] = +d.cozylistfreq;
+      diverseListFreq[d.ntacode] = +d.diverselistfreq;
+      hipsterListFreq[d.ntacode] = +d.hipsterlistfreq;
+      historicListFreq[d.ntacode] = +d.historiclistfreq;
+      luxuryListFreq[d.ntacode] = +d.luxurylistfreq;
+      modernListFreq[d.ntacode] = +d.modernlistfreq;
+      parkListFreq[d.ntacode] = +d.parklistfreq;
+      quietListFreq[d.ntacode] = +d.quietlistfreq;
       // console.log(affordableFreq)
     });
 
@@ -164,7 +186,7 @@
       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
-          return color(affordableFreq[d.properties.ntaname]);
+          return color(affordableFreq[d.properties.ntacode]);
         })
         // .style("fill", "black")
         .style("stroke", "white")
@@ -180,7 +202,7 @@
       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
-          return color(affordableFreq[d.properties.ntaname]);
+          return color(affordableFreq[d.properties.ntacode]);
         })
         .style("stroke", "white")
         .style("stroke-width", "0.1")
@@ -195,7 +217,7 @@
       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
-          return color(barFreq[d.properties.ntaname]);
+          return color(barFreq[d.properties.ntacode]);
         })
         .style("stroke", "white")
         .style("stroke-width", "0.1")
@@ -210,7 +232,7 @@
       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
-          return color(busyFreq[d.properties.ntaname]);
+          return color(busyFreq[d.properties.ntacode]);
         })
         .style("stroke", "white")
         .style("stroke-width", "0.1")
@@ -225,7 +247,7 @@
       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
-          return color(cozyFreq[d.properties.ntaname]);
+          return color(cozyFreq[d.properties.ntacode]);
         })
         .style("stroke", "white")
         .style("stroke-width", "0.1")
@@ -240,7 +262,7 @@
       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
-          return color(diverseFreq[d.properties.ntaname]);
+          return color(diverseFreq[d.properties.ntacode]);
         })
         .style("stroke", "white")
         .style("stroke-width", "0.1")
@@ -255,7 +277,7 @@
       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
-          return color(hipsterFreq[d.properties.ntaname]);
+          return color(hipsterFreq[d.properties.ntacode]);
         })
         .style("stroke", "white")
         .style("stroke-width", "0.1")
@@ -270,7 +292,7 @@
       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
-          return color(historicFreq[d.properties.ntaname]);
+          return color(historicFreq[d.properties.ntacode]);
         })
         .style("stroke", "white")
         .style("stroke-width", "0.1")
@@ -285,7 +307,7 @@
       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
-          return color(luxuryFreq[d.properties.ntaname]);
+          return color(luxuryFreq[d.properties.ntacode]);
         })
         .style("stroke", "white")
         .style("stroke-width", "0.1")
@@ -300,7 +322,7 @@
       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
-          return color(modernFreq[d.properties.ntaname]);
+          return color(modernFreq[d.properties.ntacode]);
         })
         .style("stroke", "white")
         .style("stroke-width", "0.1")
@@ -315,7 +337,7 @@
       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
-          return color(parkFreq[d.properties.ntaname]);
+          return color(parkFreq[d.properties.ntacode]);
         })
         .style("stroke", "white")
         .style("stroke-width", "0.1")
@@ -330,7 +352,7 @@
       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
-          return color(quietFreq[d.properties.ntaname]);
+          return color(quietFreq[d.properties.ntacode]);
         })
         .style("stroke", "white")
         .style("stroke-width", "0.1")
@@ -367,7 +389,8 @@
     .attr("height", legendRectHeight)
     .style("fill", function(d, i) { return color(d); })
     .style("opacity", 0.8);
-
+    
+    var legend_items = ["Low", "", "", "", "", "", "", "", "High"];
     legend.append("text") //legend text
     .attr("class", "legendText") //gives it class so can edit in css
     .attr("x", 50) //positioning
