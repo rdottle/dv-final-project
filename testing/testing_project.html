@@ -71,13 +71,13 @@
 
   //setting the color range using a color function
   var color= d3.scaleThreshold()
-      .domain([5, 10, 15, 20, 25]) //this is the input break values 
+      .domain([0.001, 0.005, 0.1, 0.2, 25]) //this is the input break values 
       .range(["#f2f0f7", "#dadaeb", "#bcbddc", "#9e9ac8", "#756bb1", "#54278f"]);
 
 
   d3.queue()  
-      .defer(d3.json, "nybb.json")
-      .defer(d3.json, "nta_review_relative_word_freqs.json") 
+      .defer(d3.json, "NY_NTA.json")
+      .defer(d3.csv, "nta_review_relative_word_freqs.csv") 
       .await(ready); //Run 'ready' when JSONs are loaded
 
 //FREQS: affordable, barfreq, busyfreq, cozyfreq, diversefre, hipsterfre, historicfr, luxuryfreq, modernfreq, parkfreq, quietfreq
@@ -87,12 +87,11 @@
     if (error) throw error;
     console.log(nyc)
     console.log(frequency)
-    // console.log(frequency.value)
 
     var affordableFreq = {};
  
-    Array.prototype.forEach.call(frequency, function(d) {
-      affordableFreq[d.ntaname] = +d.properties.affordable; 
+    frequency.forEach(function(d) {
+      affordableFreq[d.ntaname] = +d.affordable; 
       console.log(affordableFreq)
     });
 
@@ -100,19 +99,19 @@
     svg.append("g")
         .attr("class", "nta") //i define the class 
       .selectAll("path")
-        .data(topojson.feature(frequency, frequency.object).features) // Bind TopoJSON data elements - this has to be basically the name of the file under the objects in the json 
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) // Bind TopoJSON data elements - this has to be basically the name of the file under the objects in the json 
       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
           return color(affordableFreq[d.properties.ntaname]);
         })
-        .style("fill", "black")
+        // .style("fill", "black")
         .style("stroke", "white")
         .style("stroke-width", "0.1")
 
   //adding outline for borough boundaries 
    svg.append("path")
-    .datum(topojson.mesh(nyc, nyc.objects.nybb))
+    .datum(topojson.mesh(nyc, nyc.objects.NY_NTA))
     .attr("class", "boroughs") 
     .attr("d", path)
 };
