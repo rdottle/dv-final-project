@@ -281,7 +281,7 @@ function ready(error, nyc, frequency) { //error, var1, var2
     d3.select("#affordablefrequency").on("click", affordablefrequency);
       function affordablefrequency(d){
         //this changes the styling of the selected button 
-        d3.select(".updateButton").classed("updateButtonSelected", false);
+        d3.selectAll(".updateButton").classed("updateButtonSelected", false);
         d3.select(this).classed("updateButtonSelected", true); //classed adds new class here
         //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
@@ -290,9 +290,9 @@ function ready(error, nyc, frequency) { //error, var1, var2
         d3.select(".legend").remove();
       svgReviews.append("g") //appending it to the left map 
         .attr("class", "nta") 
-      .selectAll("path")
+       .selectAll("path")
         .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
-      .enter().append("path")
+       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
           return colorPriceAffordable(affordableFreq[d.properties.ntacode]);
@@ -384,8 +384,8 @@ function ready(error, nyc, frequency) { //error, var1, var2
     d3.select("#luxuryfrequency").on("click", luxuryfrequency);
       function luxuryfrequency(d){
         //this changes the styling of the selected button 
-        d3.select(".updateButton").classed("updateButtonSelected", false);
-        d3.select(this).classed("updateButtonSelected", true);
+        d3.selectAll(".updateButton").classed("updateButtonSelected", false);
+        d3.select(this).classed("updateButtonSelected", true); 
         //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
         d3.selectAll(".boroughs").remove();
@@ -393,16 +393,16 @@ function ready(error, nyc, frequency) { //error, var1, var2
         d3.select(".legend").remove();
       svgReviews.append("g")
         .attr("class", "nta") 
-      .selectAll("path")
+       .selectAll("path")
         .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
-      .enter().append("path")
+       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
           return colorPriceLuxury(luxuryFreq[d.properties.ntacode]);
         })
         .style("stroke", "lightgrey")
         .style("stroke-width", "0.2")
-        //drawing reviews and listings headings 
+       //drawing reviews and listings headings 
         d3.select("svg.reviewsMap")   
           svgReviews.append("text")
           .attr("class", "mapTitle")
@@ -488,7 +488,7 @@ function ready(error, nyc, frequency) { //error, var1, var2
     d3.select("#modernfrequency").on("click", modernfrequency);
       function modernfrequency(d){
         //this changes the styling of the selected button 
-        d3.select(".updateButton").classed("updateButtonSelected", false);
+        d3.selectAll(".updateButton").classed("updateButtonSelected", false);
         d3.select(this).classed("updateButtonSelected", true);
         //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
@@ -497,9 +497,9 @@ function ready(error, nyc, frequency) { //error, var1, var2
         d3.select(".legend").remove();
       svgReviews.append("g")
         .attr("class", "nta") 
-      .selectAll("path")
+       .selectAll("path")
         .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
-      .enter().append("path")
+       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
           return colorInteriorModern(modernFreq[d.properties.ntacode]);
@@ -591,7 +591,7 @@ function ready(error, nyc, frequency) { //error, var1, var2
     d3.select("#cozyfrequency").on("click", cozyfrequency);
       function cozyfrequency(d){
         //this changes the styling of the selected button 
-        d3.select(".updateButton").classed("updateButtonSelected", false);
+        d3.selectAll(".updateButton").classed("updateButtonSelected", false);
         d3.select(this).classed("updateButtonSelected", true);
         //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
@@ -600,9 +600,9 @@ function ready(error, nyc, frequency) { //error, var1, var2
         d3.select(".legend").remove();
       svgReviews.append("g")
         .attr("class", "nta") //i define the class 
-      .selectAll("path")
+       .selectAll("path")
         .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
-      .enter().append("path")
+       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
           return colorInteriorCozy(cozyFreq[d.properties.ntacode]);
@@ -695,7 +695,7 @@ function ready(error, nyc, frequency) { //error, var1, var2
     d3.select("#diversefrequency").on("click", diversefrequency);
       function diversefrequency(d){
         //this changes the styling of the selected button 
-        d3.select(".updateButton").classed("updateButtonSelected", false);
+        d3.selectAll(".updateButton").classed("updateButtonSelected", false);
         d3.select(this).classed("updateButtonSelected", true);
         //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
@@ -704,9 +704,9 @@ function ready(error, nyc, frequency) { //error, var1, var2
         d3.select(".legend").remove();
       svgReviews.append("g")
         .attr("class", "nta") 
-      .selectAll("path")
+       .selectAll("path")
         .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
-      .enter().append("path")
+       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
           return colorIdentityDiverse(diverseFreq[d.properties.ntacode]);
@@ -804,7 +804,7 @@ function ready(error, nyc, frequency) { //error, var1, var2
     d3.select("#hipsterfrequency").on("click", hipsterfrequency);
       function hipsterfrequency(d){
         //this changes the styling of the selected button 
-        d3.select(".updateButton").classed("updateButtonSelected", false);
+        d3.selectAll(".updateButton").classed("updateButtonSelected", false);
         d3.select(this).classed("updateButtonSelected", true);
         //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
@@ -813,9 +813,9 @@ function ready(error, nyc, frequency) { //error, var1, var2
         d3.select(".legend").remove();
       svgReviews.append("g")
         .attr("class", "nta") 
-      .selectAll("path")
+       .selectAll("path")
         .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
-      .enter().append("path")
+       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
           return colorIdentityHipster(hipsterFreq[d.properties.ntacode]);
@@ -913,7 +913,7 @@ function ready(error, nyc, frequency) { //error, var1, var2
     d3.select("#historicfrequency").on("click", historicfrequency);
       function historicfrequency(d){
         //this changes the styling of the selected button 
-        d3.select(".updateButton").classed("updateButtonSelected", false);
+        d3.selectAll(".updateButton").classed("updateButtonSelected", false);
         d3.select(this).classed("updateButtonSelected", true);
         //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
@@ -922,9 +922,9 @@ function ready(error, nyc, frequency) { //error, var1, var2
         d3.select(".legend").remove();
       svgReviews.append("g")
         .attr("class", "nta") 
-      .selectAll("path")
+       .selectAll("path")
         .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
-      .enter().append("path")
+       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
           return colorIdentityHistoric(historicFreq[d.properties.ntacode]);
@@ -1023,7 +1023,7 @@ function ready(error, nyc, frequency) { //error, var1, var2
     d3.select("#barfrequency").on("click", barfrequency);
       function barfrequency(d){
         //this changes the styling of the selected button 
-        d3.select(".updateButton").classed("updateButtonSelected", false);
+        d3.selectAll(".updateButton").classed("updateButtonSelected", false);
         d3.select(this).classed("updateButtonSelected", true);
         //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
@@ -1032,9 +1032,9 @@ function ready(error, nyc, frequency) { //error, var1, var2
         d3.select(".legend").remove();
       svgReviews.append("g")
         .attr("class", "nta") //i define the class 
-      .selectAll("path")
+       .selectAll("path")
         .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) // Bind TopoJSON data elements - this has to be basically the name of the file under the objects in the json 
-      .enter().append("path")
+       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
           return colorAmenitiesBar(barFreq[d.properties.ntacode]);
@@ -1126,7 +1126,7 @@ function ready(error, nyc, frequency) { //error, var1, var2
     d3.select("#parkfrequency").on("click", parkfrequency);
       function parkfrequency(d){
         //this changes the styling of the selected button 
-        d3.select(".updateButton").classed("updateButtonSelected", false);
+        d3.selectAll(".updateButton").classed("updateButtonSelected", false);
         d3.select(this).classed("updateButtonSelected", true);
         //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
@@ -1135,9 +1135,9 @@ function ready(error, nyc, frequency) { //error, var1, var2
         d3.select(".legend").remove();
       svgReviews.append("g")
         .attr("class", "nta") 
-      .selectAll("path")
+       .selectAll("path")
         .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
-      .enter().append("path")
+       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
           return colorAmenitiesPark(parkFreq[d.properties.ntacode]);
@@ -1230,7 +1230,7 @@ function ready(error, nyc, frequency) { //error, var1, var2
     d3.select("#quietfrequency").on("click", quietfrequency);
       function quietfrequency(d){
         //this changes the styling of the selected button 
-        d3.select(".updateButton").classed("updateButtonSelected", false);
+        d3.selectAll(".updateButton").classed("updateButtonSelected", false);
         d3.select(this).classed("updateButtonSelected", true);
         //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
@@ -1239,9 +1239,9 @@ function ready(error, nyc, frequency) { //error, var1, var2
         d3.select(".legend").remove();
       svgReviews.append("g")
         .attr("class", "nta") 
-      .selectAll("path")
+       .selectAll("path")
         .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
-      .enter().append("path")
+       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
           return colorPaceQuiet(quietFreq[d.properties.ntacode]);
@@ -1333,7 +1333,7 @@ function ready(error, nyc, frequency) { //error, var1, var2
     d3.select("#busyfrequency").on("click", busyfrequency);
       function busyfrequency(d){
         //this changes the styling of the selected button 
-        d3.select(".updateButton").classed("updateButtonSelected", false);
+        d3.selectAll(".updateButton").classed("updateButtonSelected", false);
         d3.select(this).classed("updateButtonSelected", true);
         //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
@@ -1342,9 +1342,9 @@ function ready(error, nyc, frequency) { //error, var1, var2
         d3.select(".legend").remove();
       svgReviews.append("g")
         .attr("class", "nta")  
-      .selectAll("path")
+       .selectAll("path")
         .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
-      .enter().append("path")
+       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
           return colorPaceBusy(busyFreq[d.properties.ntacode]);
