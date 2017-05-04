@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Introduction Visual</title>
+  <script src="http://d3js.org/d3.v4.min.js"></script>
+  <script src="http://d3js.org/d3-queue.v3.min.js"></script>  
+  <script src="http://d3js.org/topojson.v1.min.js"></script> 
+  <script src="//use.typekit.net/hgl4qxi.js"></script>
+  <script src = "../libraries/p5.js"></script>
+<script type = "text/javascript"> 
+
+var listings;
+var reviews;
+var textvalue;
+
+
+
+function setup(){
+  createCanvas(1024,175);
+   for (var r = 0; r < listings.getRowCount(); r++)
+      print(listings.getString(r, "summary"));
+ }
+
+
+
+
+
+function preload(){
+  listings = loadTable('../data/listings_comments_join.csv', 'csv', 'header');
+  reviews = loadTable('../data/review_comments_join.csv', 'csv', 'header');
+  console.log('done loading data');
+  img = loadImage("../pngicons/icons_all.png");
+  print(listings.getColumn("summary"));
+
+  }
+
+function draw(){
+  background(255);
+  image(img, 0, 0, 1024, 175);
+  text((floor(mouseX)), mouseX+20, mouseY+20);
+  text((floor(mouseY)), mouseX+30, mouseY+30);
+}
+
+
+
+// function mouseMoved() {
+//   text(floor(mouseX), mouseX+20, mouseY+20);
+//   text(floor(mouseY), mouseX+30, mouseY+30);
+//   fill(0, 102, 153, 51);
+
+  // prevent default
+//   return false;
+// }
+
+  </script>   
+
+  </head>
+
+  <style type="text/css">
+    /*CSS goes here */
+  </style>
+  
+  <body>
+    <!-- page elements go here -->
+<!--     <ul id="map">
+  <li><a class="bunny" href="#" title="Bunny"> <span><b>Review Data</b><br>
+    Cute and fuzzy, with long ears and a fluffy tail. this cuddly bunny 
+    makes a great pet.</span></a></li>
+
+  <li><a class="parrot" href="#" title="Parrot"><span><b>Parrot</b><br>
+    With a lifespan of up to 40 years, these bright, colorful birds 
+    are wonderful life-long pets. One of only a few birds
+    capable of learning to speak, parrots are intelilgent and
+    highly social animals.</span></a></li>
+    
+  <li><a class="snail" href="#" title="Snail"><span><b>Snail</b><br>
+    Snails are a wonderful addition to any aquarium-- just make
+    sure that its tank-mates aren't going to eat it! Snails say
+    "Meow."</span></a></li>
+    
+  <li><a class="dog" href="#" title="Dog"><span><b>Dog</b><br>
+    Man's best friend, a protector and commrade of humans for
+    centuries, dogs are faithful, loyal and loving companions.
+    </span></a></li>
+    
+  <li><a class="cat" href="#" title="Cat"><span><b>Cat</b><br>
+    Another popular pet, these felines were once viewd as a
+    sacred creature amont the ancient Egyptians. Independant,
+    sociable, and with a rumbling purr, cats make wonderful
+    pets.</span></a></li>
+</ul> -->
+    <h1> Viz </h1>
+
+  </body>
+
+</html>
