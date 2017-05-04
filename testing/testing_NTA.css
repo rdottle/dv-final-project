@@ -120,3 +120,13 @@ div.tooltip {
   color: #F0EEEE;
   font-weight: 200px;
 }
+
+.boroughName{
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.NYCtitle{
+  text-transform: uppercase;
+  font-size: 28px;
+}
