@@ -233,10 +233,27 @@ nta_joinlist <- nta_joinlist %>% select(ntacode, county_fips, ntaname, hipsterli
                                                cozylistfreq, modernlistfreq, affordablelistfreq, luxurylistfreq, busylistfreq, quietlistfreq, barlistfreq, parklistfreq, n)
 
 nta_joinlist[is.na(nta_joinlist)] <- 0
-
-
-write.csv(nta_rev_list, "nta_updated_reviews_listings.csv")
-getwd()
-
-
 nta_rev_list <- left_join(nta_join_rel2, nta_joinlist, by = "ntacode")
+
+
+
+
+
+
+
+ntajoin <- revslist_bynab %>% select(listing_id, X, Y, id, ntaname, ntacode, boro_name, county_fip)
+
+
+listings_comments$listing_id <- listings_comments$id
+list_comm <- left_join(listings_comments, ntajoin, by = "listing_id")
+
+list_comm_cleaned <- list_comm[!duplicated(list_comm), ]
+
+
+
+
+rev_comm <- left_join(review_comments, ntajoin, by = "listing_id")
+rev_comm <- rev_comm[!duplicated(rev_comm), ]
+
+write.csv(rev_comm, "review_comments_join.csv")
+write.csv(list_comm_cleaned, "listings_comments_join.csv")
