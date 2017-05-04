@@ -1,7 +1,6 @@
 
 body { 
-  font-family: 'Proxima Nova', sans-serif;
-  font-size: 14px;
+  font-family: 'Poppins', sans-serif !important; 
 }
 
 div.tooltip {
@@ -70,15 +69,15 @@ div.tooltip {
 
 /*buttons styling*/
 .updateButton {
-    background-color: #ffffff;
-    padding: 2%;
+    background-color: #ebebeb;
+    padding-top: 1%;
     border-radius: .75em;
     margin-bottom: 1%;
-    border: .2em solid black;
+    border: .1em solid grey;
     color: #000;
 }
 .updateButton:hover {
-  background: #356094;
+  background: #FAFAD2;
   opacity: 0.5;
   text-decoration: none;
 }
@@ -90,9 +89,34 @@ div.tooltip {
   border: solid 1px #203E5F;
 }*/
 .updateButtonSelected{
-  background-color: purple;
+  background-color: #FFDF00;
 }
 
 .sourceText{
 	font-size: 10px;
+}
+
+/*styling for side column*/
+.sidePanel .container .col-md-2 {
+    height: 100%;
+    padding: 2% 2% 2% 2%; /*top, right, bottom, left*/ 
+    margin: 0;
+    overflow: hidden;
+    background-color: rgba(0, 0, 4, 0.8);
+    position:fixed;
+    left: 0;
+    color: rgba(179,179,179,1); /*font color*/
+    font-weight: 800;
+}
+
+.sidePanel .container .col-md-2 h1{
+  font-size: 36px;
+  font-family: 'Dosis', sans-serif; 
+}
+
+.topHeading{
+  font-size: 16px;
+  text-transform: uppercase;
+  color: #F0EEEE;
+  font-weight: 200px;
 }
