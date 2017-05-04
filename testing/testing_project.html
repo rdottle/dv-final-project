@@ -119,15 +119,7 @@
       .attr("width", width)
       .attr("height", height)
 
-  //SETTING COLORS FOR THE LEGEND
-  var legend_color_domain = [5, 10, 15, 20, 25] //LOWER LIMIT
-  var legend_labels = ["1000", "5000", "30000", "60000", "80000"]  
-
 //setting colors for maps
-
-  var color = d3.scaleLinear()
-    .domain([0.000152036, 7.142857143])
-    .range(["#f4f4f8","#f4f4f8"])
   //REVIEWS 
   var colorPriceAffordable = d3.scaleLinear()
     .domain([0, 0.407608696])
@@ -278,18 +270,14 @@ function ready(error, nyc, frequency) { //error, var1, var2
     .style("stroke", "grey")
     .style("stroke-width", "1")
     .style("stroke-opacity", "1")
-  
-  //adding source
-   svgReviews.append("text")
-    .attr("class", "sourceText")
-    .attr("x", 10)
-    .attr("y", function(d){ return height/2 + 280;}) 
-    .text("SOURCE: Department of City Planning (2017), Inside AirBnB (2017)")
 
 // Add mouse events
     d3.select("#affordablefrequency").on("click", affordablefrequency);
       function affordablefrequency(d){
+        //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
+        d3.selectAll(".boroughs").remove();
+        d3.selectAll(".mapTitle").remove();
       svgReviews.append("g") //appending it to the left map 
         .attr("class", "nta") 
       .selectAll("path")
@@ -333,7 +321,10 @@ function ready(error, nyc, frequency) { //error, var1, var2
       }
     d3.select("#luxuryfrequency").on("click", luxuryfrequency);
       function luxuryfrequency(d){
+        //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
+        d3.selectAll(".boroughs").remove();
+        d3.selectAll(".mapTitle").remove();
       svgReviews.append("g")
         .attr("class", "nta") 
       .selectAll("path")
@@ -378,7 +369,10 @@ function ready(error, nyc, frequency) { //error, var1, var2
 
     d3.select("#modernfrequency").on("click", modernfrequency);
       function modernfrequency(d){
+        //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
+        d3.selectAll(".boroughs").remove();
+        d3.selectAll(".mapTitle").remove();
       svgReviews.append("g")
         .attr("class", "nta") 
       .selectAll("path")
@@ -422,7 +416,10 @@ function ready(error, nyc, frequency) { //error, var1, var2
       }
     d3.select("#cozyfrequency").on("click", cozyfrequency);
       function cozyfrequency(d){
+        //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
+        d3.selectAll(".boroughs").remove();
+        d3.selectAll(".mapTitle").remove();
       svgReviews.append("g")
         .attr("class", "nta") //i define the class 
       .selectAll("path")
@@ -467,7 +464,10 @@ function ready(error, nyc, frequency) { //error, var1, var2
 
       d3.select("#diversefrequency").on("click", diversefrequency);
       function diversefrequency(d){
+        //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
+        d3.selectAll(".boroughs").remove();
+        d3.selectAll(".mapTitle").remove();
       svgReviews.append("g")
         .attr("class", "nta") 
       .selectAll("path")
@@ -511,7 +511,10 @@ function ready(error, nyc, frequency) { //error, var1, var2
       }
     d3.select("#hipsterfrequency").on("click", hipsterfrequency);
       function hipsterfrequency(d){
+        //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
+        d3.selectAll(".boroughs").remove();
+        d3.selectAll(".mapTitle").remove();
       svgReviews.append("g")
         .attr("class", "nta") 
       .selectAll("path")
@@ -555,7 +558,10 @@ function ready(error, nyc, frequency) { //error, var1, var2
       }
     d3.select("#historicfrequency").on("click", historicfrequency);
       function historicfrequency(d){
+        //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
+        d3.selectAll(".boroughs").remove();
+        d3.selectAll(".mapTitle").remove();
       svgReviews.append("g")
         .attr("class", "nta") 
       .selectAll("path")
@@ -597,10 +603,13 @@ function ready(error, nyc, frequency) { //error, var1, var2
         .style("stroke-width", "1")
         .style("stroke-opacity", "1")
       }
-    
+
     d3.select("#barfrequency").on("click", barfrequency);
       function barfrequency(d){
+        //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
+        d3.selectAll(".boroughs").remove();
+        d3.selectAll(".mapTitle").remove();
       svgReviews.append("g")
         .attr("class", "nta") //i define the class 
       .selectAll("path")
@@ -644,7 +653,10 @@ function ready(error, nyc, frequency) { //error, var1, var2
       }
     d3.select("#parkfrequency").on("click", parkfrequency);
       function parkfrequency(d){
+        //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
+        d3.selectAll(".boroughs").remove();
+        d3.selectAll(".mapTitle").remove();
       svgReviews.append("g")
         .attr("class", "nta") 
       .selectAll("path")
@@ -689,7 +701,10 @@ function ready(error, nyc, frequency) { //error, var1, var2
 
     d3.select("#quietfrequency").on("click", quietfrequency);
       function quietfrequency(d){
+        //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
+        d3.selectAll(".boroughs").remove();
+        d3.selectAll(".mapTitle").remove();
       svgReviews.append("g")
         .attr("class", "nta") 
       .selectAll("path")
@@ -733,7 +748,10 @@ function ready(error, nyc, frequency) { //error, var1, var2
       }
     d3.select("#busyfrequency").on("click", busyfrequency);
       function busyfrequency(d){
+        //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
+        d3.selectAll(".boroughs").remove();
+        d3.selectAll(".mapTitle").remove();
       svgReviews.append("g")
         .attr("class", "nta")  
       .selectAll("path")
@@ -777,34 +795,65 @@ function ready(error, nyc, frequency) { //error, var1, var2
       }
 };
 
-  // //drawing legend for chloropleth
-  //  var legend = svg.selectAll("g.legend")
-  //   .data(legend_color_domain)
-  //   .enter().append("g")
-  //   .attr("class", "legend");
+//MOVE THIS INTO actual button clicks
+  //drawing legend for chloropleth
+    var w = 960, h = 625; //width and height of legend 
 
-  //   var legendRectWidth = 20, legendRectHeight = 20; //width and height
+    var key = d3.select("body")
+      .append("svg")
+      .attr("width", w)
+      .attr("height", h)
+      .attr("class", "legend");
 
-  //   legend.append("rect") //legend boxes
-  //   .attr("x", 20) //horizontal location
-  //   .attr("y", function(d, i){ return height - (i*legendRectHeight) - 2*legendRectHeight;}) //vertical location
-  //   .attr("width", legendRectWidth)
-  //   .attr("height", legendRectHeight)
-  //   .style("fill", function(d, i) { return color(d); })
-  //   .style("opacity", 0.8);
+    var legend = key.append("defs")
+      .append("svg:linearGradient")
+      .attr("id", "gradient")
+      .attr("x1", "100%")
+      .attr("y1", "100%")
+      .attr("x2", "0%") //for the start opacity 0 to be at the left of x 
+      .attr("y2", "100%")
+      .attr("spreadMethod", "pad");
+    //stop color
+    legend.append("stop")
+      .attr("offset", "0%")
+      .attr("stop-color", "#000000")
+      .attr("stop-opacity", 1);
+    //start color
+    legend.append("stop")
+      .attr("offset", "100%")
+      .attr("stop-color", "pink")
+      .attr("stop-opacity", 1);
+
+    key.append("rect")
+      .attr("width", 200) //width and height of rectangle 
+      .attr("height", 20)
+      .style("fill", "url(#gradient)")
+      .attr("transform", "translate(220, 570)"); //changes the position
     
-  //   var legend_items = ["Low", "", "", "", "", "", "", "", "High"];
-  //   legend.append("text") //legend text
-  //   .attr("class", "legendText") //gives it class so can edit in css
-  //   .attr("x", 50) //positioning
-  //   .attr("y", function(d, i){ return height - (i*legendRectHeight) - legendRectHeight - 4;}) //multiplying by i puts all the boxes
-  //   .text(function(d, i){ return legend_labels[i]; });
+    key.append("text")
+      .attr("class", "legendText") 
+      .attr("x", 220) 
+      .attr("y", 605) 
+      .text("Low");
 
-  //   legend.append("text")
-  //   .attr("class", "legendHeading")
-  //   .attr("x", 20)
-  //   .attr("y", function(d){ return height - 6 - legendRectHeight * 6;}) //multiplying and subtractingincreases the height vertically
-  //   .text("Relative Frequency")
+    key.append("text")
+      .attr("class", "legendText") 
+      .attr("x", 390) 
+      .attr("y", 605) 
+      .text("High");
+
+    key.append("text")
+      .attr("class", "legendHeading")
+      .attr("x", 220)
+      .attr("y", 560) 
+      .text("Relative Frequency")
+
+    //adding source
+    key.append("text")
+      .attr("class", "sourceText")
+      .attr("x", 220)
+      .attr("y", 618) 
+      .text("SOURCE: Department of City Planning (2017), Inside AirBnB (2017)")
 
   </script>   
 
