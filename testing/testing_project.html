@@ -21,33 +21,33 @@
             <!-- list of tags to select  -->
             <ul class="selections">
               <li class="topHeading">Price</li>
-              <li><input name="updateButton" id="affordablefrequency" type="button" value="Affordable"></li>             
-              <li><input name="updateButton" id="luxuryfrequency" type="button" value="Luxury"></li> 
+              <li><input class="updateButton" id="affordablefrequency" type="button" value="Affordable"></li>             
+              <li><input class="updateButton" id="luxuryfrequency" type="button" value="Luxury"></li> 
             </ul>
 
             <ul class="selections">
               <li class="topHeading">Interior</li>
-              <li><input name="updateButton" id="cozyfrequency" type="button" value="Cozy"></li> 
-              <li><input name="updateButton" id="modernfrequency" type="button" value="Modern"></li>            
+              <li><input class="updateButton" id="cozyfrequency" type="button" value="Cozy"></li> 
+              <li><input class="updateButton" id="modernfrequency" type="button" value="Modern"></li>            
             </ul>
 
             <ul class="selections">
               <li class="topHeading">Identity</li>
-              <li><input name="updateButton" id="diversefrequency" type="button" value="Diverse"></li> 
-              <li><input name="updateButton" id="hipsterfrequency" type="button" value="Hipster"></li> 
-              <li><input name="updateButton" id="historicfrequency" type="button" value="Historic"></li> 
+              <li><input class="updateButton" id="diversefrequency" type="button" value="Diverse"></li> 
+              <li><input class="updateButton" id="hipsterfrequency" type="button" value="Hipster"></li> 
+              <li><input class="updateButton" id="historicfrequency" type="button" value="Historic"></li> 
             </ul>
 
             <ul class="selections">
               <li class="topHeading">Neighborhood Amenities</li>
-              <li><input name="updateButton" id="barfrequency" type="button" value="Bar"></li> 
-              <li><input name="updateButton" id="parkfrequency" type="button" value="Park"></li> 
+              <li><input class="updateButton" id="barfrequency" type="button" value="Bar"></li> 
+              <li><input class="updateButton" id="parkfrequency" type="button" value="Park"></li> 
             </ul>
 
             <ul class="selections">
               <li class="topHeading">Pace</li>
-              <li><input name="updateButton" id="quietfrequency" type="button" value="Quiet"></li> 
-              <li><input name="updateButton" id="busyfrequency" type="button" value="Busy"></li> 
+              <li><input class="updateButton" id="quietfrequency" type="button" value="Quiet"></li> 
+              <li><input class="updateButton" id="busyfrequency" type="button" value="Busy"></li> 
             </ul>
           </div>
         </div>
@@ -261,19 +261,21 @@ function ready(error, nyc, frequency) { //error, var1, var2
     .attr("x", width/7 + 5)
     .attr("y", function(d){ return height * 210 / 300;}) 
     .text("Staten Island")
-
    //adding outline for borough boundaries [INTRO]
    svg.append("path")
     .datum(topojson.mesh(nyc, nyc.objects.nybb))
     .attr("class", "boroughs") 
     .attr("d", pathIntro)
-    .style("stroke", "grey")
+    .style("stroke", "gold")
     .style("stroke-width", "1")
     .style("stroke-opacity", "1")
 
 // Add mouse events
     d3.select("#affordablefrequency").on("click", affordablefrequency);
       function affordablefrequency(d){
+        //this changes the styling of the selected button 
+        d3.select(".updateButton").classed("updateButtonSelected", false);
+        d3.select(this).classed("updateButtonSelected", true); //classed adds new class here
         //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
         d3.selectAll(".boroughs").remove();
@@ -307,20 +309,17 @@ function ready(error, nyc, frequency) { //error, var1, var2
           .datum(topojson.mesh(nyc, nyc.objects.nybb))
           .attr("class", "boroughs") 
           .attr("d", path)
-          .style("stroke", "grey")
-          .style("stroke-width", "1")
-          .style("stroke-opacity", "1")
         //adding outline for borough boundaries [LISTINGS]
          svgListings.append("path")
           .datum(topojson.mesh(nyc, nyc.objects.nybb))
           .attr("class", "boroughs") 
           .attr("d", path)
-          .style("stroke", "grey")
-          .style("stroke-width", "1")
-          .style("stroke-opacity", "1")
       }
     d3.select("#luxuryfrequency").on("click", luxuryfrequency);
       function luxuryfrequency(d){
+        //this changes the styling of the selected button 
+        d3.select(".updateButton").classed("updateButtonSelected", false);
+        d3.select(this).classed("updateButtonSelected", true);
         //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
         d3.selectAll(".boroughs").remove();
@@ -354,21 +353,18 @@ function ready(error, nyc, frequency) { //error, var1, var2
           .datum(topojson.mesh(nyc, nyc.objects.nybb))
           .attr("class", "boroughs") 
           .attr("d", path)
-          .style("stroke", "grey")
-          .style("stroke-width", "1")
-          .style("stroke-opacity", "1")
         //adding outline for borough boundaries [LISTINGS]
          svgListings.append("path")
           .datum(topojson.mesh(nyc, nyc.objects.nybb))
           .attr("class", "boroughs") 
           .attr("d", path)
-          .style("stroke", "grey")
-          .style("stroke-width", "1")
-          .style("stroke-opacity", "1")
       }
 
     d3.select("#modernfrequency").on("click", modernfrequency);
       function modernfrequency(d){
+        //this changes the styling of the selected button 
+        d3.select(".updateButton").classed("updateButtonSelected", false);
+        d3.select(this).classed("updateButtonSelected", true);
         //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
         d3.selectAll(".boroughs").remove();
@@ -402,20 +398,17 @@ function ready(error, nyc, frequency) { //error, var1, var2
           .datum(topojson.mesh(nyc, nyc.objects.nybb))
           .attr("class", "boroughs") 
           .attr("d", path)
-          .style("stroke", "grey")
-          .style("stroke-width", "1")
-          .style("stroke-opacity", "1")
         //adding outline for borough boundaries [LISTINGS]
          svgListings.append("path")
           .datum(topojson.mesh(nyc, nyc.objects.nybb))
           .attr("class", "boroughs") 
           .attr("d", path)
-          .style("stroke", "grey")
-          .style("stroke-width", "1")
-          .style("stroke-opacity", "1")
       }
     d3.select("#cozyfrequency").on("click", cozyfrequency);
       function cozyfrequency(d){
+        //this changes the styling of the selected button 
+        d3.select(".updateButton").classed("updateButtonSelected", false);
+        d3.select(this).classed("updateButtonSelected", true);
         //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
         d3.selectAll(".boroughs").remove();
@@ -449,21 +442,18 @@ function ready(error, nyc, frequency) { //error, var1, var2
         .datum(topojson.mesh(nyc, nyc.objects.nybb))
         .attr("class", "boroughs") 
         .attr("d", path)
-        .style("stroke", "grey")
-        .style("stroke-width", "1")
-        .style("stroke-opacity", "1")
         //adding outline for borough boundaries [LISTINGS]
         svgListings.append("path")
         .datum(topojson.mesh(nyc, nyc.objects.nybb))
         .attr("class", "boroughs") 
         .attr("d", path)
-        .style("stroke", "grey")
-        .style("stroke-width", "1")
-        .style("stroke-opacity", "1")
       }
 
       d3.select("#diversefrequency").on("click", diversefrequency);
       function diversefrequency(d){
+        //this changes the styling of the selected button 
+        d3.select(".updateButton").classed("updateButtonSelected", false);
+        d3.select(this).classed("updateButtonSelected", true);
         //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
         d3.selectAll(".boroughs").remove();
@@ -511,6 +501,9 @@ function ready(error, nyc, frequency) { //error, var1, var2
       }
     d3.select("#hipsterfrequency").on("click", hipsterfrequency);
       function hipsterfrequency(d){
+        //this changes the styling of the selected button 
+        d3.select(".updateButton").classed("updateButtonSelected", false);
+        d3.select(this).classed("updateButtonSelected", true);
         //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
         d3.selectAll(".boroughs").remove();
@@ -558,6 +551,9 @@ function ready(error, nyc, frequency) { //error, var1, var2
       }
     d3.select("#historicfrequency").on("click", historicfrequency);
       function historicfrequency(d){
+        //this changes the styling of the selected button 
+        d3.select(".updateButton").classed("updateButtonSelected", false);
+        d3.select(this).classed("updateButtonSelected", true);
         //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
         d3.selectAll(".boroughs").remove();
@@ -606,6 +602,9 @@ function ready(error, nyc, frequency) { //error, var1, var2
 
     d3.select("#barfrequency").on("click", barfrequency);
       function barfrequency(d){
+        //this changes the styling of the selected button 
+        d3.select(".updateButton").classed("updateButtonSelected", false);
+        d3.select(this).classed("updateButtonSelected", true);
         //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
         d3.selectAll(".boroughs").remove();
@@ -639,20 +638,17 @@ function ready(error, nyc, frequency) { //error, var1, var2
           .datum(topojson.mesh(nyc, nyc.objects.nybb))
           .attr("class", "boroughs") 
           .attr("d", path)
-          .style("stroke", "grey")
-          .style("stroke-width", "1")
-          .style("stroke-opacity", "1")
         //adding outline for borough boundaries [LISTINGS]
          svgListings.append("path")
           .datum(topojson.mesh(nyc, nyc.objects.nybb))
           .attr("class", "boroughs") 
           .attr("d", path)
-          .style("stroke", "grey")
-          .style("stroke-width", "1")
-          .style("stroke-opacity", "1")
       }
     d3.select("#parkfrequency").on("click", parkfrequency);
       function parkfrequency(d){
+        //this changes the styling of the selected button 
+        d3.select(".updateButton").classed("updateButtonSelected", false);
+        d3.select(this).classed("updateButtonSelected", true);
         //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
         d3.selectAll(".boroughs").remove();
@@ -686,21 +682,18 @@ function ready(error, nyc, frequency) { //error, var1, var2
           .datum(topojson.mesh(nyc, nyc.objects.nybb))
           .attr("class", "boroughs") 
           .attr("d", path)
-          .style("stroke", "grey")
-          .style("stroke-width", "1")
-          .style("stroke-opacity", "1")
         //adding outline for borough boundaries [LISTINGS]
          svgListings.append("path")
           .datum(topojson.mesh(nyc, nyc.objects.nybb))
           .attr("class", "boroughs") 
           .attr("d", path)
-          .style("stroke", "grey")
-          .style("stroke-width", "1")
-          .style("stroke-opacity", "1")
       }
 
     d3.select("#quietfrequency").on("click", quietfrequency);
       function quietfrequency(d){
+        //this changes the styling of the selected button 
+        d3.select(".updateButton").classed("updateButtonSelected", false);
+        d3.select(this).classed("updateButtonSelected", true);
         //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
         d3.selectAll(".boroughs").remove();
@@ -734,20 +727,17 @@ function ready(error, nyc, frequency) { //error, var1, var2
           .datum(topojson.mesh(nyc, nyc.objects.nybb))
           .attr("class", "boroughs") 
           .attr("d", path)
-          .style("stroke", "grey")
-          .style("stroke-width", "1")
-          .style("stroke-opacity", "1")
         //adding outline for borough boundaries [LISTINGS]
          svgListings.append("path")
           .datum(topojson.mesh(nyc, nyc.objects.nybb))
           .attr("class", "boroughs") 
           .attr("d", path)
-          .style("stroke", "grey")
-          .style("stroke-width", "1")
-          .style("stroke-opacity", "1")
       }
     d3.select("#busyfrequency").on("click", busyfrequency);
       function busyfrequency(d){
+        //this changes the styling of the selected button 
+        d3.select(".updateButton").classed("updateButtonSelected", false);
+        d3.select(this).classed("updateButtonSelected", true);
         //to clear these elements when you change the map 
         d3.select(".chloroplethMap").remove();
         d3.selectAll(".boroughs").remove();
@@ -781,17 +771,11 @@ function ready(error, nyc, frequency) { //error, var1, var2
           .datum(topojson.mesh(nyc, nyc.objects.nybb))
           .attr("class", "boroughs") 
           .attr("d", path)
-          .style("stroke", "grey")
-          .style("stroke-width", "1")
-          .style("stroke-opacity", "1")
         //adding outline for borough boundaries [LISTINGS]
          svgListings.append("path")
           .datum(topojson.mesh(nyc, nyc.objects.nybb))
           .attr("class", "boroughs") 
           .attr("d", path)
-          .style("stroke", "grey")
-          .style("stroke-width", "1")
-          .style("stroke-opacity", "1")
       }
 };
 
