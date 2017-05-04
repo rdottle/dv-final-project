@@ -166,6 +166,45 @@
     .domain([0, 0.21905805])
     .range([lowColor, highColorPace])
 
+  //LISTINGS 
+  var colorPriceAffordableList = d3.scaleLinear()
+    .domain([0, 0.750073059])
+    .range([lowColor, highColorPrice])
+  var colorPriceLuxuryList = d3.scaleLinear()
+    .domain([0, 2.60374288])
+    .range([lowColor, highColorPrice])
+
+  var colorInteriorCozyList = d3.scaleLinear()
+    .domain([0, 5.278944211])
+    .range([lowColor, highColorInterior])
+  var colorInteriorModernList = d3.scaleLinear()
+    .domain([0, 2.067669173])
+    .range([lowColor, highColorInterior])
+
+  var colorIdentityDiverseList = d3.scaleLinear()
+    .domain([0, 1.756652028])
+    .range([lowColor, highColorIdentity])
+  var colorIdentityHipsterList = d3.scaleLinear()
+    .domain([0, 0.330346638])
+    .range([lowColor, highColorIdentity])
+  var colorIdentityHistoricList = d3.scaleLinear()
+    .domain([0, 4.712041885])
+    .range([lowColor, highColorIdentity])
+
+  var colorAmenitiesBarList = d3.scaleLinear()
+    .domain([0, 3.169572108])
+    .range([lowColor, highColorAmenities])
+  var colorAmenitiesParkList = d3.scaleLinear()
+    .domain([0, 7.142857143])
+    .range([lowColor, highColorAmenities])
+
+  var colorPaceQuietList = d3.scaleLinear()
+    .domain([0, 5.235602094])
+    .range([lowColor, highColorPace])
+  var colorPaceBusyList = d3.scaleLinear()
+    .domain([0, 1.668594086])
+    .range([lowColor, highColorPace])
+
   d3.queue()  
       .defer(d3.json, "boroughs_NTA.json")
       .defer(d3.csv, "nta_updated_reviews_listings.csv") 
@@ -299,6 +338,17 @@ function ready(error, nyc, frequency) { //error, var1, var2
         })
         .style("stroke", "lightgrey")
         .style("stroke-width", "0.2")
+      svgListings.append("g") //appending it to the left map 
+        .attr("class", "nta") 
+       .selectAll("path")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
+       .enter().append("path")
+        .attr("d", path)
+        .style("fill", function(d) {
+          return colorPriceAffordableList(affordableListFreq[d.properties.ntacode]);
+        })
+        .style("stroke", "lightgrey")
+        .style("stroke-width", "0.2")
         //drawing reviews and listings headings 
         d3.select("svg.reviewsMap")   
           svgReviews.append("text")
@@ -399,6 +449,17 @@ function ready(error, nyc, frequency) { //error, var1, var2
         .attr("d", path)
         .style("fill", function(d) {
           return colorPriceLuxury(luxuryFreq[d.properties.ntacode]);
+        })
+        .style("stroke", "lightgrey")
+        .style("stroke-width", "0.2")
+      svgListings.append("g")
+        .attr("class", "nta") 
+       .selectAll("path")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
+       .enter().append("path")
+        .attr("d", path)
+        .style("fill", function(d) {
+          return colorPriceLuxuryList(luxuryListFreq[d.properties.ntacode]);
         })
         .style("stroke", "lightgrey")
         .style("stroke-width", "0.2")
@@ -506,6 +567,17 @@ function ready(error, nyc, frequency) { //error, var1, var2
         })
         .style("stroke", "lightgrey")
         .style("stroke-width", "0.2")
+      svgListings.append("g")
+        .attr("class", "nta") 
+       .selectAll("path")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
+       .enter().append("path")
+        .attr("d", path)
+        .style("fill", function(d) {
+          return colorInteriorModernList(modernListFreq[d.properties.ntacode]);
+        })
+        .style("stroke", "lightgrey")
+        .style("stroke-width", "0.2")
         //drawing reviews and listings headings 
         d3.select("svg.reviewsMap")   
           svgReviews.append("text")
@@ -606,6 +678,17 @@ function ready(error, nyc, frequency) { //error, var1, var2
         .attr("d", path)
         .style("fill", function(d) {
           return colorInteriorCozy(cozyFreq[d.properties.ntacode]);
+        })
+        .style("stroke", "lightgrey")
+        .style("stroke-width", "0.2")
+      svgListings.append("g")
+        .attr("class", "nta") //i define the class 
+       .selectAll("path")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
+       .enter().append("path")
+        .attr("d", path)
+        .style("fill", function(d) {
+          return colorInteriorCozyList(cozyListFreq[d.properties.ntacode]);
         })
         .style("stroke", "lightgrey")
         .style("stroke-width", "0.2")
@@ -710,6 +793,17 @@ function ready(error, nyc, frequency) { //error, var1, var2
         .attr("d", path)
         .style("fill", function(d) {
           return colorIdentityDiverse(diverseFreq[d.properties.ntacode]);
+        })
+        .style("stroke", "lightgrey")
+        .style("stroke-width", "0.2")
+      svgListings.append("g")
+        .attr("class", "nta") 
+       .selectAll("path")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
+       .enter().append("path")
+        .attr("d", path)
+        .style("fill", function(d) {
+          return colorIdentityDiverseList(diverseListFreq[d.properties.ntacode]);
         })
         .style("stroke", "lightgrey")
         .style("stroke-width", "0.2")
@@ -822,6 +916,17 @@ function ready(error, nyc, frequency) { //error, var1, var2
         })
         .style("stroke", "lightgrey")
         .style("stroke-width", "0.2")
+      svgListings.append("g")
+        .attr("class", "nta") 
+       .selectAll("path")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
+       .enter().append("path")
+        .attr("d", path)
+        .style("fill", function(d) {
+          return colorIdentityHipsterList(hipsterListFreq[d.properties.ntacode]);
+        })
+        .style("stroke", "lightgrey")
+        .style("stroke-width", "0.2")
         //drawing reviews and listings headings 
         d3.select("svg.reviewsMap")   
           svgReviews.append("text")
@@ -928,6 +1033,17 @@ function ready(error, nyc, frequency) { //error, var1, var2
         .attr("d", path)
         .style("fill", function(d) {
           return colorIdentityHistoric(historicFreq[d.properties.ntacode]);
+        })
+        .style("stroke", "lightgrey")
+        .style("stroke-width", "0.2")
+      svgListings.append("g")
+        .attr("class", "nta") 
+       .selectAll("path")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
+       .enter().append("path")
+        .attr("d", path)
+        .style("fill", function(d) {
+          return colorIdentityHistoricList(historicListFreq[d.properties.ntacode]);
         })
         .style("stroke", "lightgrey")
         .style("stroke-width", "0.2")
@@ -1041,6 +1157,17 @@ function ready(error, nyc, frequency) { //error, var1, var2
         })
         .style("stroke", "lightgrey")
         .style("stroke-width", "0.2")
+      svgListings.append("g")
+        .attr("class", "nta") //i define the class 
+       .selectAll("path")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) // Bind TopoJSON data elements - this has to be basically the name of the file under the objects in the json 
+       .enter().append("path")
+        .attr("d", path)
+        .style("fill", function(d) {
+          return colorAmenitiesBarList(barListFreq[d.properties.ntacode]);
+        })
+        .style("stroke", "lightgrey")
+        .style("stroke-width", "0.2")
         //drawing reviews and listings headings 
         d3.select("svg.reviewsMap")   
           svgReviews.append("text")
@@ -1144,6 +1271,15 @@ function ready(error, nyc, frequency) { //error, var1, var2
         })
         .style("stroke", "lightgrey")
         .style("stroke-width", "0.2")
+      svgListings.append("g")
+        .attr("class", "nta")  
+       .selectAll("path")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
+       .enter().append("path")
+        .attr("d", path) 
+        .style("fill", function(d) {
+          return colorAmenitiesParkList(parkListFreq[d.properties.ntacode]);
+        })
         //drawing reviews and listings headings 
         d3.select("svg.reviewsMap")   
           svgReviews.append("text")
@@ -1248,6 +1384,15 @@ function ready(error, nyc, frequency) { //error, var1, var2
         })
         .style("stroke", "lightgrey")
         .style("stroke-width", "0.2")
+      svgListings.append("g")
+        .attr("class", "nta")  
+       .selectAll("path")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
+       .enter().append("path")
+        .attr("d", path) 
+        .style("fill", function(d) {
+          return colorPaceQuiet(quietListFreq[d.properties.ntacode]);
+        })
         //drawing reviews and listings headings 
         d3.select("svg.reviewsMap")   
           svgReviews.append("text")
@@ -1348,6 +1493,17 @@ function ready(error, nyc, frequency) { //error, var1, var2
         .attr("d", path)
         .style("fill", function(d) {
           return colorPaceBusy(busyFreq[d.properties.ntacode]);
+        })
+        .style("stroke", "lightgrey")
+        .style("stroke-width", "0.2")
+      svgListings.append("g")
+        .attr("class", "nta")  
+       .selectAll("path")
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
+       .enter().append("path")
+        .attr("d", path)
+        .style("fill", function(d) {
+          return colorPaceBusyList(busyListFreq[d.properties.ntacode]);
         })
         .style("stroke", "lightgrey")
         .style("stroke-width", "0.2")
