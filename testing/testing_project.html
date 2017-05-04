@@ -58,7 +58,7 @@
       <div class = "container" >
         <div class="row">
           <div class="col-md-10">
-            <svg class="chloroplethMap" width = "680" height = "600"> </svg>
+            <svg class="chloroplethMap" width = "960" height = "600"> </svg>
               <div class="col-md-6">
             <svg class="reviewsMap" width = "480" height = "600"> </svg>
           </div>
@@ -86,9 +86,21 @@
   <script type="text/javascript">
 
 //map basics
+  //Creates tooltip and makes it invisiblae
+  var div = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+
   //using svg element to display the map on 
-  var width = 960;
-      height = 600;
+  // var width = 960;
+  //     height = 600;
+
+  //Sets dimensions
+  var margin = {top: 10, left: 10, bottom: 10, right: 10}
+    , width = window.outerWidth
+    , width = width - margin.left - margin.right
+    , mapRatio = .5
+    , height = width * mapRatio;
 
   //for all maps
   var projection = d3.geoMercator()
@@ -276,45 +288,46 @@ function ready(error, nyc, frequency) { //error, var1, var2
     .attr("d", pathIntro)
     .style("fill", "gold")
     .style("fill-opacity", "0.2")
-   svg.append("text")
-    .attr("class", "NYCtitle")
-    .attr("x", 400)
-    .attr("y", function(d){ return height / 10;}) 
-    .text("New York City")
-    //adding borough titles 
-   svg.append("text")
-    .attr("class", "boroughName")
-    .attr("x", width/3 - 10)
-    .attr("y", function(d){ return height * 60 /180;}) 
-    .text("Manhattan")
-   svg.append("text")
-    .attr("class", "boroughName")
-    .attr("x", width/2 - 40)
-    .attr("y", function(d){ return height * 90 / 150;}) 
-    .text("Brooklyn")
-   svg.append("text")
-    .attr("class", "boroughName")
-    .attr("x", width/2 + 80)
-    .attr("y", function(d){ return height * 70 / 150;})
-    .text("Queens") 
-   svg.append("text")
-    .attr("class", "boroughName")
-    .attr("x", width/2 + 30)
-    .attr("y", function(d){ return height * 60 / 300;}) 
-    .text("The Bronx")
-   svg.append("text")
-    .attr("class", "boroughName")
-    .attr("x", width/7 + 5)
-    .attr("y", function(d){ return height * 210 / 300;}) 
-    .text("Staten Island")
-   //adding outline for borough boundaries [INTRO]
-   svg.append("path")
-    .datum(topojson.mesh(nyc, nyc.objects.nybb))
-    .attr("class", "boroughs") 
-    .attr("d", pathIntro)
-    .style("stroke", "gold")
-    .style("stroke-width", "1")
-    .style("stroke-opacity", "1")
+   //text
+     svg.append("text")
+      .attr("class", "NYCtitle")
+      .attr("x", 400)
+      .attr("y", function(d){ return height / 10;}) 
+      .text("New York City")
+      //adding borough titles 
+     svg.append("text")
+      .attr("class", "boroughName")
+      .attr("x", width/3 - 10)
+      .attr("y", function(d){ return height * 60 /180;}) 
+      .text("Manhattan")
+     svg.append("text")
+      .attr("class", "boroughName")
+      .attr("x", width/2 - 40)
+      .attr("y", function(d){ return height * 90 / 150;}) 
+      .text("Brooklyn")
+     svg.append("text")
+      .attr("class", "boroughName")
+      .attr("x", width/2 + 80)
+      .attr("y", function(d){ return height * 70 / 150;})
+      .text("Queens") 
+     svg.append("text")
+      .attr("class", "boroughName")
+      .attr("x", width/2 + 30)
+      .attr("y", function(d){ return height * 60 / 300;}) 
+      .text("The Bronx")
+     svg.append("text")
+      .attr("class", "boroughName")
+      .attr("x", width/7 + 5)
+      .attr("y", function(d){ return height * 210 / 300;}) 
+      .text("Staten Island")
+     //adding outline for borough boundaries [INTRO]
+     svg.append("path")
+      .datum(topojson.mesh(nyc, nyc.objects.nybb))
+      .attr("class", "boroughs") 
+      .attr("d", pathIntro)
+      .style("stroke", "gold")
+      .style("stroke-width", "1")
+      .style("stroke-opacity", "1")
 
 // Add mouse events
     d3.select("#affordablefrequency").on("click", affordablefrequency);
@@ -1589,6 +1602,41 @@ function ready(error, nyc, frequency) { //error, var1, var2
             .attr("y", 618) 
             .text("SOURCE: Department of City Planning (2017), Inside AirBnB (2017)")
       }
+  
+  //RESPONSIVENESS
+   d3.select(window).on('resize', resize);
+
+   function resize() {
+
+    var w = d3.select(".chloroplethMap").node().clientWidth;
+    console.log("resized", w);
+
+    // adjust things when the window size changes
+    width = w - margin.left - margin.right;
+    height = width* mapRatio;
+
+    console.log(width)
+    // update projection
+    var newProjection = d3.geoMercator()
+      .scale(width)
+            .center([-73.94, 40.70])
+
+      .translate([width / 2, height / 2]);
+
+    //Update path
+    path = d3.geoPath()
+      .projection(newProjection);    
+
+    // resize the map container
+    var svg = d3.select(".chloroplethMap").append("svg")
+      .attr("width", width)
+      .attr("height", height)
+
+    // resize the map
+    d3.select("svg.chloroplethMap")
+      .selectAll("path")
+      .attr("d", pathIntro);
+ }
 };
   </script>   
 
