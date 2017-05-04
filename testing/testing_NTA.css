@@ -4,6 +4,18 @@ body {
   font-size: 14px;
 }
 
+div.tooltip {
+  position: absolute;
+  left: 75px;
+  text-align: center;
+  height: 12px;
+  padding: 8px;
+  font-size: 13px;
+  font-family: 'Proxima-Nova', sans-serif;
+  background: #FFFFFF;
+  border: 1px solid #989898;
+}
+
 .chloroplethMap {
 	padding:0;
 	background: none;

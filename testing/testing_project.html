@@ -100,7 +100,7 @@
     , width = window.outerWidth
     , width = width - margin.left - margin.right
     , mapRatio = .5
-    , height = width * mapRatio;
+    , height = width * mapRatio + 50;
 
   //for all maps
   var projection = d3.geoMercator()
@@ -1602,41 +1602,7 @@ function ready(error, nyc, frequency) { //error, var1, var2
             .attr("y", 618) 
             .text("SOURCE: Department of City Planning (2017), Inside AirBnB (2017)")
       }
-  
-  //RESPONSIVENESS
-   d3.select(window).on('resize', resize);
 
-   function resize() {
-
-    var w = d3.select(".chloroplethMap").node().clientWidth;
-    console.log("resized", w);
-
-    // adjust things when the window size changes
-    width = w - margin.left - margin.right;
-    height = width* mapRatio;
-
-    console.log(width)
-    // update projection
-    var newProjection = d3.geoMercator()
-      .scale(width)
-            .center([-73.94, 40.70])
-
-      .translate([width / 2, height / 2]);
-
-    //Update path
-    path = d3.geoPath()
-      .projection(newProjection);    
-
-    // resize the map container
-    var svg = d3.select(".chloroplethMap").append("svg")
-      .attr("width", width)
-      .attr("height", height)
-
-    // resize the map
-    d3.select("svg.chloroplethMap")
-      .selectAll("path")
-      .attr("d", pathIntro);
- }
 };
   </script>   
 
