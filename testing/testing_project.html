@@ -120,44 +120,51 @@
       .attr("height", height)
 
 //setting colors for maps
-  //REVIEWS 
+  var lowColor = "#ffffff"
+  var highColorPrice = "#06063B"
+  var highColorInterior = "#330003"
+  var highColorIdentity = "#100026"
+  var highColorAmenities = "#220024"
+  var highColorPace = "#570E0E"
+
+ //REVIEWS 
   var colorPriceAffordable = d3.scaleLinear()
     .domain([0, 0.407608696])
-    .range(["#ffffff","#06063B"])
+    .range([lowColor, highColorPrice])
   var colorPriceLuxury = d3.scaleLinear()
     .domain([0, 0.201612903])
-    .range(["#ffffff","#06063B"])
+    .range([lowColor, highColorPrice])
 
   var colorInteriorCozy = d3.scaleLinear()
     .domain([0, 1.52284264])
-    .range(["#ffffff","#330003"])
+    .range([lowColor, highColorInterior])
   var colorInteriorModern = d3.scaleLinear()
     .domain([0, 0.337837838])
-    .range(["#ffffff","#330003"])
+    .range([lowColor, highColorInterior])
 
   var colorIdentityDiverse = d3.scaleLinear()
     .domain([0, 0.200722601])
-    .range(["#ffffff","#100026"])
+    .range([lowColor, highColorIdentity])
   var colorIdentityHipster = d3.scaleLinear()
     .domain([0, 0.10384216])
-    .range(["#ffffff","#100026"])
+    .range([lowColor, highColorIdentity])
   var colorIdentityHistoric = d3.scaleLinear()
     .domain([0, 0.063417728])
-    .range(["#ffffff","#100026"])
+    .range([lowColor, highColorIdentity])
 
   var colorAmenitiesBar = d3.scaleLinear()
     .domain([0, 5.555555556])
-    .range(["#ffffff","#220024"])
+    .range([lowColor, highColorAmenities])
   var colorAmenitiesPark = d3.scaleLinear()
     .domain([0, 2.030456853])
-    .range(["#ffffff","#220024"])
+    .range([lowColor, highColorAmenities])
 
   var colorPaceQuiet = d3.scaleLinear()
     .domain([0, 1.411290323])
-    .range(["#ffffff","#570E0E"])
+    .range([lowColor, highColorPace])
   var colorPaceBusy = d3.scaleLinear()
     .domain([0, 0.21905805])
-    .range(["#ffffff","#570E0E"])
+    .range([lowColor, highColorPace])
 
   d3.queue()  
       .defer(d3.json, "boroughs_NTA.json")
@@ -280,6 +287,7 @@ function ready(error, nyc, frequency) { //error, var1, var2
         d3.select(".chloroplethMap").remove();
         d3.selectAll(".boroughs").remove();
         d3.selectAll(".mapTitle").remove();
+        d3.select(".legend").remove();
       svgReviews.append("g") //appending it to the left map 
         .attr("class", "nta") 
       .selectAll("path")
@@ -314,7 +322,65 @@ function ready(error, nyc, frequency) { //error, var1, var2
           .datum(topojson.mesh(nyc, nyc.objects.nybb))
           .attr("class", "boroughs") 
           .attr("d", path)
-      }
+        //drawing legend for chloropleth
+        var w = 960, h = 625; //width and height of legend 
+
+        var key = d3.select("body")
+          .append("svg")
+          .attr("width", w)
+          .attr("height", h)
+          .attr("class", "legend");
+
+        var legend = key.append("defs")
+          .append("svg:linearGradient")
+          .attr("id", "gradient")
+          .attr("x1", "100%")
+          .attr("y1", "100%")
+          .attr("x2", "0%") //for the start opacity 0 to be at the left of x 
+          .attr("y2", "100%")
+          .attr("spreadMethod", "pad");
+        //stop color
+        legend.append("stop")
+          .attr("offset", "0%")
+          .attr("stop-color", highColorPrice)
+          .attr("stop-opacity", 1);
+        //start color
+        legend.append("stop")
+          .attr("offset", "100%")
+          .attr("stop-color", lowColor)
+          .attr("stop-opacity", 1);
+
+        key.append("rect")
+          .attr("width", 200) //width and height of rectangle 
+          .attr("height", 20)
+          .style("fill", "url(#gradient)")
+          .attr("transform", "translate(220, 570)"); //changes the position
+        
+        key.append("text")
+          .attr("class", "legendText") 
+          .attr("x", 220) 
+          .attr("y", 605) 
+          .text("Low");
+
+        key.append("text")
+          .attr("class", "legendText") 
+          .attr("x", 390) 
+          .attr("y", 605) 
+          .text("High");
+
+        key.append("text")
+          .attr("class", "legendHeading")
+          .attr("x", 220)
+          .attr("y", 560) 
+          .text("Relative Frequency")
+
+        //adding source
+        key.append("text")
+          .attr("class", "sourceText")
+          .attr("x", 220)
+          .attr("y", 618) 
+          .text("SOURCE: Department of City Planning (2017), Inside AirBnB (2017)")
+          }
     d3.select("#luxuryfrequency").on("click", luxuryfrequency);
       function luxuryfrequency(d){
         //this changes the styling of the selected button 
@@ -324,6 +390,7 @@ function ready(error, nyc, frequency) { //error, var1, var2
         d3.select(".chloroplethMap").remove();
         d3.selectAll(".boroughs").remove();
         d3.selectAll(".mapTitle").remove();
+        d3.select(".legend").remove();
       svgReviews.append("g")
         .attr("class", "nta") 
       .selectAll("path")
@@ -358,7 +425,65 @@ function ready(error, nyc, frequency) { //error, var1, var2
           .datum(topojson.mesh(nyc, nyc.objects.nybb))
           .attr("class", "boroughs") 
           .attr("d", path)
-      }
+          //drawing legend for chloropleth
+          var w = 960, h = 625; //width and height of legend 
+
+          var key = d3.select("body")
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h)
+            .attr("class", "legend");
+
+          var legend = key.append("defs")
+            .append("svg:linearGradient")
+            .attr("id", "gradient")
+            .attr("x1", "100%")
+            .attr("y1", "100%")
+            .attr("x2", "0%") //for the start opacity 0 to be at the left of x 
+            .attr("y2", "100%")
+            .attr("spreadMethod", "pad");
+          //stop color
+          legend.append("stop")
+            .attr("offset", "0%")
+            .attr("stop-color", highColorPrice)
+            .attr("stop-opacity", 1);
+          //start color
+          legend.append("stop")
+            .attr("offset", "100%")
+            .attr("stop-color", lowColor)
+            .attr("stop-opacity", 1);
+
+          key.append("rect")
+            .attr("width", 200) //width and height of rectangle 
+            .attr("height", 20)
+            .style("fill", "url(#gradient)")
+            .attr("transform", "translate(220, 570)"); //changes the position
+          
+          key.append("text")
+            .attr("class", "legendText") 
+            .attr("x", 220) 
+            .attr("y", 605) 
+            .text("Low");
+
+          key.append("text")
+            .attr("class", "legendText") 
+            .attr("x", 390) 
+            .attr("y", 605) 
+            .text("High");
+
+          key.append("text")
+            .attr("class", "legendHeading")
+            .attr("x", 220)
+            .attr("y", 560) 
+            .text("Relative Frequency")
+
+          //adding source
+          key.append("text")
+            .attr("class", "sourceText")
+            .attr("x", 220)
+            .attr("y", 618) 
+            .text("SOURCE: Department of City Planning (2017), Inside AirBnB (2017)")
+            }
 
     d3.select("#modernfrequency").on("click", modernfrequency);
       function modernfrequency(d){
@@ -369,6 +494,7 @@ function ready(error, nyc, frequency) { //error, var1, var2
         d3.select(".chloroplethMap").remove();
         d3.selectAll(".boroughs").remove();
         d3.selectAll(".mapTitle").remove();
+        d3.select(".legend").remove();
       svgReviews.append("g")
         .attr("class", "nta") 
       .selectAll("path")
@@ -403,7 +529,65 @@ function ready(error, nyc, frequency) { //error, var1, var2
           .datum(topojson.mesh(nyc, nyc.objects.nybb))
           .attr("class", "boroughs") 
           .attr("d", path)
-      }
+          //drawing legend for chloropleth
+          var w = 960, h = 625; //width and height of legend 
+
+          var key = d3.select("body")
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h)
+            .attr("class", "legend");
+
+          var legend = key.append("defs")
+            .append("svg:linearGradient")
+            .attr("id", "gradient")
+            .attr("x1", "100%")
+            .attr("y1", "100%")
+            .attr("x2", "0%") //for the start opacity 0 to be at the left of x 
+            .attr("y2", "100%")
+            .attr("spreadMethod", "pad");
+          //stop color
+          legend.append("stop")
+            .attr("offset", "0%")
+            .attr("stop-color", highColorInterior)
+            .attr("stop-opacity", 1);
+          //start color
+          legend.append("stop")
+            .attr("offset", "100%")
+            .attr("stop-color", lowColor)
+            .attr("stop-opacity", 1);
+
+          key.append("rect")
+            .attr("width", 200) //width and height of rectangle 
+            .attr("height", 20)
+            .style("fill", "url(#gradient)")
+            .attr("transform", "translate(220, 570)"); //changes the position
+          
+          key.append("text")
+            .attr("class", "legendText") 
+            .attr("x", 220) 
+            .attr("y", 605) 
+            .text("Low");
+
+          key.append("text")
+            .attr("class", "legendText") 
+            .attr("x", 390) 
+            .attr("y", 605) 
+            .text("High");
+
+          key.append("text")
+            .attr("class", "legendHeading")
+            .attr("x", 220)
+            .attr("y", 560) 
+            .text("Relative Frequency")
+
+          //adding source
+          key.append("text")
+            .attr("class", "sourceText")
+            .attr("x", 220)
+            .attr("y", 618) 
+            .text("SOURCE: Department of City Planning (2017), Inside AirBnB (2017)")
+            }
     d3.select("#cozyfrequency").on("click", cozyfrequency);
       function cozyfrequency(d){
         //this changes the styling of the selected button 
@@ -413,6 +597,7 @@ function ready(error, nyc, frequency) { //error, var1, var2
         d3.select(".chloroplethMap").remove();
         d3.selectAll(".boroughs").remove();
         d3.selectAll(".mapTitle").remove();
+        d3.select(".legend").remove();
       svgReviews.append("g")
         .attr("class", "nta") //i define the class 
       .selectAll("path")
@@ -447,9 +632,67 @@ function ready(error, nyc, frequency) { //error, var1, var2
         .datum(topojson.mesh(nyc, nyc.objects.nybb))
         .attr("class", "boroughs") 
         .attr("d", path)
-      }
+        //drawing legend for chloropleth
+        var w = 960, h = 625; //width and height of legend 
 
-      d3.select("#diversefrequency").on("click", diversefrequency);
+        var key = d3.select("body")
+          .append("svg")
+          .attr("width", w)
+          .attr("height", h)
+          .attr("class", "legend");
+
+        var legend = key.append("defs")
+          .append("svg:linearGradient")
+          .attr("id", "gradient")
+          .attr("x1", "100%")
+          .attr("y1", "100%")
+          .attr("x2", "0%") //for the start opacity 0 to be at the left of x 
+          .attr("y2", "100%")
+          .attr("spreadMethod", "pad");
+        //stop color
+        legend.append("stop")
+          .attr("offset", "0%")
+          .attr("stop-color", highColorInterior)
+          .attr("stop-opacity", 1);
+        //start color
+        legend.append("stop")
+          .attr("offset", "100%")
+          .attr("stop-color", lowColor)
+          .attr("stop-opacity", 1);
+
+        key.append("rect")
+          .attr("width", 200) //width and height of rectangle 
+          .attr("height", 20)
+          .style("fill", "url(#gradient)")
+          .attr("transform", "translate(220, 570)"); //changes the position
+        
+        key.append("text")
+          .attr("class", "legendText") 
+          .attr("x", 220) 
+          .attr("y", 605) 
+          .text("Low");
+
+        key.append("text")
+          .attr("class", "legendText") 
+          .attr("x", 390) 
+          .attr("y", 605) 
+          .text("High");
+
+        key.append("text")
+          .attr("class", "legendHeading")
+          .attr("x", 220)
+          .attr("y", 560) 
+          .text("Relative Frequency")
+
+        //adding source
+        key.append("text")
+          .attr("class", "sourceText")
+          .attr("x", 220)
+          .attr("y", 618) 
+          .text("SOURCE: Department of City Planning (2017), Inside AirBnB (2017)")
+          }
+
+    d3.select("#diversefrequency").on("click", diversefrequency);
       function diversefrequency(d){
         //this changes the styling of the selected button 
         d3.select(".updateButton").classed("updateButtonSelected", false);
@@ -458,6 +701,7 @@ function ready(error, nyc, frequency) { //error, var1, var2
         d3.select(".chloroplethMap").remove();
         d3.selectAll(".boroughs").remove();
         d3.selectAll(".mapTitle").remove();
+        d3.select(".legend").remove();
       svgReviews.append("g")
         .attr("class", "nta") 
       .selectAll("path")
@@ -498,7 +742,65 @@ function ready(error, nyc, frequency) { //error, var1, var2
         .style("stroke", "grey")
         .style("stroke-width", "1")
         .style("stroke-opacity", "1")
-      }
+          //drawing legend for chloropleth
+        var w = 960, h = 625; //width and height of legend 
+
+        var key = d3.select("body")
+          .append("svg")
+          .attr("width", w)
+          .attr("height", h)
+          .attr("class", "legend");
+
+        var legend = key.append("defs")
+          .append("svg:linearGradient")
+          .attr("id", "gradient")
+          .attr("x1", "100%")
+          .attr("y1", "100%")
+          .attr("x2", "0%") //for the start opacity 0 to be at the left of x 
+          .attr("y2", "100%")
+          .attr("spreadMethod", "pad");
+        //stop color
+        legend.append("stop")
+          .attr("offset", "0%")
+          .attr("stop-color", highColorIdentity)
+          .attr("stop-opacity", 1);
+        //start color
+        legend.append("stop")
+          .attr("offset", "100%")
+          .attr("stop-color", lowColor)
+          .attr("stop-opacity", 1);
+
+        key.append("rect")
+          .attr("width", 200) //width and height of rectangle 
+          .attr("height", 20)
+          .style("fill", "url(#gradient)")
+          .attr("transform", "translate(220, 570)"); //changes the position
+        
+        key.append("text")
+          .attr("class", "legendText") 
+          .attr("x", 220) 
+          .attr("y", 605) 
+          .text("Low");
+
+        key.append("text")
+          .attr("class", "legendText") 
+          .attr("x", 390) 
+          .attr("y", 605) 
+          .text("High");
+
+        key.append("text")
+          .attr("class", "legendHeading")
+          .attr("x", 220)
+          .attr("y", 560) 
+          .text("Relative Frequency")
+
+        //adding source
+        key.append("text")
+          .attr("class", "sourceText")
+          .attr("x", 220)
+          .attr("y", 618) 
+          .text("SOURCE: Department of City Planning (2017), Inside AirBnB (2017)")
+          }
     d3.select("#hipsterfrequency").on("click", hipsterfrequency);
       function hipsterfrequency(d){
         //this changes the styling of the selected button 
@@ -508,6 +810,7 @@ function ready(error, nyc, frequency) { //error, var1, var2
         d3.select(".chloroplethMap").remove();
         d3.selectAll(".boroughs").remove();
         d3.selectAll(".mapTitle").remove();
+        d3.select(".legend").remove();
       svgReviews.append("g")
         .attr("class", "nta") 
       .selectAll("path")
@@ -548,7 +851,65 @@ function ready(error, nyc, frequency) { //error, var1, var2
           .style("stroke", "grey")
           .style("stroke-width", "1")
           .style("stroke-opacity", "1")
-      }
+          //drawing legend for chloropleth
+          var w = 960, h = 625; //width and height of legend 
+
+          var key = d3.select("body")
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h)
+            .attr("class", "legend");
+
+          var legend = key.append("defs")
+            .append("svg:linearGradient")
+            .attr("id", "gradient")
+            .attr("x1", "100%")
+            .attr("y1", "100%")
+            .attr("x2", "0%") //for the start opacity 0 to be at the left of x 
+            .attr("y2", "100%")
+            .attr("spreadMethod", "pad");
+          //stop color
+          legend.append("stop")
+            .attr("offset", "0%")
+            .attr("stop-color", highColorIdentity)
+            .attr("stop-opacity", 1);
+          //start color
+          legend.append("stop")
+            .attr("offset", "100%")
+            .attr("stop-color", lowColor)
+            .attr("stop-opacity", 1);
+
+          key.append("rect")
+            .attr("width", 200) //width and height of rectangle 
+            .attr("height", 20)
+            .style("fill", "url(#gradient)")
+            .attr("transform", "translate(220, 570)"); //changes the position
+          
+          key.append("text")
+            .attr("class", "legendText") 
+            .attr("x", 220) 
+            .attr("y", 605) 
+            .text("Low");
+
+          key.append("text")
+            .attr("class", "legendText") 
+            .attr("x", 390) 
+            .attr("y", 605) 
+            .text("High");
+
+          key.append("text")
+            .attr("class", "legendHeading")
+            .attr("x", 220)
+            .attr("y", 560) 
+            .text("Relative Frequency")
+
+          //adding source
+          key.append("text")
+            .attr("class", "sourceText")
+            .attr("x", 220)
+            .attr("y", 618) 
+            .text("SOURCE: Department of City Planning (2017), Inside AirBnB (2017)")
+            }
     d3.select("#historicfrequency").on("click", historicfrequency);
       function historicfrequency(d){
         //this changes the styling of the selected button 
@@ -558,6 +919,7 @@ function ready(error, nyc, frequency) { //error, var1, var2
         d3.select(".chloroplethMap").remove();
         d3.selectAll(".boroughs").remove();
         d3.selectAll(".mapTitle").remove();
+        d3.select(".legend").remove();
       svgReviews.append("g")
         .attr("class", "nta") 
       .selectAll("path")
@@ -598,7 +960,65 @@ function ready(error, nyc, frequency) { //error, var1, var2
         .style("stroke", "grey")
         .style("stroke-width", "1")
         .style("stroke-opacity", "1")
-      }
+        //drawing legend for chloropleth
+        var w = 960, h = 625; //width and height of legend 
+
+        var key = d3.select("body")
+          .append("svg")
+          .attr("width", w)
+          .attr("height", h)
+          .attr("class", "legend");
+
+        var legend = key.append("defs")
+          .append("svg:linearGradient")
+          .attr("id", "gradient")
+          .attr("x1", "100%")
+          .attr("y1", "100%")
+          .attr("x2", "0%") //for the start opacity 0 to be at the left of x 
+          .attr("y2", "100%")
+          .attr("spreadMethod", "pad");
+        //stop color
+        legend.append("stop")
+          .attr("offset", "0%")
+          .attr("stop-color", highColorIdentity)
+          .attr("stop-opacity", 1);
+        //start color
+        legend.append("stop")
+          .attr("offset", "100%")
+          .attr("stop-color", lowColor)
+          .attr("stop-opacity", 1);
+
+        key.append("rect")
+          .attr("width", 200) //width and height of rectangle 
+          .attr("height", 20)
+          .style("fill", "url(#gradient)")
+          .attr("transform", "translate(220, 570)"); //changes the position
+        
+        key.append("text")
+          .attr("class", "legendText") 
+          .attr("x", 220) 
+          .attr("y", 605) 
+          .text("Low");
+
+        key.append("text")
+          .attr("class", "legendText") 
+          .attr("x", 390) 
+          .attr("y", 605) 
+          .text("High");
+
+        key.append("text")
+          .attr("class", "legendHeading")
+          .attr("x", 220)
+          .attr("y", 560) 
+          .text("Relative Frequency")
+
+        //adding source
+        key.append("text")
+          .attr("class", "sourceText")
+          .attr("x", 220)
+          .attr("y", 618) 
+          .text("SOURCE: Department of City Planning (2017), Inside AirBnB (2017)")
+          }
 
     d3.select("#barfrequency").on("click", barfrequency);
       function barfrequency(d){
@@ -609,6 +1029,7 @@ function ready(error, nyc, frequency) { //error, var1, var2
         d3.select(".chloroplethMap").remove();
         d3.selectAll(".boroughs").remove();
         d3.selectAll(".mapTitle").remove();
+        d3.select(".legend").remove();
       svgReviews.append("g")
         .attr("class", "nta") //i define the class 
       .selectAll("path")
@@ -643,7 +1064,65 @@ function ready(error, nyc, frequency) { //error, var1, var2
           .datum(topojson.mesh(nyc, nyc.objects.nybb))
           .attr("class", "boroughs") 
           .attr("d", path)
-      }
+          //drawing legend for chloropleth
+          var w = 960, h = 625; //width and height of legend 
+
+          var key = d3.select("body")
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h)
+            .attr("class", "legend");
+
+          var legend = key.append("defs")
+            .append("svg:linearGradient")
+            .attr("id", "gradient")
+            .attr("x1", "100%")
+            .attr("y1", "100%")
+            .attr("x2", "0%") //for the start opacity 0 to be at the left of x 
+            .attr("y2", "100%")
+            .attr("spreadMethod", "pad");
+          //stop color
+          legend.append("stop")
+            .attr("offset", "0%")
+            .attr("stop-color", highColorAmenities)
+            .attr("stop-opacity", 1);
+          //start color
+          legend.append("stop")
+            .attr("offset", "100%")
+            .attr("stop-color", lowColor)
+            .attr("stop-opacity", 1);
+
+          key.append("rect")
+            .attr("width", 200) //width and height of rectangle 
+            .attr("height", 20)
+            .style("fill", "url(#gradient)")
+            .attr("transform", "translate(220, 570)"); //changes the position
+          
+          key.append("text")
+            .attr("class", "legendText") 
+            .attr("x", 220) 
+            .attr("y", 605) 
+            .text("Low");
+
+          key.append("text")
+            .attr("class", "legendText") 
+            .attr("x", 390) 
+            .attr("y", 605) 
+            .text("High");
+
+          key.append("text")
+            .attr("class", "legendHeading")
+            .attr("x", 220)
+            .attr("y", 560) 
+            .text("Relative Frequency")
+
+          //adding source
+          key.append("text")
+            .attr("class", "sourceText")
+            .attr("x", 220)
+            .attr("y", 618) 
+            .text("SOURCE: Department of City Planning (2017), Inside AirBnB (2017)")
+            }
     d3.select("#parkfrequency").on("click", parkfrequency);
       function parkfrequency(d){
         //this changes the styling of the selected button 
@@ -653,6 +1132,7 @@ function ready(error, nyc, frequency) { //error, var1, var2
         d3.select(".chloroplethMap").remove();
         d3.selectAll(".boroughs").remove();
         d3.selectAll(".mapTitle").remove();
+        d3.select(".legend").remove();
       svgReviews.append("g")
         .attr("class", "nta") 
       .selectAll("path")
@@ -687,7 +1167,65 @@ function ready(error, nyc, frequency) { //error, var1, var2
           .datum(topojson.mesh(nyc, nyc.objects.nybb))
           .attr("class", "boroughs") 
           .attr("d", path)
-      }
+          //drawing legend for chloropleth
+          var w = 960, h = 625; //width and height of legend 
+
+          var key = d3.select("body")
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h)
+            .attr("class", "legend");
+
+          var legend = key.append("defs")
+            .append("svg:linearGradient")
+            .attr("id", "gradient")
+            .attr("x1", "100%")
+            .attr("y1", "100%")
+            .attr("x2", "0%") //for the start opacity 0 to be at the left of x 
+            .attr("y2", "100%")
+            .attr("spreadMethod", "pad");
+          //stop color
+          legend.append("stop")
+            .attr("offset", "0%")
+            .attr("stop-color", highColorAmenities)
+            .attr("stop-opacity", 1);
+          //start color
+          legend.append("stop")
+            .attr("offset", "100%")
+            .attr("stop-color", lowColor)
+            .attr("stop-opacity", 1);
+
+          key.append("rect")
+            .attr("width", 200) //width and height of rectangle 
+            .attr("height", 20)
+            .style("fill", "url(#gradient)")
+            .attr("transform", "translate(220, 570)"); //changes the position
+          
+          key.append("text")
+            .attr("class", "legendText") 
+            .attr("x", 220) 
+            .attr("y", 605) 
+            .text("Low");
+
+          key.append("text")
+            .attr("class", "legendText") 
+            .attr("x", 390) 
+            .attr("y", 605) 
+            .text("High");
+
+          key.append("text")
+            .attr("class", "legendHeading")
+            .attr("x", 220)
+            .attr("y", 560) 
+            .text("Relative Frequency")
+
+          //adding source
+          key.append("text")
+            .attr("class", "sourceText")
+            .attr("x", 220)
+            .attr("y", 618) 
+            .text("SOURCE: Department of City Planning (2017), Inside AirBnB (2017)")
+            }
 
     d3.select("#quietfrequency").on("click", quietfrequency);
       function quietfrequency(d){
@@ -698,6 +1236,7 @@ function ready(error, nyc, frequency) { //error, var1, var2
         d3.select(".chloroplethMap").remove();
         d3.selectAll(".boroughs").remove();
         d3.selectAll(".mapTitle").remove();
+        d3.select(".legend").remove();
       svgReviews.append("g")
         .attr("class", "nta") 
       .selectAll("path")
@@ -732,7 +1271,65 @@ function ready(error, nyc, frequency) { //error, var1, var2
           .datum(topojson.mesh(nyc, nyc.objects.nybb))
           .attr("class", "boroughs") 
           .attr("d", path)
-      }
+        //drawing legend for chloropleth
+        var w = 960, h = 625; //width and height of legend 
+
+        var key = d3.select("body")
+          .append("svg")
+          .attr("width", w)
+          .attr("height", h)
+          .attr("class", "legend");
+
+        var legend = key.append("defs")
+          .append("svg:linearGradient")
+          .attr("id", "gradient")
+          .attr("x1", "100%")
+          .attr("y1", "100%")
+          .attr("x2", "0%") //for the start opacity 0 to be at the left of x 
+          .attr("y2", "100%")
+          .attr("spreadMethod", "pad");
+        //stop color
+        legend.append("stop")
+          .attr("offset", "0%")
+          .attr("stop-color", highColorPace)
+          .attr("stop-opacity", 1);
+        //start color
+        legend.append("stop")
+          .attr("offset", "100%")
+          .attr("stop-color", lowColor)
+          .attr("stop-opacity", 1);
+
+        key.append("rect")
+          .attr("width", 200) //width and height of rectangle 
+          .attr("height", 20)
+          .style("fill", "url(#gradient)")
+          .attr("transform", "translate(220, 570)"); //changes the position
+        
+        key.append("text")
+          .attr("class", "legendText") 
+          .attr("x", 220) 
+          .attr("y", 605) 
+          .text("Low");
+
+        key.append("text")
+          .attr("class", "legendText") 
+          .attr("x", 390) 
+          .attr("y", 605) 
+          .text("High");
+
+        key.append("text")
+          .attr("class", "legendHeading")
+          .attr("x", 220)
+          .attr("y", 560) 
+          .text("Relative Frequency")
+
+        //adding source
+        key.append("text")
+          .attr("class", "sourceText")
+          .attr("x", 220)
+          .attr("y", 618) 
+          .text("SOURCE: Department of City Planning (2017), Inside AirBnB (2017)")
+          }
     d3.select("#busyfrequency").on("click", busyfrequency);
       function busyfrequency(d){
         //this changes the styling of the selected button 
@@ -742,6 +1339,7 @@ function ready(error, nyc, frequency) { //error, var1, var2
         d3.select(".chloroplethMap").remove();
         d3.selectAll(".boroughs").remove();
         d3.selectAll(".mapTitle").remove();
+        d3.select(".legend").remove();
       svgReviews.append("g")
         .attr("class", "nta")  
       .selectAll("path")
@@ -776,69 +1374,66 @@ function ready(error, nyc, frequency) { //error, var1, var2
           .datum(topojson.mesh(nyc, nyc.objects.nybb))
           .attr("class", "boroughs") 
           .attr("d", path)
+        //drawing legend for chloropleth
+          var w = 960, h = 625; //width and height of legend 
+
+          var key = d3.select("body")
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h)
+            .attr("class", "legend");
+
+          var legend = key.append("defs")
+            .append("svg:linearGradient")
+            .attr("id", "gradient")
+            .attr("x1", "100%")
+            .attr("y1", "100%")
+            .attr("x2", "0%") //for the start opacity 0 to be at the left of x 
+            .attr("y2", "100%")
+            .attr("spreadMethod", "pad");
+          //stop color
+          legend.append("stop")
+            .attr("offset", "0%")
+            .attr("stop-color", highColorPace)
+            .attr("stop-opacity", 1);
+          //start color
+          legend.append("stop")
+            .attr("offset", "100%")
+            .attr("stop-color", lowColor)
+            .attr("stop-opacity", 1);
+
+          key.append("rect")
+            .attr("width", 200) //width and height of rectangle 
+            .attr("height", 20)
+            .style("fill", "url(#gradient)")
+            .attr("transform", "translate(220, 570)"); //changes the position
+          
+          key.append("text")
+            .attr("class", "legendText") 
+            .attr("x", 220) 
+            .attr("y", 605) 
+            .text("Low");
+
+          key.append("text")
+            .attr("class", "legendText") 
+            .attr("x", 390) 
+            .attr("y", 605) 
+            .text("High");
+
+          key.append("text")
+            .attr("class", "legendHeading")
+            .attr("x", 220)
+            .attr("y", 560) 
+            .text("Relative Frequency")
+
+          //adding source
+          key.append("text")
+            .attr("class", "sourceText")
+            .attr("x", 220)
+            .attr("y", 618) 
+            .text("SOURCE: Department of City Planning (2017), Inside AirBnB (2017)")
       }
 };
-
-//MOVE THIS INTO actual button clicks
-  //drawing legend for chloropleth
-    var w = 960, h = 625; //width and height of legend 
-
-    var key = d3.select("body")
-      .append("svg")
-      .attr("width", w)
-      .attr("height", h)
-      .attr("class", "legend");
-
-    var legend = key.append("defs")
-      .append("svg:linearGradient")
-      .attr("id", "gradient")
-      .attr("x1", "100%")
-      .attr("y1", "100%")
-      .attr("x2", "0%") //for the start opacity 0 to be at the left of x 
-      .attr("y2", "100%")
-      .attr("spreadMethod", "pad");
-    //stop color
-    legend.append("stop")
-      .attr("offset", "0%")
-      .attr("stop-color", "#000000")
-      .attr("stop-opacity", 1);
-    //start color
-    legend.append("stop")
-      .attr("offset", "100%")
-      .attr("stop-color", "pink")
-      .attr("stop-opacity", 1);
-
-    key.append("rect")
-      .attr("width", 200) //width and height of rectangle 
-      .attr("height", 20)
-      .style("fill", "url(#gradient)")
-      .attr("transform", "translate(220, 570)"); //changes the position
-    
-    key.append("text")
-      .attr("class", "legendText") 
-      .attr("x", 220) 
-      .attr("y", 605) 
-      .text("Low");
-
-    key.append("text")
-      .attr("class", "legendText") 
-      .attr("x", 390) 
-      .attr("y", 605) 
-      .text("High");
-
-    key.append("text")
-      .attr("class", "legendHeading")
-      .attr("x", 220)
-      .attr("y", 560) 
-      .text("Relative Frequency")
-
-    //adding source
-    key.append("text")
-      .attr("class", "sourceText")
-      .attr("x", 220)
-      .attr("y", 618) 
-      .text("SOURCE: Department of City Planning (2017), Inside AirBnB (2017)")
-
   </script>   
 
 </html>
