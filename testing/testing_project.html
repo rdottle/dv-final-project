@@ -58,11 +58,13 @@
       <div class = "container" >
         <div class="row">
           <div class="col-md-10">
-            <div class="chloroplethMap"> </div>
-              <div class="source">
-                <span class="sourceTitle"></span>
-                <span class="sourceText"></span>
-              </div>
+            <svg class="chloroplethMap" width = "680" height = "600"> </svg>
+              <div class="col-md-6">
+            <svg class="listingsMap" width = "480" height = "600"> </svg>
+          </div>
+          <div class="col-md-6">
+            <svg class="reviewsMap" width = "480" height = "600"> </svg>
+          </div>
             </div>
           </div>
         </div>
@@ -85,24 +87,38 @@
 
 //map basics
   //Creates tooltip and makes it invisiblae
-  var div = d3.select(".chloroplethMap").append("div")
-    .attr("class", "tooltip")
-    .style("opacity", 0);
+  // var div = d3.select(".chloroplethMap").append("div")
+  //   .attr("class", "tooltip")
+  //   .style("opacity", 0);
+  // var div = d3.select(".reviewsMap").append("div")
+  //   .attr("class", "tooltip")
+  //   .style("opacity", 0);
+  // var div = d3.select(".listingsMap").append("div")
+  //   .attr("class", "tooltip")
+  //   .style("opacity", 0);
 
   //using svg element to display the map on 
-  var width = 600;
+  var width = 960;
       height = 600;
 
   var projection = d3.geoMercator()
       .center([-73.94, 40.70])
-      .scale(50000)
-      .translate([width / 2, height / 2]); 
+      .scale(42000)
+      .translate([width / 4, height / 2]); 
 
   var path = d3.geoPath()
       .projection(projection);
 
   //sets/creates svg window and draws first map  
   var svg = d3.select(".chloroplethMap").append("svg")
+      .attr("width", width)
+      .attr("height", height)
+
+  var svgReviews = d3.select(".reviewsMap").append("svg")
+      .attr("width", width)
+      .attr("height", height)
+
+  var svgListing = d3.select(".listingMap").append("svg")
       .attr("width", width)
       .attr("height", height)
 
@@ -217,13 +233,13 @@ function ready(error, nyc, frequency) { //error, var1, var2
       // console.log(affordableFreq)
     });
     
-  //drawing first map 
-    svg.append("g")
-      .attr("class", "nta") //i define the class 
+  //drawing reviews map 
+    d3.select("svg.reviewsMap")
     .selectAll("path")
       .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
     .enter().append("path")
       .attr("d", path)
+      .attr("class", "introMap")
       .style("fill", "gold")
       .style("fill-opacity", "0.2")
     svg.append("text")
@@ -232,54 +248,71 @@ function ready(error, nyc, frequency) { //error, var1, var2
     .attr("y", function(d){ return height / 10;}) 
     .text("New York City")
 
-  //adding outline for borough boundaries  
-   svg.append("path")
-    .datum(topojson.mesh(nyc, nyc.objects.nybb))
-    .attr("class", "boroughs") 
-    .attr("d", path)
-    .style("stroke", "grey")
-    .style("stroke-width", "1")
-    .style("stroke-opacity", "1")
-  //adding borough titles 
-   svg.append("text")
-    .attr("class", "boroughName")
-    .attr("x", width/3 - 10)
-    .attr("y", function(d){ return height * 60 /180;}) 
-    .text("Manhattan")
-   svg.append("text")
-    .attr("class", "boroughName")
-    .attr("x", width/2 - 40)
-    .attr("y", function(d){ return height * 90 / 150;}) 
-    .text("Brooklyn")
-   svg.append("text")
-    .attr("class", "boroughName")
-    .attr("x", width/2 + 80)
-    .attr("y", function(d){ return height * 70 / 150;})
-    .text("Queens") 
-   svg.append("text")
-    .attr("class", "boroughName")
-    .attr("x", width/2 + 30)
-    .attr("y", function(d){ return height * 60 / 300;}) 
-    .text("The Bronx")
-   svg.append("text")
-    .attr("class", "boroughName")
-    .attr("x", width/7 + 5)
-    .attr("y", function(d){ return height * 210 / 300;}) 
-    .text("Staten Island")
-  //adding source
-   svg.append("text")
-    .attr("class", "sourceText")
-    .attr("x", 10)
-    .attr("y", function(d){ return height/2 + 300;}) 
-    .text("SOURCE: Department of City Planning (2017), Inside AirBnB (2017)")
+    //drawing listings map 
+    d3.select("svg.listingsMap")
+    .selectAll("path")
+      .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
+    .enter().append("path")
+      .attr("d", path)
+      .attr("class", "introMap")
+      .style("fill", "gold")
+      .style("fill-opacity", "0.2")
+    svg.append("text")
+    .attr("class", "mapTitle")
+    .attr("x", 400)
+    .attr("y", function(d){ return height / 10;}) 
+    .text("New York City")
+
+  // //adding outline for borough boundaries  
+  //  svg.append("path")
+  //   .datum(topojson.mesh(nyc, nyc.objects.nybb))
+  //   .attr("class", "boroughs") 
+  //   .attr("d", path)
+  //   .style("stroke", "grey")
+  //   .style("stroke-width", "1")
+  //   .style("stroke-opacity", "1")
+  // //adding borough titles 
+  //  svg.append("text")
+  //   .attr("class", "boroughName")
+  //   .attr("x", width/3 - 10)
+  //   .attr("y", function(d){ return height * 60 /180;}) 
+  //   .text("Manhattan")
+  //  svg.append("text")
+  //   .attr("class", "boroughName")
+  //   .attr("x", width/2 - 40)
+  //   .attr("y", function(d){ return height * 90 / 150;}) 
+  //   .text("Brooklyn")
+  //  svg.append("text")
+  //   .attr("class", "boroughName")
+  //   .attr("x", width/2 + 80)
+  //   .attr("y", function(d){ return height * 70 / 150;})
+  //   .text("Queens") 
+  //  svg.append("text")
+  //   .attr("class", "boroughName")
+  //   .attr("x", width/2 + 30)
+  //   .attr("y", function(d){ return height * 60 / 300;}) 
+  //   .text("The Bronx")
+  //  svg.append("text")
+  //   .attr("class", "boroughName")
+  //   .attr("x", width/7 + 5)
+  //   .attr("y", function(d){ return height * 210 / 300;}) 
+  //   .text("Staten Island")
+  // //adding source
+  //  svg.append("text")
+  //   .attr("class", "sourceText")
+  //   .attr("x", 10)
+  //   .attr("y", function(d){ return height/2 + 280;}) 
+  //   .text("SOURCE: Department of City Planning (2017), Inside AirBnB (2017)")
+
 
 // Add mouse events
     d3.select("#affordablefrequency").on("click", affordablefrequency);
       function affordablefrequency(d){
+        // d3.select(".chloroplethMap").remove();
       svg.append("g")
-        .attr("class", "nta") //i define the class 
+        .attr("class", "nta") 
       .selectAll("path")
-        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) // Bind TopoJSON data elements - this has to be basically the name of the file under the objects in the json 
+        .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
       .enter().append("path")
         .attr("d", path)
         .style("fill", function(d) {
@@ -432,7 +465,7 @@ function ready(error, nyc, frequency) { //error, var1, var2
         .style("stroke", "lightgrey")
         .style("stroke-width", "0.2")
       }
-      
+     
 };
 
   // //drawing legend for chloropleth

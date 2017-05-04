@@ -6,10 +6,18 @@ body {
 
 .chloroplethMap {
 	padding:0;
-	border: 1px solid black;
-	background: white;
+	background: none;
 }
 
+.reviewsMap{
+  bottom:0;
+  position: fixed;
+}
+
+.listingsMap{
+  bottom:0;
+  position: fixed;
+}
 /*so that empty cells will have no color*/
 .nta { 
   fill: none;
