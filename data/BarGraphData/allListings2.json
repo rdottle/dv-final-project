@@ -1,0 +1,362 @@
+[
+  {
+    "ID": "Manhattan",
+    "Word": "apartment",
+    "Freq": 10982,
+    "RelFreq": 2.051352937
+  },
+  {
+    "ID": "Manhattan",
+    "Word": "bedroom",
+    "Freq": 7032,
+    "RelFreq": 1.313523388
+  },
+  {
+    "ID": "Manhattan",
+    "Word": "room",
+    "Freq": 6967,
+    "RelFreq": 1.301381889
+  },
+  {
+    "ID": "Manhattan",
+    "Word": "place",
+    "Freq": 6943,
+    "RelFreq": 1.296898874
+  },
+  {
+    "ID": "Manhattan",
+    "Word": "park",
+    "Freq": 6536,
+    "RelFreq": 1.220874412
+  },
+  {
+    "ID": "Manhattan",
+    "Word": "located",
+    "Freq": 5085,
+    "RelFreq": 0.949838798
+  },
+  {
+    "ID": "Manhattan",
+    "Word": "restaurants",
+    "Freq": 5026,
+    "RelFreq": 0.938818053
+  },
+  {
+    "ID": "Manhattan",
+    "Word": "subway",
+    "Freq": 4921,
+    "RelFreq": 0.919204863
+  },
+  {
+    "ID": "Manhattan",
+    "Word": "central",
+    "Freq": 4910,
+    "RelFreq": 0.917150147
+  },
+  {
+    "ID": "Manhattan",
+    "Word": "close",
+    "Freq": 4828,
+    "RelFreq": 0.90183318
+  },
+  {
+    "ID": "Manhattan",
+    "Word": "kitchen",
+    "Freq": 4701,
+    "RelFreq": 0.878110559
+  },
+  {
+    "ID": "Manhattan",
+    "Word": "bed",
+    "Freq": 4659,
+    "RelFreq": 0.870265282
+  },
+  {
+    "ID": "Bronx",
+    "Word": "place",
+    "Freq": 301,
+    "RelFreq": 1.994830671
+  },
+  {
+    "ID": "Bronx",
+    "Word": "bronx",
+    "Freq": 252,
+    "RelFreq": 1.670090795
+  },
+  {
+    "ID": "Bronx",
+    "Word": "room",
+    "Freq": 229,
+    "RelFreq": 1.517661873
+  },
+  {
+    "ID": "Bronx",
+    "Word": "manhattan",
+    "Freq": 191,
+    "RelFreq": 1.265822785
+  },
+  {
+    "ID": "Bronx",
+    "Word": "train",
+    "Freq": 188,
+    "RelFreq": 1.245940752
+  },
+  {
+    "ID": "Bronx",
+    "Word": "apartment",
+    "Freq": 185,
+    "RelFreq": 1.226058718
+  },
+  {
+    "ID": "Bronx",
+    "Word": "close",
+    "Freq": 158,
+    "RelFreq": 1.047120419
+  },
+  {
+    "ID": "Bronx",
+    "Word": "minutes",
+    "Freq": 157,
+    "RelFreq": 1.040493074
+  },
+  {
+    "ID": "Bronx",
+    "Word": "private",
+    "Freq": 142,
+    "RelFreq": 0.941082908
+  },
+  {
+    "ID": "Bronx",
+    "Word": "bedroom",
+    "Freq": 139,
+    "RelFreq": 0.921200875
+  },
+  {
+    "ID": "Bronx",
+    "Word": "subway",
+    "Freq": 138,
+    "RelFreq": 0.91457353
+  },
+  {
+    "ID": "Bronx",
+    "Word": "away",
+    "Freq": 130,
+    "RelFreq": 0.861554775
+  },
+  {
+    "ID": "Queens",
+    "Word": "place",
+    "Freq": 1563,
+    "RelFreq": 2.272000465
+  },
+  {
+    "ID": "Queens",
+    "Word": "room",
+    "Freq": 1127,
+    "RelFreq": 1.638224264
+  },
+  {
+    "ID": "Queens",
+    "Word": "manhattan",
+    "Freq": 1089,
+    "RelFreq": 1.582986888
+  },
+  {
+    "ID": "Queens",
+    "Word": "apartment",
+    "Freq": 1067,
+    "RelFreq": 1.551007355
+  },
+  {
+    "ID": "Queens",
+    "Word": "minutes",
+    "Freq": 977,
+    "RelFreq": 1.420181993
+  },
+  {
+    "ID": "Queens",
+    "Word": "close",
+    "Freq": 892,
+    "RelFreq": 1.296624706
+  },
+  {
+    "ID": "Queens",
+    "Word": "bedroom",
+    "Freq": 809,
+    "RelFreq": 1.175974649
+  },
+  {
+    "ID": "Queens",
+    "Word": "train",
+    "Freq": 799,
+    "RelFreq": 1.161438498
+  },
+  {
+    "ID": "Queens",
+    "Word": "subway",
+    "Freq": 778,
+    "RelFreq": 1.13091258
+  },
+  {
+    "ID": "Queens",
+    "Word": "neighborhood",
+    "Freq": 724,
+    "RelFreq": 1.052417362
+  },
+  {
+    "ID": "Queens",
+    "Word": "restaurants",
+    "Freq": 660,
+    "RelFreq": 0.959385993
+  },
+  {
+    "ID": "Queens",
+    "Word": "away",
+    "Freq": 654,
+    "RelFreq": 0.950664302
+  },
+  {
+    "ID": "Brooklyn",
+    "Word": "apartment",
+    "Freq": 8431,
+    "RelFreq": 0.521552793
+  },
+  {
+    "ID": "Brooklyn",
+    "Word": "room",
+    "Freq": 7114,
+    "RelFreq": 0.440081434
+  },
+  {
+    "ID": "Brooklyn",
+    "Word": "brooklyn",
+    "Freq": 6637,
+    "RelFreq": 0.410573584
+  },
+  {
+    "ID": "Brooklyn",
+    "Word": "place",
+    "Freq": 5784,
+    "RelFreq": 0.357805878
+  },
+  {
+    "ID": "Brooklyn",
+    "Word": "bedroom",
+    "Freq": 5774,
+    "RelFreq": 0.357187265
+  },
+  {
+    "ID": "Brooklyn",
+    "Word": "manhattan",
+    "Freq": 5274,
+    "RelFreq": 0.326256604
+  },
+  {
+    "ID": "Brooklyn",
+    "Word": "restaurants",
+    "Freq": 4413,
+    "RelFreq": 0.272994007
+  },
+  {
+    "ID": "Brooklyn",
+    "Word": "train",
+    "Freq": 4312,
+    "RelFreq": 0.266746014
+  },
+  {
+    "ID": "Brooklyn",
+    "Word": "private",
+    "Freq": 4214,
+    "RelFreq": 0.260683605
+  },
+  {
+    "ID": "Brooklyn",
+    "Word": "park",
+    "Freq": 4133,
+    "RelFreq": 0.255672838
+  },
+  {
+    "ID": "Brooklyn",
+    "Word": "close",
+    "Freq": 3962,
+    "RelFreq": 0.245094552
+  },
+  {
+    "ID": "Brooklyn",
+    "Word": "kitchen",
+    "Freq": 3694,
+    "RelFreq": 0.228515718
+  },
+  {
+    "ID": "StatenIsland",
+    "Word": "ferry",
+    "Freq": 141,
+    "RelFreq": 2.267974908
+  },
+  {
+    "ID": "StatenIsland",
+    "Word": "manhattan",
+    "Freq": 129,
+    "RelFreq": 2.074955766
+  },
+  {
+    "ID": "StatenIsland",
+    "Word": "island",
+    "Freq": 122,
+    "RelFreq": 1.962361267
+  },
+  {
+    "ID": "StatenIsland",
+    "Word": "staten",
+    "Freq": 115,
+    "RelFreq": 1.849766769
+  },
+  {
+    "ID": "StatenIsland",
+    "Word": "room",
+    "Freq": 93,
+    "RelFreq": 1.495898343
+  },
+  {
+    "ID": "StatenIsland",
+    "Word": "private",
+    "Freq": 91,
+    "RelFreq": 1.463728486
+  },
+  {
+    "ID": "StatenIsland",
+    "Word": "free",
+    "Freq": 79,
+    "RelFreq": 1.270709345
+  },
+  {
+    "ID": "StatenIsland",
+    "Word": "apartment",
+    "Freq": 77,
+    "RelFreq": 1.238539488
+  },
+  {
+    "ID": "StatenIsland",
+    "Word": "place",
+    "Freq": 77,
+    "RelFreq": 1.238539488
+  },
+  {
+    "ID": "StatenIsland",
+    "Word": "house",
+    "Freq": 71,
+    "RelFreq": 1.142029918
+  },
+  {
+    "ID": "StatenIsland",
+    "Word": "close",
+    "Freq": 64,
+    "RelFreq": 1.029435419
+  },
+  {
+    "ID": "StatenIsland",
+    "Word": "bus",
+    "Freq": 55,
+    "RelFreq": 0.884671063
+  }
+]
