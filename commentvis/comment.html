@@ -3,6 +3,58 @@
   <head>
     <meta charset="utf-8">
     <title>Introduction Visual</title>
+  <script src="http://d3js.org/d3.v4.min.js"></script>
+  <script src="http://d3js.org/d3-queue.v3.min.js"></script>  
+  <script src="http://d3js.org/topojson.v1.min.js"></script> 
+  <script src="//use.typekit.net/hgl4qxi.js"></script>
+  <script src = "../libraries/p5.js"></script>
+<script type = "text/javascript"> 
+
+var listings;
+var reviews;
+var textvalue;
+
+
+
+function setup(){
+  createCanvas(1024,175);
+   for (var r = 0; r < listings.getRowCount(); r++)
+      print(listings.getString(r, "summary"));
+ }
+
+
+
+
+
+function preload(){
+  listings = loadTable('../data/listings_comments_join.csv', 'csv', 'header');
+  reviews = loadTable('../data/review_comments_join.csv', 'csv', 'header');
+  console.log('done loading data');
+  img = loadImage("../pngicons/icons_all.png");
+  print(listings.getColumn("summary"));
+
+  }
+
+function draw(){
+  background(255);
+  image(img, 0, 0, 1024, 175);
+  text((floor(mouseX)), mouseX+20, mouseY+20);
+  text((floor(mouseY)), mouseX+30, mouseY+30);
+}
+
+
+
+// function mouseMoved() {
+//   text(floor(mouseX), mouseX+20, mouseY+20);
+//   text(floor(mouseY), mouseX+30, mouseY+30);
+//   fill(0, 102, 153, 51);
+
+  // prevent default
+//   return false;
+// }
+
+  </script>   
+
   </head>
 
   <style type="text/css">
@@ -39,91 +91,7 @@
     pets.</span></a></li>
 </ul> -->
     <h1> Viz </h1>
-      <img src="../pngicons/icons_all.png" width="1440" height="246"  usemap="#planetmap">
 
-<map name="planetmap">
-  <area shape="circle" coords="0,0,82,126" href="sun.htm" alt="Sun">
-  <area shape="circle" coords="90,58,3" href="mercur.htm" alt="Mercury">
-  <area shape="circle" coords="124,58,8" href="venus.htm" alt="Venus">
-</map>
-
-</div>
   </body>
-  
-  <script src="http://d3js.org/d3.v4.min.js"></script>
-  <script src="http://d3js.org/d3-queue.v3.min.js"></script>  
-  <script src="http://d3js.org/topojson.v1.min.js"></script> 
-  <script src="//use.typekit.net/hgl4qxi.js"></script>
-  <script>try{Typekit.load();}catch(e){}</script>
-  <script type="text/javascript" src="p5/p5.js"></script>   
-
-  <script type="text/javascript">
-
-
-
-
-// var data = [400, 800, 15, 160, 23003, 420];
-
-// var x = d3.scaleLinear()
-//     .domain([0, d3.max(data)])
-//     .range([0, 420]);
-
-// var tooltip = d3.select("body")
-//     .append("div")
-//     .style("position", "absolute")
-//     .style("z-index", "10")
-//     .style("visibility", "hidden")
-//     .style("background", "#000")
-//     .text("a simple tooltip");
-
-// d3.csv("../data/colombiandata.csv", function(error, data){
-
-//           var popData = data.filter(function(d) {return d.year == year});
-
-//           x.domain([0, d3.extent(data, function(element) { return element.sumtotal; })]);
-
-//           y.domain(popData.map(function(element) {return element.age}));
-
-//           var svg = body.append("svg")
-//                .attr("width", width + margin.left + margin.right)
-//                .attr("height", height + margin.top + margin.bottom)
-//            .append("g")
-//                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-//           var barGroup = svg.append("g")
-//                .attr("class", "bar");
-
-//           var bars = barGroup.selectAll("rect")
-//                .data(popData, keys)
-//             .enter().append("rect")
-//                .attr("x", 0)
-//                .attr("y", function(d) {return y(d.age)})
-//                .attr("width", function(d) {return x(d.total)})
-//                .attr("height", y.rangeBand());
-
-//           svg.append("g")
-//                .call(xAxis)
-//                .attr("class", "x axis")
-
-//           svg.append("g")
-//                .call(yAxis)
-//                .attr("class","y axis")
-
-//           buttons.on("click", function(d) {
-//                update(d);
-//                clearInterval(playInterval);
-//           });
-
-
-// d3.select("body")
-//   .selectAll("div")
-//     .data(data)
-//   .enter().append("div")
-//     .style("width", function(d) { return x(d) + "px"; })
-//     .text(function(d) { return d; })
-//     .on("mouseover", function(d){tooltip.text(d); return tooltip.style("visibility", "visible");})
-//       .on("mousemove", function(){return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");})
-//       .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
-  </script>   
 
 </html>
