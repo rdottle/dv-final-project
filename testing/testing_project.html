@@ -60,10 +60,10 @@
           <div class="col-md-10">
             <svg class="chloroplethMap" width = "680" height = "600"> </svg>
               <div class="col-md-6">
-            <svg class="listingsMap" width = "480" height = "600"> </svg>
+            <svg class="reviewsMap" width = "480" height = "600"> </svg>
           </div>
           <div class="col-md-6">
-            <svg class="reviewsMap" width = "480" height = "600"> </svg>
+            <svg class="listingsMap" width = "480" height = "600"> </svg>
           </div>
             </div>
           </div>
@@ -86,39 +86,36 @@
   <script type="text/javascript">
 
 //map basics
-  //Creates tooltip and makes it invisiblae
-  // var div = d3.select(".chloroplethMap").append("div")
-  //   .attr("class", "tooltip")
-  //   .style("opacity", 0);
-  // var div = d3.select(".reviewsMap").append("div")
-  //   .attr("class", "tooltip")
-  //   .style("opacity", 0);
-  // var div = d3.select(".listingsMap").append("div")
-  //   .attr("class", "tooltip")
-  //   .style("opacity", 0);
-
   //using svg element to display the map on 
   var width = 960;
       height = 600;
 
+  //for all maps
   var projection = d3.geoMercator()
       .center([-73.94, 40.70])
       .scale(42000)
       .translate([width / 4, height / 2]); 
-
   var path = d3.geoPath()
       .projection(projection);
 
-  //sets/creates svg window and draws first map  
+  //just for first map 
+  var projectionIntro = d3.geoMercator()
+      .center([-73.94, 40.70])
+      .scale(55000)
+      .translate([width / 2 -50, height / 2 ]); 
+  var pathIntro = d3.geoPath()
+      .projection(projectionIntro);
+
+  //sets/creates svg window and draws first NYC map  
   var svg = d3.select(".chloroplethMap").append("svg")
       .attr("width", width)
       .attr("height", height)
 
+  //creates svg window for reviews and listings maps 
   var svgReviews = d3.select(".reviewsMap").append("svg")
       .attr("width", width)
       .attr("height", height)
-
-  var svgListing = d3.select(".listingMap").append("svg")
+  var svgListings = d3.select(".listingsMap").append("svg")
       .attr("width", width)
       .attr("height", height)
 
@@ -233,83 +230,67 @@ function ready(error, nyc, frequency) { //error, var1, var2
       // console.log(affordableFreq)
     });
     
-  //drawing reviews map 
-    d3.select("svg.reviewsMap")
-    .selectAll("path")
-      .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
-    .enter().append("path")
-      .attr("d", path)
-      .attr("class", "introMap")
-      .style("fill", "gold")
-      .style("fill-opacity", "0.2")
-    svg.append("text")
-    .attr("class", "mapTitle")
-    .attr("x", 20)
-    .attr("y", function(d){ return height / 10;}) 
-    .text("New York City")
-
-    //drawing listings map 
-    d3.select("svg.listingsMap")
-    .selectAll("path")
-      .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
-    .enter().append("path")
-      .attr("d", path)
-      .attr("class", "introMap")
-      .style("fill", "gold")
-      .style("fill-opacity", "0.2")
-    svg.append("text")
-    .attr("class", "mapTitle")
+  //drawing intro map 
+   d3.select("svg.chloroplethMap")
+   .selectAll("path")
+    .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
+   .enter().append("path")
+    .attr("d", pathIntro)
+    .style("fill", "gold")
+    .style("fill-opacity", "0.2")
+   svg.append("text")
+    .attr("class", "NYCtitle")
     .attr("x", 400)
     .attr("y", function(d){ return height / 10;}) 
     .text("New York City")
+    //adding borough titles 
+   svg.append("text")
+    .attr("class", "boroughName")
+    .attr("x", width/3 - 10)
+    .attr("y", function(d){ return height * 60 /180;}) 
+    .text("Manhattan")
+   svg.append("text")
+    .attr("class", "boroughName")
+    .attr("x", width/2 - 40)
+    .attr("y", function(d){ return height * 90 / 150;}) 
+    .text("Brooklyn")
+   svg.append("text")
+    .attr("class", "boroughName")
+    .attr("x", width/2 + 80)
+    .attr("y", function(d){ return height * 70 / 150;})
+    .text("Queens") 
+   svg.append("text")
+    .attr("class", "boroughName")
+    .attr("x", width/2 + 30)
+    .attr("y", function(d){ return height * 60 / 300;}) 
+    .text("The Bronx")
+   svg.append("text")
+    .attr("class", "boroughName")
+    .attr("x", width/7 + 5)
+    .attr("y", function(d){ return height * 210 / 300;}) 
+    .text("Staten Island")
 
-  // //adding outline for borough boundaries  
-  //  svg.append("path")
-  //   .datum(topojson.mesh(nyc, nyc.objects.nybb))
-  //   .attr("class", "boroughs") 
-  //   .attr("d", path)
-  //   .style("stroke", "grey")
-  //   .style("stroke-width", "1")
-  //   .style("stroke-opacity", "1")
-  // //adding borough titles 
-  //  svg.append("text")
-  //   .attr("class", "boroughName")
-  //   .attr("x", width/3 - 10)
-  //   .attr("y", function(d){ return height * 60 /180;}) 
-  //   .text("Manhattan")
-  //  svg.append("text")
-  //   .attr("class", "boroughName")
-  //   .attr("x", width/2 - 40)
-  //   .attr("y", function(d){ return height * 90 / 150;}) 
-  //   .text("Brooklyn")
-  //  svg.append("text")
-  //   .attr("class", "boroughName")
-  //   .attr("x", width/2 + 80)
-  //   .attr("y", function(d){ return height * 70 / 150;})
-  //   .text("Queens") 
-  //  svg.append("text")
-  //   .attr("class", "boroughName")
-  //   .attr("x", width/2 + 30)
-  //   .attr("y", function(d){ return height * 60 / 300;}) 
-  //   .text("The Bronx")
-  //  svg.append("text")
-  //   .attr("class", "boroughName")
-  //   .attr("x", width/7 + 5)
-  //   .attr("y", function(d){ return height * 210 / 300;}) 
-  //   .text("Staten Island")
-  // //adding source
-  //  svg.append("text")
-  //   .attr("class", "sourceText")
-  //   .attr("x", 10)
-  //   .attr("y", function(d){ return height/2 + 280;}) 
-  //   .text("SOURCE: Department of City Planning (2017), Inside AirBnB (2017)")
-
+   //adding outline for borough boundaries [INTRO]
+   svg.append("path")
+    .datum(topojson.mesh(nyc, nyc.objects.nybb))
+    .attr("class", "boroughs") 
+    .attr("d", pathIntro)
+    .style("stroke", "grey")
+    .style("stroke-width", "1")
+    .style("stroke-opacity", "1")
+  
+  //adding source
+   svgReviews.append("text")
+    .attr("class", "sourceText")
+    .attr("x", 10)
+    .attr("y", function(d){ return height/2 + 280;}) 
+    .text("SOURCE: Department of City Planning (2017), Inside AirBnB (2017)")
 
 // Add mouse events
     d3.select("#affordablefrequency").on("click", affordablefrequency);
       function affordablefrequency(d){
-        // d3.select(".chloroplethMap").remove();
-      svg.append("g")
+        d3.select(".chloroplethMap").remove();
+      svgReviews.append("g") //appending it to the left map 
         .attr("class", "nta") 
       .selectAll("path")
         .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
@@ -320,10 +301,40 @@ function ready(error, nyc, frequency) { //error, var1, var2
         })
         .style("stroke", "lightgrey")
         .style("stroke-width", "0.2")
+        //drawing reviews and listings headings 
+        d3.select("svg.reviewsMap")   
+          svgReviews.append("text")
+          .attr("class", "mapTitle")
+          .attr("x", 20)
+          .attr("y", 40) 
+          .text("AirBnB Reviews")
+        d3.select("svg.listingsMap")
+          svgListings.append("text")
+          .attr("class", "mapTitle")
+          .attr("x", 80)
+          .attr("y", 40) 
+          .text("Air BnB Listings")
+        //adding outline for borough boundaries [REVIEWS]
+         svgReviews.append("path")
+          .datum(topojson.mesh(nyc, nyc.objects.nybb))
+          .attr("class", "boroughs") 
+          .attr("d", path)
+          .style("stroke", "grey")
+          .style("stroke-width", "1")
+          .style("stroke-opacity", "1")
+        //adding outline for borough boundaries [LISTINGS]
+         svgListings.append("path")
+          .datum(topojson.mesh(nyc, nyc.objects.nybb))
+          .attr("class", "boroughs") 
+          .attr("d", path)
+          .style("stroke", "grey")
+          .style("stroke-width", "1")
+          .style("stroke-opacity", "1")
       }
     d3.select("#luxuryfrequency").on("click", luxuryfrequency);
       function luxuryfrequency(d){
-      svg.append("g")
+        d3.select(".chloroplethMap").remove();
+      svgReviews.append("g")
         .attr("class", "nta") 
       .selectAll("path")
         .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
@@ -334,11 +345,41 @@ function ready(error, nyc, frequency) { //error, var1, var2
         })
         .style("stroke", "lightgrey")
         .style("stroke-width", "0.2")
+        //drawing reviews and listings headings 
+        d3.select("svg.reviewsMap")   
+          svgReviews.append("text")
+          .attr("class", "mapTitle")
+          .attr("x", 20)
+          .attr("y", 40) 
+          .text("AirBnB Reviews")
+        d3.select("svg.listingsMap")
+          svgListings.append("text")
+          .attr("class", "mapTitle")
+          .attr("x", 80)
+          .attr("y", 40) 
+          .text("Air BnB Listings")
+        //adding outline for borough boundaries [REVIEWS]
+         svgReviews.append("path")
+          .datum(topojson.mesh(nyc, nyc.objects.nybb))
+          .attr("class", "boroughs") 
+          .attr("d", path)
+          .style("stroke", "grey")
+          .style("stroke-width", "1")
+          .style("stroke-opacity", "1")
+        //adding outline for borough boundaries [LISTINGS]
+         svgListings.append("path")
+          .datum(topojson.mesh(nyc, nyc.objects.nybb))
+          .attr("class", "boroughs") 
+          .attr("d", path)
+          .style("stroke", "grey")
+          .style("stroke-width", "1")
+          .style("stroke-opacity", "1")
       }
 
     d3.select("#modernfrequency").on("click", modernfrequency);
       function modernfrequency(d){
-      svg.append("g")
+        d3.select(".chloroplethMap").remove();
+      svgReviews.append("g")
         .attr("class", "nta") 
       .selectAll("path")
         .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
@@ -349,10 +390,40 @@ function ready(error, nyc, frequency) { //error, var1, var2
         })
         .style("stroke", "lightgrey")
         .style("stroke-width", "0.2")
+        //drawing reviews and listings headings 
+        d3.select("svg.reviewsMap")   
+          svgReviews.append("text")
+          .attr("class", "mapTitle")
+          .attr("x", 20)
+          .attr("y", 40) 
+          .text("AirBnB Reviews")
+        d3.select("svg.listingsMap")
+          svgListings.append("text")
+          .attr("class", "mapTitle")
+          .attr("x", 80)
+          .attr("y", 40) 
+          .text("Air BnB Listings")
+        //adding outline for borough boundaries [REVIEWS]
+         svgReviews.append("path")
+          .datum(topojson.mesh(nyc, nyc.objects.nybb))
+          .attr("class", "boroughs") 
+          .attr("d", path)
+          .style("stroke", "grey")
+          .style("stroke-width", "1")
+          .style("stroke-opacity", "1")
+        //adding outline for borough boundaries [LISTINGS]
+         svgListings.append("path")
+          .datum(topojson.mesh(nyc, nyc.objects.nybb))
+          .attr("class", "boroughs") 
+          .attr("d", path)
+          .style("stroke", "grey")
+          .style("stroke-width", "1")
+          .style("stroke-opacity", "1")
       }
     d3.select("#cozyfrequency").on("click", cozyfrequency);
       function cozyfrequency(d){
-      svg.append("g")
+        d3.select(".chloroplethMap").remove();
+      svgReviews.append("g")
         .attr("class", "nta") //i define the class 
       .selectAll("path")
         .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
@@ -363,11 +434,41 @@ function ready(error, nyc, frequency) { //error, var1, var2
         })
         .style("stroke", "lightgrey")
         .style("stroke-width", "0.2")
+        //drawing reviews and listings headings 
+        d3.select("svg.reviewsMap")   
+          svgReviews.append("text")
+          .attr("class", "mapTitle")
+          .attr("x", 20)
+          .attr("y", 40) 
+          .text("AirBnB Reviews")
+        d3.select("svg.listingsMap")
+          svgListings.append("text")
+          .attr("class", "mapTitle")
+          .attr("x", 80)
+          .attr("y", 40) 
+          .text("Air BnB Listings")
+        //adding outline for borough boundaries [REVIEWS]
+        svgReviews.append("path")
+        .datum(topojson.mesh(nyc, nyc.objects.nybb))
+        .attr("class", "boroughs") 
+        .attr("d", path)
+        .style("stroke", "grey")
+        .style("stroke-width", "1")
+        .style("stroke-opacity", "1")
+        //adding outline for borough boundaries [LISTINGS]
+        svgListings.append("path")
+        .datum(topojson.mesh(nyc, nyc.objects.nybb))
+        .attr("class", "boroughs") 
+        .attr("d", path)
+        .style("stroke", "grey")
+        .style("stroke-width", "1")
+        .style("stroke-opacity", "1")
       }
 
       d3.select("#diversefrequency").on("click", diversefrequency);
       function diversefrequency(d){
-      svg.append("g")
+        d3.select(".chloroplethMap").remove();
+      svgReviews.append("g")
         .attr("class", "nta") 
       .selectAll("path")
         .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
@@ -378,10 +479,40 @@ function ready(error, nyc, frequency) { //error, var1, var2
         })
         .style("stroke", "lightgrey")
         .style("stroke-width", "0.2")
+        //drawing reviews and listings headings 
+        d3.select("svg.reviewsMap")   
+          svgReviews.append("text")
+          .attr("class", "mapTitle")
+          .attr("x", 20)
+          .attr("y", 40) 
+          .text("AirBnB Reviews")
+        d3.select("svg.listingsMap")
+          svgListings.append("text")
+          .attr("class", "mapTitle")
+          .attr("x", 80)
+          .attr("y", 40) 
+          .text("Air BnB Listings")
+        //adding outline for borough boundaries [REVIEWS]
+        svgReviews.append("path")
+        .datum(topojson.mesh(nyc, nyc.objects.nybb))
+        .attr("class", "boroughs") 
+        .attr("d", path)
+        .style("stroke", "grey")
+        .style("stroke-width", "1")
+        .style("stroke-opacity", "1")
+        //adding outline for borough boundaries [LISTINGS]
+        svgListings.append("path")
+        .datum(topojson.mesh(nyc, nyc.objects.nybb))
+        .attr("class", "boroughs") 
+        .attr("d", path)
+        .style("stroke", "grey")
+        .style("stroke-width", "1")
+        .style("stroke-opacity", "1")
       }
     d3.select("#hipsterfrequency").on("click", hipsterfrequency);
       function hipsterfrequency(d){
-      svg.append("g")
+        d3.select(".chloroplethMap").remove();
+      svgReviews.append("g")
         .attr("class", "nta") 
       .selectAll("path")
         .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
@@ -392,10 +523,40 @@ function ready(error, nyc, frequency) { //error, var1, var2
         })
         .style("stroke", "lightgrey")
         .style("stroke-width", "0.2")
+        //drawing reviews and listings headings 
+        d3.select("svg.reviewsMap")   
+          svgReviews.append("text")
+          .attr("class", "mapTitle")
+          .attr("x", 20)
+          .attr("y", 40) 
+          .text("AirBnB Reviews")
+        d3.select("svg.listingsMap")
+          svgListings.append("text")
+          .attr("class", "mapTitle")
+          .attr("x", 80)
+          .attr("y", 40) 
+          .text("Air BnB Listings")
+        //adding outline for borough boundaries [REVIEWS]
+         svgReviews.append("path")
+          .datum(topojson.mesh(nyc, nyc.objects.nybb))
+          .attr("class", "boroughs") 
+          .attr("d", path)
+          .style("stroke", "grey")
+          .style("stroke-width", "1")
+          .style("stroke-opacity", "1")
+        //adding outline for borough boundaries [LISTINGS]
+         svgListings.append("path")
+          .datum(topojson.mesh(nyc, nyc.objects.nybb))
+          .attr("class", "boroughs") 
+          .attr("d", path)
+          .style("stroke", "grey")
+          .style("stroke-width", "1")
+          .style("stroke-opacity", "1")
       }
     d3.select("#historicfrequency").on("click", historicfrequency);
       function historicfrequency(d){
-      svg.append("g")
+        d3.select(".chloroplethMap").remove();
+      svgReviews.append("g")
         .attr("class", "nta") 
       .selectAll("path")
         .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
@@ -406,11 +567,41 @@ function ready(error, nyc, frequency) { //error, var1, var2
         })
         .style("stroke", "lightgrey")
         .style("stroke-width", "0.2")
+        //drawing reviews and listings headings 
+        d3.select("svg.reviewsMap")   
+          svgReviews.append("text")
+          .attr("class", "mapTitle")
+          .attr("x", 20)
+          .attr("y", 40) 
+          .text("AirBnB Reviews")
+        d3.select("svg.listingsMap")
+          svgListings.append("text")
+          .attr("class", "mapTitle")
+          .attr("x", 80)
+          .attr("y", 40) 
+          .text("Air BnB Listings")
+        //adding outline for borough boundaries [REVIEWS]
+        svgReviews.append("path")
+        .datum(topojson.mesh(nyc, nyc.objects.nybb))
+        .attr("class", "boroughs") 
+        .attr("d", path)
+        .style("stroke", "grey")
+        .style("stroke-width", "1")
+        .style("stroke-opacity", "1")
+        //adding outline for borough boundaries [LISTINGS]
+        svgListings.append("path")
+        .datum(topojson.mesh(nyc, nyc.objects.nybb))
+        .attr("class", "boroughs") 
+        .attr("d", path)
+        .style("stroke", "grey")
+        .style("stroke-width", "1")
+        .style("stroke-opacity", "1")
       }
     
     d3.select("#barfrequency").on("click", barfrequency);
       function barfrequency(d){
-      svg.append("g")
+        d3.select(".chloroplethMap").remove();
+      svgReviews.append("g")
         .attr("class", "nta") //i define the class 
       .selectAll("path")
         .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) // Bind TopoJSON data elements - this has to be basically the name of the file under the objects in the json 
@@ -421,10 +612,40 @@ function ready(error, nyc, frequency) { //error, var1, var2
         })
         .style("stroke", "lightgrey")
         .style("stroke-width", "0.2")
+        //drawing reviews and listings headings 
+        d3.select("svg.reviewsMap")   
+          svgReviews.append("text")
+          .attr("class", "mapTitle")
+          .attr("x", 20)
+          .attr("y", 40) 
+          .text("AirBnB Reviews")
+        d3.select("svg.listingsMap")
+          svgListings.append("text")
+          .attr("class", "mapTitle")
+          .attr("x", 80)
+          .attr("y", 40) 
+          .text("Air BnB Listings")
+        //adding outline for borough boundaries [REVIEWS]
+         svgReviews.append("path")
+          .datum(topojson.mesh(nyc, nyc.objects.nybb))
+          .attr("class", "boroughs") 
+          .attr("d", path)
+          .style("stroke", "grey")
+          .style("stroke-width", "1")
+          .style("stroke-opacity", "1")
+        //adding outline for borough boundaries [LISTINGS]
+         svgListings.append("path")
+          .datum(topojson.mesh(nyc, nyc.objects.nybb))
+          .attr("class", "boroughs") 
+          .attr("d", path)
+          .style("stroke", "grey")
+          .style("stroke-width", "1")
+          .style("stroke-opacity", "1")
       }
     d3.select("#parkfrequency").on("click", parkfrequency);
       function parkfrequency(d){
-      svg.append("g")
+        d3.select(".chloroplethMap").remove();
+      svgReviews.append("g")
         .attr("class", "nta") 
       .selectAll("path")
         .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
@@ -435,11 +656,41 @@ function ready(error, nyc, frequency) { //error, var1, var2
         })
         .style("stroke", "lightgrey")
         .style("stroke-width", "0.2")
+        //drawing reviews and listings headings 
+        d3.select("svg.reviewsMap")   
+          svgReviews.append("text")
+          .attr("class", "mapTitle")
+          .attr("x", 20)
+          .attr("y", 40) 
+          .text("AirBnB Reviews")
+        d3.select("svg.listingsMap")
+          svgListings.append("text")
+          .attr("class", "mapTitle")
+          .attr("x", 80)
+          .attr("y", 40) 
+          .text("Air BnB Listings")
+        //adding outline for borough boundaries [REVIEWS]
+         svgReviews.append("path")
+          .datum(topojson.mesh(nyc, nyc.objects.nybb))
+          .attr("class", "boroughs") 
+          .attr("d", path)
+          .style("stroke", "grey")
+          .style("stroke-width", "1")
+          .style("stroke-opacity", "1")
+        //adding outline for borough boundaries [LISTINGS]
+         svgListings.append("path")
+          .datum(topojson.mesh(nyc, nyc.objects.nybb))
+          .attr("class", "boroughs") 
+          .attr("d", path)
+          .style("stroke", "grey")
+          .style("stroke-width", "1")
+          .style("stroke-opacity", "1")
       }
 
     d3.select("#quietfrequency").on("click", quietfrequency);
       function quietfrequency(d){
-      svg.append("g")
+        d3.select(".chloroplethMap").remove();
+      svgReviews.append("g")
         .attr("class", "nta") 
       .selectAll("path")
         .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
@@ -450,10 +701,40 @@ function ready(error, nyc, frequency) { //error, var1, var2
         })
         .style("stroke", "lightgrey")
         .style("stroke-width", "0.2")
+        //drawing reviews and listings headings 
+        d3.select("svg.reviewsMap")   
+          svgReviews.append("text")
+          .attr("class", "mapTitle")
+          .attr("x", 20)
+          .attr("y", 40) 
+          .text("AirBnB Reviews")
+        d3.select("svg.listingsMap")
+          svgListings.append("text")
+          .attr("class", "mapTitle")
+          .attr("x", 80)
+          .attr("y", 40) 
+          .text("Air BnB Listings")
+        //adding outline for borough boundaries [REVIEWS]
+         svgReviews.append("path")
+          .datum(topojson.mesh(nyc, nyc.objects.nybb))
+          .attr("class", "boroughs") 
+          .attr("d", path)
+          .style("stroke", "grey")
+          .style("stroke-width", "1")
+          .style("stroke-opacity", "1")
+        //adding outline for borough boundaries [LISTINGS]
+         svgListings.append("path")
+          .datum(topojson.mesh(nyc, nyc.objects.nybb))
+          .attr("class", "boroughs") 
+          .attr("d", path)
+          .style("stroke", "grey")
+          .style("stroke-width", "1")
+          .style("stroke-opacity", "1")
       }
     d3.select("#busyfrequency").on("click", busyfrequency);
       function busyfrequency(d){
-      svg.append("g")
+        d3.select(".chloroplethMap").remove();
+      svgReviews.append("g")
         .attr("class", "nta")  
       .selectAll("path")
         .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) 
@@ -464,8 +745,36 @@ function ready(error, nyc, frequency) { //error, var1, var2
         })
         .style("stroke", "lightgrey")
         .style("stroke-width", "0.2")
+        //drawing reviews and listings headings 
+        d3.select("svg.reviewsMap")   
+          svgReviews.append("text")
+          .attr("class", "mapTitle")
+          .attr("x", 20)
+          .attr("y", 40) 
+          .text("AirBnB Reviews")
+        d3.select("svg.listingsMap")
+          svgListings.append("text")
+          .attr("class", "mapTitle")
+          .attr("x", 80)
+          .attr("y", 40) 
+          .text("Air BnB Listings")
+        //adding outline for borough boundaries [REVIEWS]
+         svgReviews.append("path")
+          .datum(topojson.mesh(nyc, nyc.objects.nybb))
+          .attr("class", "boroughs") 
+          .attr("d", path)
+          .style("stroke", "grey")
+          .style("stroke-width", "1")
+          .style("stroke-opacity", "1")
+        //adding outline for borough boundaries [LISTINGS]
+         svgListings.append("path")
+          .datum(topojson.mesh(nyc, nyc.objects.nybb))
+          .attr("class", "boroughs") 
+          .attr("d", path)
+          .style("stroke", "grey")
+          .style("stroke-width", "1")
+          .style("stroke-opacity", "1")
       }
-     
 };
 
   // //drawing legend for chloropleth
