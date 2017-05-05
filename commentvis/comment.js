@@ -51,7 +51,7 @@ function mouseClicked() {
   // var d = dist(mouseX, mouseY, 90, 78);
   if (mouseX > 20 && mouseX < 150 && mouseY > 40 && mouseY < 145 ){
     // Pick new random color values
-    textbox = reviews.getString(0, "comments");
+    textbox = reviews.getString(6, "comments");
         textSize(16);
 
     }
@@ -61,13 +61,13 @@ function mouseClicked() {
   }
 
   else if (mouseX > 415 && mouseX < 525 && mouseY > 25 && mouseY < 140){
-    textbox = reviews.getString(4, "comments");
+    textbox = reviews.getString(0, "comments");
         textSize(16);
 
   }
 
   else if (mouseX > 620 && mouseX < 725 && mouseY > 25 && mouseY < 140){
-    textbox = reviews.getString(6, "comments");
+    textbox = reviews.getString(9, "comments");
         textSize(16);
 
   }
