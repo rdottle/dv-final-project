@@ -43,6 +43,14 @@ body{
     text-align:left;
 }
 
+  /*#canvasHolder2.canvas{
+          width:1200px;
+          height:675px;
+          padding-bottom: 5%;
+          padding-top: 0%;
+          padding-left:5%;
+        
+        }*/
 
 
   #canvasHolder.canvas{
