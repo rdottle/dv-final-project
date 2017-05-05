@@ -39,6 +39,16 @@ body{
     text-align:left;
 }
 
+
+
+  #canvasHolder.canvas{
+          width:1700px;
+          height:375px;
+          padding: 5%;
+
+        
+        }
+
 /* Fonts */
 .page h1 {
     font-weight: bold;
@@ -69,7 +79,7 @@ p{
 }
 
 #big_picture.page {
-    background-color: rgba(253,160,45,0.7);
+    background-color: rgba(253,160,45, 1);
     display: block;
     padding: 5%;
 }

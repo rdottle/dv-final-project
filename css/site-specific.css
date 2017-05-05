@@ -2,6 +2,7 @@ body{
     font-family: 'Poppins', sans-serif !important; 
 }
 
+
 /*styling for side column*/
 .sidePanel .container .col-md-2 {
     height: 100%;
@@ -153,6 +154,13 @@ button.searchBar{
     overflow:auto;
     text-align:left;
 }
+
+
+  #canvasHolder.canvas{
+          /*width:1024px;
+          height:175px;*/
+        
+        }
 
 /* Fonts */
 .page h1 {
