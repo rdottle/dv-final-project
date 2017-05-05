@@ -43,12 +43,20 @@ body{
   #canvasHolder.canvas{
           width:1700px;
           height:375px;
-          padding: 5%;
-
+          padding-bottom: 5%;
+          padding-top: 0%;
+          padding-left:5%;
         
         }
 
-/* Fonts */
+.text-bigpicture{
+  font-size:2em;
+  word-spacing: 110px;
+  padding-top: 5%;
+  padding-left:5%;
+
+}
+  /* Fonts */
 .page h1 {
     font-weight: bold;
     font-size: 5em;

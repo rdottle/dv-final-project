@@ -42,6 +42,7 @@ function draw(){
   // text((floor(mouseX)), mouseX+20, mouseY+20);
   // text((floor(mouseY)), mouseX+30, mouseY+30);
   text(textbox, mouseX, mouseY+100);
+  fill('#fffff');
 }
 
 // // When the user clicks the mouse
