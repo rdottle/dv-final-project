@@ -7,10 +7,10 @@ var textbox = "";
 var canvasHolder;
 
 function preload(){
-  listings = loadTable('../data/listings_comments_join.csv', 'csv', 'header');
-  reviews = loadTable('../data/review_comments_join.csv', 'csv', 'header');
+  listings = loadTable('data/listings_comments_join.csv', 'csv', 'header');
+  reviews = loadTable('data/review_comments_join.csv', 'csv', 'header');
   console.log('done loading data');
-  img = loadImage("../pngicons/icons_all.png");
+  img = loadImage("pngicons/icons_all.png");
   print(listings.getColumn("summary"));
 
   }
