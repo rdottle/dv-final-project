@@ -26,6 +26,11 @@ body{
     overflow: auto;
 }
 
+.coding-image{
+  height:800px;
+  width:1200px;
+  padding-bottom: 5%;
+}
 
 /*different blocks for the page on the right*/
 .page {

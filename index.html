@@ -151,7 +151,18 @@
           <div class="page" id="big_picture">
                      
 
-            <p>We are visualizing data from Airbnb via text analysis to create a narrative about neighbourhood identity and how this identity differs across neighbourhoods and between hosts and guests.</p>
+            <p>This project visualizes text data from Airbnb to create a narrative about neighbourhood identity and how this identity differs across neighbourhoods and between AirBnB hosts and guests. 
+      The themes being exploring are: 
+<ul>
+<li>Price (Affordable, Luxury)</li>
+<li>Interior (Cozy, Modern)</li>
+<li>Identity (Diverse, Hipster, Historic) </li>
+<li> Neighbourhood amenities (Bars, Parks) </li>
+<li> Pace (Quiet, Busy) </li>
+</p>
+
+<p>We are using these clusters of words to see how hosts in different neighbourhoods market themselves, whether their guests agree with their descriptions and to identity patterns that support or defy neighbourhood stereotypes. </p>
+
 
             <h2 class="text-bigpicture"> Price Interior Identity Neighborhood Pace</h2>
             <!-- <h2 class="text-bigpicture"> Interior</h2>
@@ -193,9 +204,10 @@
 
           <div class="page" id="coding">
             <h1>CODING</h1>
-            <p>We will be using R to do the text analysis of the data.</p>
+            
+            <img class = "coding-image" src="img/Capture3.png"/>
 
-            <p>we are interested in comparing the difference in the perceived character of neighborhoods in New York, by comparing the way neighborhoods are described and presented in listings and reviews. We have developed a basic text mining program, to extract features from our listing and review datasets. Some features we are focusing on are word frequencies, correlations, which can be compared spatially and between listings and reivews. We've also applied basic topic modeling methods to develop and compare topics across the two texts regarding how neighborhoods are described, experienced and perceived. 
+            <p>We are compare the difference in the perceived character of neighborhoods in New York, by comparing the way neighborhoods are described and presented in listings and reviews. We have developed a basic text mining program, to extract features from our listing and review datasets. Some features we are focusing on are word frequencies, correlations, which can be compared spatially and between listings and reivews. We've also applied basic topic modeling methods to develop and compare topics across the two texts regarding how neighborhoods are described, experienced and perceived. 
 
             To visualize our results, we have developed word clouds, basic word counts and frequency plots, and an interactive cartogram/diagram. An area cartogram, also referred to as a value-by-area map, distorts the shape of predetermined regions on the map to correlate with quantitative information. Our cartograms were developed in QGIS and R and many of our static plot visuals were developed in R. Our code is on <a href="https://github.com/rdottle/dv-final-project/blob/gh-pages/R/data_cleaning.Rmd" > github.</a></p>
 
@@ -208,6 +220,7 @@
             <p>The primary visual piece on our website will be the cartogram accompanied by a side panel that the user may use to interact with the data.</p>
 
             <p> Users can start interacting with the website by selecting general quantitative variables such as number of listings or average rating and see how the cartogram becomes distorted based on the relative presence and success of Airbnb across neighbourhoods. Next, using this website as inspiration, <a href="http://dashboard.electome.org">http://dashboard.electome.org</a>, there will be a toggle with which users can select “host” or “visitor”. From there there will be a list of clickable keywords or topics that users can select based on their interests that will distort the cartogram based on our text analysis. This way the user can see both differences in the relative presence of particular topics across neighbourhoods and also toggle back and forth between host and visitor to see if there are differences in each perspective and the presence of these topics in their narrative about the neighbourhood.</p>
+
             <!-- need to do this so image resizes to the column size which is the whole page within the body panel-->
             <div class="col-md-12">
               
