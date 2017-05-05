@@ -43,15 +43,6 @@ body{
     text-align:left;
 }
 
-  /*#canvasHolder2.canvas{
-          width:1200px;
-          height:675px;
-          padding-bottom: 5%;
-          padding-top: 0%;
-          padding-left:5%;
-        
-        }*/
-
 
   #canvasHolder.canvas{
           width:1700px;
@@ -59,6 +50,15 @@ body{
           padding-bottom: 5%;
           padding-top: 0%;
           padding-left:5%;
+        
+        }
+
+    #canvasHolder2.canvas{
+          width:1200px;
+          height:675px;
+          padding-bottom: 5%;
+          padding-top: 0%;
+          padding-left:0%;
         
         }
 
@@ -84,12 +84,14 @@ body{
 #title.page h1 {
     font-size: 5em;
     color: rgba(253,92,99,1); 
+    text-align: center;
     /*text-transform: uppercase; */
 }
 
 #title.page h2 {
     font-size: 2.5em;
     color: rgba(254, 129, 135,1); 
+    text-align: center;
 }
 
 p{
@@ -121,7 +123,7 @@ p{
 }
 
 #interface.page {
-    background-color: #f2f2f2;
+    background-color: #333333;
     display: block;
     padding: 5%;
 }

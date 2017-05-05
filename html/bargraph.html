@@ -1,20 +1,26 @@
 <!DOCTYPE html>
 <html>
+  <meta charset="utf-8">
   <head>
     <title>Airbnb | NYC</title>
 
     <!-- Google fonts code -->
     <link href="https://fonts.googleapis.com/css?family=Dosis|Poppins|Abel" rel="stylesheet">
 
-    <!-- Loading d3.js library -->
-    <script language="javascript" type="text/javascript" src="../libraries/d3.min.js"></script>
-    <script language="javascript" type="text.javascrapt" src="https://d3js.org/d3.v4.min.js"> </script>
+   
+  <script src="http://d3js.org/d3.v4.min.js"></script>
+  <script src="http://d3js.org/d3-queue.v3.min.js"></script>  
+  <script src="http://d3js.org/topojson.v1.min.js"></script> 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//use.typekit.net/hgl4qxi.js"></script>
+  <script src = "../libraries/p5.js"></script>
+  <script src = "https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.8/addons/p5.dom.js"></script>
 
-    <!-- Loading p5.js dom library 
-    <script language="javascript" type="text/javascript" src="libraries/addons/p5.dom.js"></script>-->
+  <script type = "text/javascript" src="../commentvis/comment.js"> </script>
+  <script type = "text/javascript" src="../bargraph/bargraph.js"> </script>
 
-    <!-- Link to p5 sketch file -->
-    <script language="javascript" type="text/javascript" src="../js/sketch.js"></script>
+<!--   <script type="text/javascript" src="../commentvis/comment.js"/>   
+ -->  <link rel="stylesheet" type="text/css" href="../testing/testing_NTA.css">
     
     <!-- bootstrap set up--> 
     <meta charset="utf-8">
@@ -24,216 +30,365 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
 
     <!-- Stylesheet + Bootstrap link -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet"> 
-    <link rel="stylesheet" type="text/css" href="../css/site-specific.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">  
+    <link href="css/bootstrap.min.css" rel="stylesheet"> 
+    <link rel="stylesheet" type="text/css" href="../css/final-site-specific.css">
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">  
     <!-- favicon - img for browser -->
-    <link rel="shortcut icon" type="image/png" href="../img/logo.png"/>
+    <link rel="shortcut icon" type="image/png" href=".../img/logo.png"/>
   
-   </head>
+  </head>
 
-   <body>
-
-   </body>
-
-   <script type="text/javascript">
-
-    var z = d3.scaleOrdinal()
-        .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
-
-        d3.json("../data/BarGraphData/allListings.json", function (data) {
-
-            var w = "150"
-            var h = "550"
-
-            //Manhattan code//
-            var canvas1 = d3.select("body").append("svg")
-                .attr("width", w)
-                .attr("height", h)
-                .style("background-color", "#212121")
-
-            var Manhattan = canvas1.selectAll("rect").append("g")
-                    .data(data)
-                    .enter()
-                        .append("rect")
-                        .attr("height", function (d) {return d.MnRelFreq * 30; })
-                        .attr("width", 10)
-                        .attr("y", function (d, i) {return i * 40; })
-                        .attr("x", 0)
-                        .attr("fill", "#98abc5")
-                        .attr("transform", "translate (100,50)" )
-
-            var Mntext = canvas1.selectAll("text")
-                    .data(data)
-                    .enter()
-                        .append("text")
-                        .attr("x", function (d, i) {return i })
-                        .attr("y", function (d, i) {return i * 40})
-                        .text(function (d) {return d.Manhattan; })
-                        .attr("transform", "translate (10, 80)")
-                        .style("font-size", "1em")
-                        .style("font-family", "Dosis")
-                        .style("fill", "B7B7B7")
+  <body>
+    <!-- side panel 
+    <div class="sidePanel">
+      <div class = "container" >
+        <div class="row">-->
+          <!-- divides into 4, takes first left one  
+          <div class="col-md-2">-->
             
-            var Mntitle = canvas1.append("text")
-                    .text("Manhattan")
-                    .attr("x", 75)
-                    .attr("y", 40)
-                    .style("font-size", "1em")
-                    .style("font-family", "Dosis")
-                    .style("fill", "B7B7B7")
+            <!-- heading 
+            <h1> FILTER </h1>-->
 
-            //Bronx code//
-            var canvas2 =  d3.selectAll("body").append("svg")
-                .attr("width", w)
-                .attr("height", h)
-                .style("background-color", "#212121")
+            <!-- toggle bar 
+            <div class="source">  So this is the toggle text 
+              User  
+            </div>-->
 
-            var Bronx = canvas2.selectAll("rect").append("g")
-                .data(data)
-                .enter()
-                    .append("rect")
-                    .attr("height", function (d) {return d.BxRelFreq * 30; })
-                    .attr("width", 10)
-                    .attr("y", function (d, i) {return i * 40; })
-                    .attr("x", 0)
-                    .attr("fill", "#8a89a6")
-                    .attr("transform", "translate (100,50)")
+            <!--<div class="toggle">  So this is the actual toggling 
+              <input type="checkbox" class="check" value="on">
+              <b class="b switch"> </b>
+              <b class="b track"> </b> 
+            </div>-->
 
-            var Bxtext = canvas2.selectAll("text")
-                    .data(data)
-                    .enter()
-                        .append("text")
-                        .attr("x", function (d, i) {return i })
-                        .attr("y", function (d, i) {return i * 40})
-                        .text(function (d) {return d.Bronx; })
-                        .attr("transform", "translate (10, 80)")
-                        .style("font-size", "1em")
-                        .style("font-family", "Dosis")
-                        .style("fill", "B7B7B7")
+            <!--<div class="source">  So this is the toggle text 
+              Host  
+            </div>-->
 
-            var Bxtitle = canvas2.append("text")
-                    .text("Bronx")
-                    .attr("x", 75)
-                    .attr("y", 40)
-                    .style("font-size", "1em")
-                    .style("font-family", "Dosis")
-                    .style("fill", "B7B7B7")
+            <!-- search bar 
+            <div class="filters_search">-->
+            
+              <!-- search bar actual input box
+              <input type="type" placeholder="Search..." class="filters_search_input">  -->
+              <!-- search icon 
+              <button type="button" class="searchBar">
+                <span class="glyphicon glyphicon-search"> </span> 
+              </button>-->
+              
+              <!-- for the subtitle below about and/or 
+              <div class="search-type-selector">-->
+                <!-- react-text: 32 Multiple terms joined by /react-text 
+                <select>
+                  <option value="OR">OR</option>
+                  <option value="AND">AND</option>
+                </select>
+              </div>-->
 
-            //Queens Code//
-            var canvas3 =  d3.selectAll("body").append("svg")
-                .attr("width", w)
-                .attr("height", h)
-                .style("background-color", "#212121")
+              <!-- list of tags to select  
+              <ul class="selections">
+                <li>
+                  <input type="checkbox" class="check" value="on">
+                  Manhattan
+                </li> 
+                
+                <li>
+                  <input type="checkbox" class="check" value="on">
+                  Brooklyn
+                </li> 
 
-            var Queens = canvas3.selectAll("rect").append("g")
-                .data(data)
-                .enter()
-                    .append("rect")
-                    .attr("height", function (d) {return d.QnRelFreq * 30; })
-                    .attr("width", 10)
-                    .attr("y", function (d, i) {return i * 40; })
-                    .attr("x", 0)
-                    .attr("fill", "#7b6888")
-                    .attr("transform", "translate (100,50)" )
+                <li>
+                  <input type="checkbox" class="check" value="on">
+                  Stoop
+                </li> 
 
-            var Qntext = canvas3.selectAll("text")
-                    .data(data)
-                    .enter()
-                        .append("text")
-                        .attr("x", function (d, i) {return i })
-                        .attr("y", function (d, i) {return i * 40})
-                        .text(function (d) {return d.Queens; })
-                        .attr("transform", "translate (10, 80)")
-                        .style("font-size", "1em")
-                        .style("font-family", "Dosis")
-                        .style("fill", "B7B7B7")
+                <li>
+                  <input type="checkbox" class="check" value="on">
+                  Artisanal
+                </li> 
 
-            var Qntitle = canvas3.append("text")
-                    .text("Queens")
-                    .attr("x", 75)
-                    .attr("y", 40)
-                    .style("font-size", "1em")
-                    .style("font-family", "Dosis")
-                    .style("fill", "B7B7B7")
+                <li>
+                  <input type="checkbox" class="check" value="on">
+                  Community
+                </li> 
 
-            //Brooklyn//
-            var canvas4 =  d3.selectAll("body").append("svg")
-                .attr("width", w)
-                .attr("height", h)
-                .style("background-color", "#212121")
+                <li>
+                  <input type="checkbox" class="check" value="on">
+                  Coffee Shop
+                </li> 
+              </ul>
+            </div> -->
 
-            var Brooklyn = canvas4.selectAll("rect").append("g")
-                .data(data)
-                .enter()
-                    .append("rect")
-                    .attr("height", function (d) {return d.BkRelFreq * 30; })
-                    .attr("width", 10)
-                    .attr("y", function (d, i) {return i * 40; })
-                    .attr("x", 0)
-                    .attr("fill", "#6b486b")
-                    .attr("transform", "translate (100,50)" )
+            <!-- test link 
+            <ul class="selections">
+            <li>
+              <a href="html/bargraph.html">test bar graph!</a>
+            </li>
+            <li>
+              <a href="html/choropleth.html">test choropleth map!</a>
+            </li>
+            <li>
+              <a href="html/carto.html">test cartomap!!</a>
+            </li>
+            </ul>
+              
+            </div>
 
-            var Bktext = canvas4.selectAll("text")
-                    .data(data)
-                    .enter()
-                        .append("text")
-                        .attr("x", function (d, i) {return i })
-                        .attr("y", function (d, i) {return i * 40})
-                        .text(function (d) {return d.Brooklyn; })
-                        .attr("transform", "translate (10, 80)")
-                        .style("font-size", "1em")
-                        .style("font-family", "Dosis")
-                        .style("fill", "B7B7B7")
+          </div>
+        </div>
+      </div>
+    </div> -->
 
-            var Bktitle = canvas4.append("text")
-                    .text("Brooklyn")
-                    .attr("x", 75)
-                    .attr("y", 40)
-                    .style("font-size", "1em")
-                    .style("font-family", "Dosis")
-                    .style("fill", "B7B7B7")
+    <!-- body panel-->
+    <div class="bodyPanel">
+      <div class = "container" >
+        <div class="row">
 
-            //Staten Island//
-            var canvas5 =  d3.selectAll("body").append("svg")
-                .attr("width", w)
-                .attr("height", h)
-                .style("background-color", "#212121")
+          <div class="col-md-12">
 
-            var StatenIsland = canvas5.selectAll("rect").append("g")
-                .data(data)
-                .enter()
-                    .append("rect")
-                    .attr("height", function (d) {return d.SiRelFreq * 30; })
-                    .attr("width", 10)
-                    .attr("y", function (d, i) {return i * 40; })
-                    .attr("x", 0)
-                    .attr("fill", "#a05d56")
-                    .attr("transform", "translate (100,50)" )
+          <div class="page" id="title">
+            <h1> AirBnB Analysis</h1>
+            <h2> Neighborhood Identity in New York City </h2>          
+          </div>
 
-            var Sitext = canvas5.selectAll("text")
-                    .data(data)
-                    .enter()
-                        .append("text")
-                        .attr("x", function (d, i) {return i })
-                        .attr("y", function (d, i) {return i * 40})
-                        .text(function (d) {return d.StatenIsland; })
-                        .attr("transform", "translate (10, 80)")
-                        .style("font-size", "1em")
-                        .style("font-family", "Dosis")
-                        .style("fill", "B7B7B7")
+          <div class="page" id="big_picture">
+                     
 
-            var Sititle = canvas5.append("text")
-                    .text("Staten Island")
-                    .attr("x", 55)
-                    .attr("y", 40)
-                    .style("font-size", "1em")
-                    .style("font-family", "Dosis")
-                    .style("fill", "B7B7B7")
+            <p>This project visualizes text data from Airbnb to create a narrative about neighbourhood identity and how this identity differs across neighbourhoods and between AirBnB hosts and guests. 
+      The themes being exploring are: 
+<ul>
+<li>Price (Affordable, Luxury)</li>
+<li>Interior (Cozy, Modern)</li>
+<li>Identity (Diverse, Hipster, Historic) </li>
+<li> Neighbourhood amenities (Bars, Parks) </li>
+<li> Pace (Quiet, Busy) </li>
+</p>
+
+<p>We are using these clusters of words to see how hosts in different neighbourhoods market themselves, whether their guests agree with their descriptions and to identity patterns that support or defy neighbourhood stereotypes. </p>
 
 
-        })    
+            <h2 class="text-bigpicture"> Price Interior Identity Neighborhood Pace</h2>
+            <!-- <h2 class="text-bigpicture"> Interior</h2>
+            <h2 class = "text-bigpicture"> Identity </h2>
+            <h2 class = "text-bigpicture"> Neighborhood  </h2>
+              <h2 class = "text-bigpicture"> Pace </h2>
+ -->
+            <a href="../index.html"><img src="../pngicons/icons_all.png" alt="icons" style="width:1024px;height:175px";></a>   
 
-   </script>
+          </div>
+          
+
+          <div class="page" id="data">
+            <h1>DATA</h1>
+            <p>We are using NYC Airbnb data from <a href="http://insideairbnb.com/about.html">Inside Airbnb</a>, “an independent, non-commercial set of tools and data that allows you to explore how Airbnb is really being used in cities around the world” (Inside Airbnb).</p>
+
+            <p>Disclaimers about the data from <a href="http://insideairbnb.com/about.html">http://insideairbnb.com/about.html</a></p> 
+            <ul>
+              <li>The data utilizes public information compiled from the Airbnb web-site including the availability calendar for 365 days in the future, and the reviews for each listing. Data is verified, cleansed, analyzed and aggregated.</li>
+              <li>Some reviews may be "spam" allowed by Airbnb. Analysis suggests that spam reviews are small and do not affect the statistics.</li>
+              <li>Neighbourhood names for each listing are compiled by comparing the listing's geographic coordinates with a city's definition of neighbourhoods. Airbnb neighbourhood names are not used because of their inaccuracies.</li>
+            </ul>
+            <p>We will use a compressed csv of host descriptions and guest reviews. A list of explanatory variables are listed below:</p>
+
+          </div>
+
+          <div class="page" id="process">
+            <h1>PROCESS &amp; CODING</h1>
+            <p>We used text analysis of the airbnb host listing descriptions and guest reviews. Specifically, we used topic modeling to create clusters of similar words (i.e. entertainment = bars, restaurants, clubs; nature = green, space, open) and analyzed these topics in accordance with their prominence across neighbourhoods.</p>
+
+            <p>In order to provide the user of this website with a narrative instead of just an exploration of a data set, we analzyed the data first to find the topics that are frequently used in some areas but not in others; and the topics that differ between host and guest within a same neighbourhood. The particular topics and the words from which they are composed will depend on the results of this exploratory analysis. We were particularly interested in seeing whether host and guest perceptions of a neighbourhood differ and how.</p>
+
+            <p>The website aims to build a narrative and guide the user through the data story. The interactive piece will allow users to explore the neighbourhoods and topics that most interest them.
+            </p>
+
+            
+            
+            <p>In addition, we also used R to do the text analysis of the data.</p>
+
+            <p>We were interested in comparing the difference in the perceived character of neighborhoods in New York, by comparing the way neighborhoods are described and presented in listings and reviews. We have developed a basic text mining program, to extract features from our listing and review datasets. Some features we are focusing on are word frequencies, correlations, which can be compared spatially and between listings and reivews. We've also applied basic topic modeling methods to develop and compare topics across the two texts regarding how neighborhoods are described, experienced and perceived. 
+            </div>
+
+          <div class="page" id="coding">
+            <h1>CODING</h1>
+            
+            <img class = "coding-image" src="../img/Capture3.PNG"/>
+
+            <p>We are comparing the difference in the perceived character of neighborhoods in New York, by comparing the way neighborhoods are described and presented in listings and reviews. We have developed a basic text mining program, to extract features from our listing and review datasets. Some features we are focusing on are word frequencies, correlations, which can be compared spatially and between listings and reivews. We've also applied basic topic modeling methods to develop and compare topics across the two texts regarding how neighborhoods are described, experienced and perceived. 
+
+            To visualize our results, we have developed word clouds, basic word counts and frequency plots, and an interactive cartogram/diagram. An area cartogram, also referred to as a value-by-area map, distorts the shape of predetermined regions on the map to correlate with quantitative information. Our cartograms were developed in QGIS and R and many of our static plot visuals were developed in R. Our code is on <a href="https://github.com/rdottle/dv-final-project/blob/gh-pages/R/data_cleaning.Rmd" > github.</a></p>
+
+            
+            <p>We did the text analysis with R which was then exported as csv files to visualize in Javascript</p>
+           
+          </div>
+
+          <div class="page" id="interface">
+
+          <h1>RESULTS</h1> 
+          <div class = "canvas" id = "canvasHolder2"></div>
+            
+          </div>
+
+         
+            <!-- need to do this so image resizes to the column size which is the whole page within the body panel-->
+            <div class="col-md-12">
+              
+              <!-- <div class="chloroplethMap"> 
+              <div class="source">
+                <span class="sourceTitle"></span>
+                <span class="sourceText"></span>
+              </div>
+
+            </div>
+
+          </div>
+
+ -->
+        </div>
+      </div>
+    </div> 
+
+    <!--jQuery via Google CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+  </body>
+
+<script type="text/javascript">
+  // //Creates tooltip and makes it invisiblae
+  // var div = d3.select(".chloroplethMap").append("div")
+  //   .attr("class", "tooltip")
+  //   .style("opacity", 0);
+
+  // //using svg element to display the map on 
+  // var width = 970;
+  //     height = 560;
+
+  // //here you can change the projection and scale and location (through center) and so on 
+  // var projection = d3.geoMercator()
+  //     .center([-73.94, 40.70]) //sets a single standard parallel at selected lat 
+  //     .scale(50000) //obvi scale of the map 
+  //     .translate([width / 2, height / 2]); //a pixel offset that's commonly specified to ensure that the center of the projection is in the center of the viewing area
+
+  // //sets the path of projection to the projection we defined earlier ie sets up the path generator/geo path
+  // var path = d3.geoPath()
+  //     .projection(projection);
+
+  // //sets/creates svg window  
+  // var svg = d3.select(".chloroplethMap").append("svg")
+  //     .attr("width", width)
+  //     .attr("height", height)
+
+  // //SETTING COLORS FOR THE LEGEND
+  // var legend_color_domain = [1000, 5000, 30000, 60000, 80000] //LOWER LIMIT
+  // var legend_labels = ["1000", "5000", "30000", "60000", "80000"]  
+
+  // //setting the color range using a color function
+  // var color= d3.scaleThreshold()
+  //     .domain([1000, 5000, 30000, 60000, 80000]) //this is the input break values 
+  //     .range(["#f2f0f7", "#dadaeb", "#bcbddc", "#9e9ac8", "#756bb1", "#54278f"]);
+
+  // //Binding data from topojson
+  // //queues up datasets with d3 function - binding 
+  // d3.queue()  
+  //     .defer(d3.json, "testing/nyc_nta_bb.json") //load file containing neighborhood tabulation area and borough boundaries as layers
+  //     .defer(d3.csv, "testing/Pop_NTA.csv") //load population file
+  //     .await(ready); //Run 'ready' when JSONs are loaded
+
+  // //Moves selection to front
+  // d3.selection.prototype.moveToFront = function() {
+  //   return this.each(function(){
+  //     this.parentNode.appendChild(this);
+  //   });
+  // }; 
+
+  // //Moves selection to back
+  // d3.selection.prototype.moveToBack = function() { 
+  //   return this.each(function() { 
+  //   var firstChild = this.parentNode.firstChild; 
+  //     if (firstChild) { 
+  //       this.parentNode.insertBefore(this, firstChild); 
+  //     } 
+  //   }); 
+  // };    
+  
+  // //In this function, we pass our data (the TopoJSON) as an argument, then create SVG elements using a classic D3 append. Selecting all paths, the TopoJSON is bound in the data method. From here, we can perform work on each element. In this circumstance, we apply a fill and stroke.
+  // // Ready Function, runs when data is loaded - reads data as arguments
+  // function ready(error, nyc, population) {
+  //   if (error) throw error;
+  //   console.log(nyc);
+
+  //   //creating object for tabular dataset 
+  //   var popByID = {}; // Create empty object for holding dataset
+  //   population.forEach(function(d) {
+  //     popByID[d.ntaname] = +d.pop; // Create property for each ID which is a unique field in the table [d.whatever] and the json ie this is like a table join, give it value from "pop" which is an attribute in the csv
+  //     //important:cast rate to numeric value (+)
+  //   });
+  //   console.log(popByID);
+
+  //   //here we are seperating the features so we can style them through svg.selectAll(".newclasswearemaking")
+  //   svg.append("g")
+  //       .attr("class", "nta") //i define the class 
+  //     .selectAll("path")
+  //       .data(topojson.feature(nyc, nyc.objects.NY_NTA).features) // Bind TopoJSON data elements - this has to be basically the name of the file under the objects in the json 
+  //     .enter().append("path")
+  //       .attr("d", path)
+  //       // get population value for specific object based on selected fieldname earlier
+  //       // pass population to color function, return color based on scale 
+  //       .style("fill", function(d) {
+  //         if(d){
+  //           return color(popByID[d.properties.ntaname]);
+  //         } else {
+  //           return "white";
+  //         }
+  //       })
+  //       .style("stroke", "white")
+  //       .style("stroke-width", "0.1")
+        
+  // //adding outline for borough boundaries 
+  // svg.append("path")
+  //   .datum(topojson.mesh(nyc, nyc.objects.nybb)) //using a datum+mesh lets us do this without data join, usind data+features would only work with the first borough i.e. brooklyn
+  //   .attr("class", "boroughs") //i define the class
+  //   .attr("d", path)
+  // };
+  
+  // //appends chart source
+  // d3.select(".sourceTitle")
+  //   .text("SOURCE: ")
+  //   .attr("class", "sourceTitle");
+
+  // d3.select(".sourceText")
+  //   .text("Department of City Planning (2017), Inside AirBnB (2017)")
+  //   .attr("class", "sourceText");
+
+  // //drawing legend for chloropleth
+  //  var legend = svg.selectAll("g.legend")
+  //   .data(legend_color_domain)
+  //   .enter().append("g")
+  //   .attr("class", "legend");
+
+  //   var legendRectWidth = 20, legendRectHeight = 20; //width and height
+
+  //   legend.append("rect") //legend boxes
+  //   .attr("x", 20) //horizontal location
+  //   .attr("y", function(d, i){ return height - (i*legendRectHeight) - 2*legendRectHeight;}) //vertical location
+  //   .attr("width", legendRectWidth)
+  //   .attr("height", legendRectHeight)
+  //   .style("fill", function(d, i) { return color(d); })
+  //   .style("opacity", 0.8);
+
+  //   legend.append("text") //legend text
+  //   .attr("class", "legendText") //gives it class so can edit in css
+  //   .attr("x", 50) //positioning
+  //   .attr("y", function(d, i){ return height - (i*legendRectHeight) - legendRectHeight - 4;}) //multiplying by i puts all the boxes
+  //   .text(function(d, i){ return legend_labels[i]; });
+
+  //   legend.append("text")
+  //   .attr("class", "legendHeading")
+  //   .attr("x", 20)
+  //   .attr("y", function(d){ return height - 6 - legendRectHeight * 6;}) //multiplying and subtractingincreases the height vertically
+  //   .text("Population in New York City")
+
+  </script> 
 
 </html>
