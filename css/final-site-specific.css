@@ -28,7 +28,7 @@ body{
 
 .coding-image{
   height:800px;
-  width:1200px;
+  width:1100px;
   padding-bottom: 5%;
 }
 
@@ -45,7 +45,7 @@ body{
 
 
   #canvasHolder.canvas{
-          width:1700px;
+          width:1200px;
           height:375px;
           padding-bottom: 5%;
           padding-top: 0%;
