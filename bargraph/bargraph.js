@@ -2,6 +2,7 @@ var bargraph;
 var places;
 var w = 1200;
 var h = 675;
+var canvasHolder2;
 
 function preload(){
   baseimg = loadImage("../img/allBars.png");
@@ -15,7 +16,13 @@ function preload(){
 
 function setup(){
   createCanvas(1500,800);
-
+  const canvasHolder2 = select('#canvasHolder2'),
+        canvasWidth  = canvasHolder2.width,
+        canvasHeight = canvasHolder2.height;
+  
+  console.log(canvasHolder2);
+  print(canvasWidth + ', ' + canvasHeight);
+   createCanvas(canvasWidth, canvasHeight).parent('canvasHolder2');
   }
 
 function draw(){
