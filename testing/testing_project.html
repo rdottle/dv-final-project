@@ -94,20 +94,20 @@
 
   //using svg element to display the map on 
   // var width = 960;
-  //     height = 600;
+      var height = 600;
 
   //Sets dimensions
   var margin = {top: 10, left: 10, bottom: 10, right: 10}
     , width = window.outerWidth
     , width = width - margin.left - margin.right
     , mapRatio = .5
-    , height = width * mapRatio + 50;
+    // , height = width * mapRatio;
 
   //for all maps
   var projection = d3.geoMercator()
       .center([-73.94, 40.70])
-      .scale(42000)
-      .translate([width / 4, height / 2]); 
+      .scale(41000)
+      .translate([width / 4 - 70, height / 2]); 
   var path = d3.geoPath()
       .projection(projection);
 
